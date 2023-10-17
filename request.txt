@@ -1,0 +1,7 @@
+POST http://localhost:<port>/api HTTP/1.1
+content-type: application/json
+
+{
+    "id": 1,
+    "time": "Wed, 21 Oct 2015 18:27:50 GMT"
+}
