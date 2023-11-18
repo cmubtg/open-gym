@@ -8,9 +8,7 @@ function App() {
     {
       const res = await fetch('/api/occupancy');
       const data = await res.json();
-      if (res.ok){
-        setOccupancy(data.count);
-      }
+      if (res.ok) setOccupancy(data.count);
     }
     fetchOccupancy();
   }, []);

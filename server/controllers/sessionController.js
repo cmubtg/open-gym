@@ -13,10 +13,28 @@ const getOccupancy = async (req, res) => {
 // get all sessions
 const getAllSessions = async (req, res) => {
   const sessions = await Session.find({}).sort({createdAt: -1})
-
   res.status(200).json(sessions)
 }
 
+
+const getAnalytics = async (req, res) => {
+  const today = new Date();
+  // Set the time to the beginning of the day (midnight)
+  today.setHours(0, 0, 0, 0);
+
+  const endOfDay = new Date(today);
+  endOfDay.setHours(23, 59, 59, 999);
+    
+  const todaySessions = await Session.collection.find(
+    {
+      time: {
+        $gte: today,
+        $lt: endOfDay
+      }
+    }).toArray();
+                  
+  res.status(200).json(todaySessions);
+}
 
 // get a single workout
 const getSession = async (req, res) => {
@@ -37,15 +55,16 @@ const getSession = async (req, res) => {
 
 // create a new workout
 const createSession = async (req, res) => {
-  const {id, time} = req.body
+  // const {id, time} = req.body
+  res.status(200).json({"Received": "MR Ozua"})
 
   // add to the database
-  try {
-    const session = await Session.create({ id, time })
-    res.status(200).json(session)
-  } catch (err) {
-    res.status(400).json({ error: err.message })
-  }
+  // try {
+  //   const session = await Session.create({ id, time })
+  //   res.status(200).json(sesion)
+  // } catch (err) {
+  //   res.status(400).json({ error: err.message })
+  // }
 }
 
 // delete a session
@@ -64,5 +83,6 @@ module.exports = {
     getSession,
     createSession,
     deleteSession,
-    updateSession
+    updateSession, 
+    getAnalytics,
 }
