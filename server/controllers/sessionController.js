@@ -18,22 +18,20 @@ const getAllSessions = async (req, res) => {
 
 
 const getAnalytics = async (req, res) => {
-  const today = new Date();
-  // Set the time to the beginning of the day (midnight)
-  today.setHours(0, 0, 0, 0);
 
-  const endOfDay = new Date(today);
-  endOfDay.setHours(23, 59, 59, 999);
-    
-  const todaySessions = await Session.collection.find(
-    {
-      time: {
-        $gte: today,
-        $lt: endOfDay
-      }
-    }).toArray();
+  const data = await Session.find({});
+
+  const daysOfTheWeekMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const analyticsData = {};
+  daysOfTheWeekMap.forEach(day => analyticsData[day] = 0);
+
+  data.forEach(entry => {
+    const dateObject = new Date(entry.time);
+    analyticsData[daysOfTheWeekMap[dateObject.getDay()]] += 1;
+  });
                   
-  res.status(200).json(todaySessions);
+  res.status(200).json(analyticsData);
 }
 
 // get a single workout
