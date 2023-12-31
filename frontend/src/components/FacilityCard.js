@@ -1,6 +1,7 @@
+
 import React, { useState, useEffect } from 'react';
 
-function App() {
+const FacilityCard = ({facility}) => {
   const [occupancy, setOccupancy] = useState(0);
 
   useEffect(() => {
@@ -16,10 +17,10 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
-      <h1>Current Occupancy: <span>{occupancy}%</span></h1>
-    </div>
+    <>
+      <p>{facility.name} - Occupancy: {occupancy}</p>
+    </>
   );
 }
 
-export default App;
+export default FacilityCard;

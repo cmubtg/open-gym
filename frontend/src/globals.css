@@ -1,0 +1,43 @@
+@tailwind base;
+@tailwind utilities;
+
+
+@layer base{
+  h1{
+    @apply text-4xl font-bold;
+  }
+}
+
+
+
+:root{
+  --primary-color: rgb(244, 244, 244);
+  --secondary-color: #EB5958;
+  --btg-dark-grey: #5E5E5E;
+  --btg-light-grey: #DDDDDD;
+  --btg-red: #EB5958;
+  --btg-green: #2CBE3A;
+  --btg-yellow: #FFC700;
+}
+
+/* @media (prefers-color-scheme: dark) {
+  :root {
+    --primary-color: #1F1F1F;
+  }
+} */
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-color);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
