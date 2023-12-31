@@ -8,3 +8,13 @@ module.exports = {
   },
   plugins: [],
 }
+
+// colors: {
+//   'primary-color': '#DDDDDD',
+//   'secondary-color': '#EB5958',
+//   'btg-dark-grey': '#5E5E5E',
+//   'btg-light-grey': '#DDDDDD',
+//   'btg-red': '#EB5958',
+//   'btg-green': '#2CBE3A',
+//   'btg-yellow': '#FFC700'
+// }
