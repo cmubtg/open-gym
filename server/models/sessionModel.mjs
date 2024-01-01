@@ -1,11 +1,10 @@
-const mongoose = require('mongoose');
-
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
+import { Schema } from 'mongoose';
 
 const sessionSchema = new Schema({
     id: {type: Number, required: true},
     time: {type: Date, required: true},
 }, {timestamps: true});
 
-module.exports = mongoose.model('Session', sessionSchema);
+export default mongoose.model('Session', sessionSchema);
 

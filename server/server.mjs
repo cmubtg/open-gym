@@ -1,8 +1,9 @@
-require('dotenv').config()
+import dotenv from 'dotenv';
+dotenv.config(); // load env variables
 
-const express = require('express');
-const mongoose = require('mongoose');
-const OpenGymRoutes = require('./routes/routes.js')
+import express from 'express';
+import mongoose from 'mongoose';
+import OpenGymRoutes from './routes/routes.mjs';
 
 const app = express();
 
@@ -21,7 +22,6 @@ app.use('/api/', OpenGymRoutes)
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("Connected to database");
-        // listen on port
         app.listen(process.env.PORT, () => {
             console.log("Listening on port", process.env.PORT)
         });

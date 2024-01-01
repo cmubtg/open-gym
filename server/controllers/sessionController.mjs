@@ -1,21 +1,21 @@
-const Session = require('../models/sessionModel')
-const mongoose = require('mongoose')
+import Session from '../models/sessionModel.mjs'
+import mongoose from 'mongoose'
 
 
 // Get occupancy
-const getOccupancy = async (req, res) => {
+export const getOccupancy = async (req, res) => {
     let MAX_OCCUPANCY = 100;
     let occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
     res.status(200).json({count: occupancy});
   }
 
 // get all sessions
-const getAllSessions = async (req, res) => {
+export const getAllSessions = async (req, res) => {
   const sessions = await Session.find({}).sort({createdAt: -1})
   res.status(200).json(sessions)
 }
 
-const getAnalytics = async (req, res) => {
+export const getAnalytics = async (req, res) => {
 
   const data = await Session.find({});
   const daysOfTheWeekMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
@@ -32,7 +32,7 @@ const getAnalytics = async (req, res) => {
 }
 
 // get a single session
-const getSession = async (req, res) => {
+export const getSession = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -49,7 +49,7 @@ const getSession = async (req, res) => {
 }
 
 // create a new session
-const createSession = async (req, res) => {
+export const createSession = async (req, res) => {
   const {id, time} = req.body
 
   // add to the database
@@ -62,21 +62,11 @@ const createSession = async (req, res) => {
 }
 
 // delete a session
-const deleteSession = async (req, res) => {
+export const deleteSession = async (req, res) => {
   res.status(404).json({message: "Unimplemented"})
 }
 
 // update a session
-const updateSession = async (req, res) => {
+export const updateSession = async (req, res) => {
   res.status(404).json({message: "Unimplemented"})
-}
-
-module.exports = {
-    getOccupancy,
-    getAllSessions,
-    getSession,
-    createSession,
-    deleteSession,
-    updateSession, 
-    getAnalytics,
 }
