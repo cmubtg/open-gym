@@ -4,7 +4,6 @@ const mongoose = require('mongoose')
 
 // Get occupancy
 const getOccupancy = async (req, res) => {
-    // const sessions = await Session.find({}).sort({createdAt: -1})
     let MAX_OCCUPANCY = 100;
     let occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
     res.status(200).json({count: occupancy});
@@ -13,29 +12,43 @@ const getOccupancy = async (req, res) => {
 // get all sessions
 const getAllSessions = async (req, res) => {
   const sessions = await Session.find({}).sort({createdAt: -1})
-
   res.status(200).json(sessions)
 }
 
+const getAnalytics = async (req, res) => {
 
-// get a single workout
+  const data = await Session.find({});
+  const daysOfTheWeekMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+  const analyticsData = {};
+  daysOfTheWeekMap.forEach(day => analyticsData[day] = 0);
+
+  data.forEach(entry => {
+    const dateObject = new Date(entry.time);
+    analyticsData[daysOfTheWeekMap[dateObject.getDay()]] += 1;
+  });
+                  
+  res.status(200).json(analyticsData);
+}
+
+// get a single session
 const getSession = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such workout'})
+    return res.status(404).json({error: 'No such session'})
   }
 
   const session = await Session.findById(id)
 
   if (!session) {
-    return res.status(404).json({error: 'No such workout'})
+    return res.status(404).json({error: 'No such session'})
   }
 
   res.status(200).json(session)
 }
 
-// create a new workout
+// create a new session
 const createSession = async (req, res) => {
   const {id, time} = req.body
 
@@ -50,12 +63,12 @@ const createSession = async (req, res) => {
 
 // delete a session
 const deleteSession = async (req, res) => {
-
+  res.status(404).json({message: "Unimplemented"})
 }
 
 // update a session
 const updateSession = async (req, res) => {
-
+  res.status(404).json({message: "Unimplemented"})
 }
 
 module.exports = {
@@ -64,5 +77,6 @@ module.exports = {
     getSession,
     createSession,
     deleteSession,
-    updateSession
+    updateSession, 
+    getAnalytics,
 }

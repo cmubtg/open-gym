@@ -5,7 +5,8 @@ const {
     getSession,
     createSession,
     deleteSession,
-    updateSession
+    updateSession, 
+    getAnalytics,
 } = require('../controllers/sessionController.js')
 
 const router = express.Router()
@@ -16,9 +17,12 @@ router.get('/', getAllSessions)
 // Get occupancy level
 router.get('/occupancy', getOccupancy)
 
+router.get('/analytics', getAnalytics)
+
 // GET a single session
 router.get('/:id', getSession)
 
+// localhost:4000/api/4/
 // POST a new session
 router.post('/', createSession)
 
