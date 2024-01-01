@@ -1,5 +1,5 @@
-const fastcsv = require("fast-csv");
-const fs = require("fs");
+import fastcsv from 'fast-csv';
+import fs from 'fs';
 
 const CSV_FILE_PATH = 'data/mongodb_data.csv';
 
@@ -21,4 +21,4 @@ const writeToCSV = async (data) => {
   fs.appendFileSync(CSV_FILE_PATH, '\n');
 }
 
-module.exports = { writeToCSV }
+export default writeToCSV;
