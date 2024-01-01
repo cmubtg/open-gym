@@ -9,13 +9,13 @@ const sessionSchema = new mongoose.Schema({
 
 // Extend Session model with custom methods
 sessionSchema.statics.getAllData = async function() {
-    return await Session.find({});
+    return await this.find({});
   }
 sessionSchema.statics.deleteAllData = async function(){
     // *** Insert deletion code HERE ***
   }
 sessionSchema.statics.moveAllData = async function () { 
-    const data = await getAllData();
+    const data = await this.find({});
     writeToCSV(data);
     deleteAllData();
   }
