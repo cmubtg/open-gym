@@ -55,7 +55,7 @@ const createSession = async (req, res) => {
   // add to the database
   try {
     const session = await Session.create({ id, time })
-    res.status(200).json(sesion)
+    res.status(200).json(session)
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
