@@ -1,10 +1,11 @@
-require('dotenv').config()
+import dotenv from 'dotenv';
+dotenv.config(); // load env variables
 
-const cron = require('node-cron');
-const express = require('express');
-const mongoose = require('mongoose');
-const OpenGymRoutes = require('./routes/routes');
-const db = require("./models/database");
+import cron from 'node-cron';
+import express from 'express';
+import mongoose from 'mongoose';
+import OpenGymRoutes from './routes/routes.mjs';
+import db from './models/database.mjs';
 
 const app = express();
 
