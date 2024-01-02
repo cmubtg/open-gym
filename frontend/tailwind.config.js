@@ -10,9 +10,11 @@ module.exports = {
         inter : ['Inter', 'sans-serif'],
       },
       colors: {
-        'primary': '#DDDDDD',
-        'secondary': '#EB5958',
-        'btg-dark-grey': '#5E5E5E',
+        'btg-primary': '#f4f4f4',
+        'btg-primary-dark': '#1A1A1A',
+        'btg-secondary': '#EB5958',
+        // 'btg-dark-grey': '#5E5E5E',
+        'btg-dark-grey': '#3b3b3b',
         'btg-light-grey': '#DDDDDD',
         'btg-red': '#EB5958',
         'btg-green': '#2CBE3A',
@@ -33,13 +35,3 @@ module.exports = {
   },
   plugins: [],
 }
-
-// colors: {
-//   'primary-color': '#DDDDDD',
-//   'secondary-color': '#EB5958',
-//   'btg-dark-grey': '#5E5E5E',
-//   'btg-light-grey': '#DDDDDD',
-//   'btg-red': '#EB5958',
-//   'btg-green': '#2CBE3A',
-//   'btg-yellow': '#FFC700'
-// }

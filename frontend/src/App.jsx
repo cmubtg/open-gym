@@ -6,7 +6,7 @@ import Footer from './components/Footer';
 function App() {
   return (
       <>
-        <Router className="flex-grow">
+        <Router>
           <Routes>
             <Route path="/" element={<Home/>} />
             {/* TODO: Add dynamic route for FacilityDetail */}
