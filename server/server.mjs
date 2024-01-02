@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
         console.log("Connected to database");
 
         // weekly clearing database
-        cron.schedule('* * * * *', async () => {
+        cron.schedule('0 0 * * 0', async () => {
             db.moveAllData();
         });
         
