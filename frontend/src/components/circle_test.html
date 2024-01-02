@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SVG Test</title>
+  <style>
+    *,
+    ::after,
+    ::before {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell,
+        'Open Sans', 'Helvetica Neue', sans-serif;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      display: grid;
+      place-items: center;
+      color: hsl(231, 9%, 16%);
+      background-color: hsl(240, 20%, 98%);
+      position: relative;
+    }
+
+    section {
+      display: flex;
+      flex-flow: column;
+      align-items: center;
+      gap: .5rem;
+    }
+
+    h3,
+    span {
+      line-height: 1;
+    }
+
+    section span {
+      font-size: 2em;
+      font-weight: 500;
+    }
+
+    div {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    h3 {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 2.5em;
+    }
+
+    svg {
+      height: 150px;
+      width: 150px;
+      transform: rotate(0deg);
+    }
+
+    #progress,
+    #progress-border,
+    #track,
+    #border-track {
+      fill: transparent;
+    }
+
+    #progress {
+      stroke: hsl(161, 100%, 43%);
+      stroke-width: 14px;
+      stroke-linecap: round;
+      stroke-dasharray: 400;
+      stroke-dashoffset: 240; 
+    }
+
+    #progress-border {
+      stroke: hsl(161, 100%, 37%);
+      stroke-width: 10px;
+      stroke-linecap: round;
+      stroke-dasharray: 440;
+      stroke-dashoffset: 140; /* Change number value to shift progress bar */
+    }
+
+    #track {
+      stroke: hsl(0, 0%, 100%);
+      stroke-width: 10px;
+    }
+
+    #border-track {
+      stroke: hsl(0, 0%, 93%);
+      stroke-width: 12px;
+    }
+  </style>
+</head>
+<body>
+
+  <section>
+    <div>
+      <h3>Text</h3>
+      <svg>
+         <circle id="border-track" cx="75" cy="75" r="65"></circle>
+         
+         <circle id="progress" cx="75" cy="75" r="65"></circle>
+        
+       </svg>
+    </div>
+    <span>70%</span>
+  </section>
+
+</body>
+</html>

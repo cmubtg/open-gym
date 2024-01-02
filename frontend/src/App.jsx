@@ -1,22 +1,20 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Home, FacilityDetail } from './pages';
+import Footer from './components/Footer';
 
 function App() {
-  const [occupancy, setOccupancy] = useState(0);
-
-  useEffect(() => {
-    const fetchOccupancy = async () => 
-    {
-      const res = await fetch('/api/occupancy');
-      const data = await res.json();
-      if (res.ok) setOccupancy(data.count);
-    }
-    fetchOccupancy();
-  }, []);
-
   return (
-    <div className="App">
-      <h1>Current Occupancy: <span>{occupancy}%</span></h1>
-    </div>
+      <>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            {/* TODO: Add dynamic route for FacilityDetail */}
+            <Route path="/gym/:id" element={<FacilityDetail/>} />
+          </Routes>
+        </Router> 
+        <Footer/>
+      </>
   );
 }
 
