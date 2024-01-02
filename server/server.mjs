@@ -5,7 +5,7 @@ import cron from 'node-cron';
 import express from 'express';
 import mongoose from 'mongoose';
 import OpenGymRoutes from './routes/routes.mjs';
-import db from './models/sessionModel.mjs'
+import * as db from './models/sessionModel.mjs'
 
 const app = express();
 
@@ -26,7 +26,7 @@ mongoose.connect(process.env.MONGO_URI)
         console.log("Connected to database");
 
         // weekly clearing database
-        cron.schedule('0 0 * * 0', async () => {
+        cron.schedule('* * * * *', async () => {
             db.moveAllData();
         });
         

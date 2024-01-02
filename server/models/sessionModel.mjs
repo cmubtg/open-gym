@@ -6,20 +6,27 @@ const sessionSchema = new mongoose.Schema({
     time: {type: Date, required: true},
 }, {timestamps: true});
 
+const Session = mongoose.model('Session', sessionSchema);
+
 // Extend Session model with custom methods
-sessionSchema.statics.getAllData = async () => {
-    return await this.find({});
+export const getAllData = async () => {
+    return await Session.find({});
 }
 
-sessionSchema.statics.deleteAllData = async () => {
+export const deleteAllData = async () => {
     // *** Insert deletion code HERE ***
 }
 
-sessionSchema.statics.moveAllData = async () => { 
-    const data = await this.find({});
+export const moveAllData = async () => { 
+    const data = await getAllData();
     writeToCSV(data);
     deleteAllData();
 }
 
-export default mongoose.model('Session', sessionSchema);
+export const create = async (data) => {
+    return await Session.create(data);
+}
 
+export const findById = async (id) => {
+    return await Session.findById(id);
+}
