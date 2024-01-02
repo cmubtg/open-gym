@@ -1,8 +1,11 @@
-require('dotenv').config()
+import dotenv from 'dotenv';
+dotenv.config(); // load env variables
 
-const express = require('express');
-const mongoose = require('mongoose');
-const OpenGymRoutes = require('./routes/routes.js')
+import cron from 'node-cron';
+import express from 'express';
+import mongoose from 'mongoose';
+import OpenGymRoutes from './routes/routes.mjs';
+import * as db from './models/sessionModel.mjs'
 
 const app = express();
 
@@ -21,11 +24,15 @@ app.use('/api/', OpenGymRoutes)
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {
         console.log("Connected to database");
+
+        // weekly clearing database
+        cron.schedule('0 0 * * 0', async () => {
+            db.moveAllData();
+        });
+        
         // listen on port
         app.listen(process.env.PORT, () => {
             console.log("Listening on port", process.env.PORT)
         });
     })
     .catch(err => console.log(err));
-
-
