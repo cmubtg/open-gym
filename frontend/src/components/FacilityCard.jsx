@@ -34,9 +34,9 @@ const FacilityCard = ({facility}) => {
         {/* facility name and live results */}
         <div className="w-[60%] h-full m-auto mt-4 flex flex-col justify-start">
           <h3 className="font-extrabold text-[17px] ">{facility.name}</h3>
-          <LiveDot color="btg-red" msg={`${lastFetch}` + " minutes ago"}/>
+          <LiveDot msg={`${lastFetch}` + " minutes ago"}/>
         </div>
-        
+
         {/* // Meter */}
         <div className="w-[40%] mt-4">
           <OccMeter id={facility.id} occupancy={occupancy}/>
