@@ -1,14 +1,6 @@
 @tailwind base;
+@tailwind components;
 @tailwind utilities;
-
-
-@layer base{
-  h1{
-    @apply text-4xl font-bold;
-  }
-}
-
-
 
 :root{
   --primary-color: rgb(244, 244, 244);
@@ -18,6 +10,47 @@
   --btg-red: #EB5958;
   --btg-green: #2CBE3A;
   --btg-yellow: #FFC700;
+}
+
+@layer base{
+  h1{
+    @apply text-3xl font-bold;
+  }
+
+}
+
+@layer components{
+  .btg_container{
+    @apply container mx-auto mt-8 px-2;
+  }
+  .btg_container_col {
+    @apply flex flex-col items-center justify-center;
+  }
+  .btg_container_row{
+    @apply w-full h-full flex flex-row items-center justify-center;
+  }
+  .card_top{
+    @apply w-full h-[70%] flex flex-col items-center rounded-lg
+    object-cover brightness-[0.8];
+  }
+  .card_btm{
+    @apply flex flex-row align-middle w-full h-[30%]
+    text-black;
+  }
+  .facility_grid{
+    grid-template-rows: 350px;
+  }
+  .svg_container{
+    /* resize: both; */
+    align-items: center;
+    /* justify-content: center; */
+  }
+  svg{
+    width: 100%;
+    height: 90%;
+  }
+
+
 }
 
 /* @media (prefers-color-scheme: dark) {
@@ -30,11 +63,12 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--primary-color);
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  font-family: 'Inter', sans-serif;
 }
 
 code {

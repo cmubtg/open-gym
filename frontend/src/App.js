@@ -5,17 +5,16 @@ import Footer from './components/Footer';
 
 function App() {
   return (
-    <Router>
-      <>      
-        <Routes>
-          <Route path="/" element={<Home/>} />
-          {/* TODO: Add dynamic route for FacilityDetail */}
-          {/* <Route path="/gym/:id" element={<FacilityDetail/>} /> */}
-        </Routes>
-
+      <>
+        <Router className="flex-grow">
+          <Routes>
+            <Route path="/" element={<Home/>} />
+            {/* TODO: Add dynamic route for FacilityDetail */}
+            <Route path="/gym/:id" element={<FacilityDetail/>} />
+          </Routes>
+        </Router> 
         <Footer/>
       </>
-    </Router>
   );
 }
 
