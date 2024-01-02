@@ -1,4 +1,4 @@
-import Session from '../models/sessionModel.mjs'
+import * as db from '../models/sessionModel.mjs'
 import mongoose from 'mongoose'
 
 
@@ -11,13 +11,13 @@ export const getOccupancy = async (req, res) => {
 
 // get all sessions
 export const getAllSessions = async (req, res) => {
-  const sessions = await Session.find({}).sort({createdAt: -1})
+  const sessions = await db.getAllData().sort({createdAt: -1});
   res.status(200).json(sessions)
 }
 
 export const getAnalytics = async (req, res) => {
 
-  const data = await Session.find({});
+  const data = await db.getAllData();
   const daysOfTheWeekMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   const analyticsData = {};
@@ -39,7 +39,7 @@ export const getSession = async (req, res) => {
     return res.status(404).json({error: 'No such session'})
   }
 
-  const session = await Session.findById(id)
+  const session = await db.findById(id);
 
   if (!session) {
     return res.status(404).json({error: 'No such session'})
@@ -54,7 +54,7 @@ export const createSession = async (req, res) => {
 
   // add to the database
   try {
-    const session = await Session.create({ id, time })
+    const session = await db.create({ id, time });
     res.status(200).json(session)
   } catch (err) {
     res.status(400).json({ error: err.message })

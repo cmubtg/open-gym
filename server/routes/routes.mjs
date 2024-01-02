@@ -5,9 +5,9 @@ const router = express.Router()
 
 // Match routes to controller methods
 router.get('/', controller.getAllSessions)
-router.get('/:id', controller.getSession)
 router.get('/occupancy', controller.getOccupancy)
 router.get('/analytics', controller.getAnalytics)
+router.get('/:id', controller.getSession)
 router.post('/', controller.createSession)
 // router.delete('/:id', controller.deleteSession)
 // router.patch('/:id', controller.updateSession)
