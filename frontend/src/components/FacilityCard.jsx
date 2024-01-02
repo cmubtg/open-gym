@@ -27,8 +27,6 @@ const FacilityCard = ({facility}) => {
     <div className="w-full h-full">
 
       <div className="card_top">
-        {/* <div className={`card_status ${occupancy > 50 ? 'bg-btg-green' : 'bg-btg-red'}`}>
-            {`${occupancy > 50 ? 'Busy' : 'Available'}`}</div> */}
         <img className="card_img" src={facility.image} alt={facility.name} />
       </div>
 
@@ -38,6 +36,7 @@ const FacilityCard = ({facility}) => {
           <h3 className="font-extrabold text-[17px] ">{facility.name}</h3>
           <LiveDot color="btg-red" msg={`${lastFetch}` + " minutes ago"}/>
         </div>
+        
         {/* // Meter */}
         <div className="w-[40%] mt-4">
           <OccMeter id={facility.id} occupancy={occupancy}/>

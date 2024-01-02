@@ -1,8 +1,7 @@
 
 import React from 'react';
-import FacilityCard from '../components/FacilityCard';
 import { facilities } from '../data/facilities'; 
-import ThemeIcon from '../components/ThemeIcon';
+import { FacilityCard, ThemeIcon } from '../components';
 
 const Home = () => {
   return (

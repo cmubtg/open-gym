@@ -1,7 +1,4 @@
 import React from 'react';
-// import FacilityCard from '../components/FacilityCard';
-// import { Link } from 'react-router-dom';
-// import { sampleData } from '../utils/data'; // Assuming you have a data file
 
 const FacilityDetail = () => {
   return (
