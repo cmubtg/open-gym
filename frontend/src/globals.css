@@ -39,7 +39,7 @@ html, body{
     transition duration-300 ease-in-out;
   }
   .btg_container{
-    @apply w-full h-full mx-auto px-8;
+    @apply w-full h-full mx-auto px-8 lg:px-12 xl:px-24;
   }
   .btg_container_col {
     @apply w-full h-full flex flex-col items-center justify-center;
