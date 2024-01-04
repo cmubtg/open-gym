@@ -1,23 +1,30 @@
-import * as db from '../models/sessionModel.mjs'
+import * as db from '../models/database.mjs'
 import mongoose from 'mongoose'
 
 
+// Show every gym and all records for that gym
+export const getAllRecords = async (req, res) => {
+  const sessions = await db.GymGetAllData();
+  res.status(200).json({res : "WIP"})
+}
+
+// get the most recent record from every collection in database
+export const getAllOccupancy = async (req, res) => {
+  const allGyms = await db.GymGetAllData();
+  const occupancy = sessions.map(session => session.occupancy);
+  res.status(200).json({occupancy: occupancy});
+}
+
 // Get occupancy
-export const getOccupancy = async (req, res) => {
+export const getGymOccupancy = async (req, res) => {
     let MAX_OCCUPANCY = 100;
     let occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
     res.status(200).json({count: occupancy});
   }
 
-// get all sessions
-export const getAllSessions = async (req, res) => {
-  const sessions = await db.getAllData().sort({createdAt: -1});
-  res.status(200).json(sessions)
-}
+export const getGymAnalytics = async (req, res) => {
 
-export const getAnalytics = async (req, res) => {
-
-  const data = await db.getAllData();
+  const data = await db.GymGetAllData();
   const daysOfTheWeekMap = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
 
   const analyticsData = {};
@@ -32,14 +39,14 @@ export const getAnalytics = async (req, res) => {
 }
 
 // get a single session
-export const getSession = async (req, res) => {
+export const getGymSession = async (req, res) => {
   const { id } = req.params
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(404).json({error: 'No such session'})
   }
 
-  const session = await db.findById(id);
+  const session = await db.GymFindByID(id);
 
   if (!session) {
     return res.status(404).json({error: 'No such session'})
@@ -49,24 +56,25 @@ export const getSession = async (req, res) => {
 }
 
 // create a new session
-export const createSession = async (req, res) => {
-  const {id, time} = req.body
+export const createGymSession = async (req, res) => {
+  const { gym, occupancy } = req.body
 
   // add to the database
+  const testOccupancy = Math.floor(Math.random() * 100);
   try {
-    const session = await db.create({ id, time });
-    res.status(200).json(session)
+    db.insert(gym, testOccupancy);
+    res.status(200).json({ success: "Working" })
   } catch (err) {
     res.status(400).json({ error: err.message })
   }
 }
 
 // delete a session
-export const deleteSession = async (req, res) => {
+export const deleteGymSession = async (req, res) => {
   res.status(404).json({message: "Unimplemented"})
 }
 
 // update a session
-export const updateSession = async (req, res) => {
+export const updateGymSession = async (req, res) => {
   res.status(404).json({message: "Unimplemented"})
 }
