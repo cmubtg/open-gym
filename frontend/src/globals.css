@@ -31,7 +31,6 @@ html, body{
 }
 
 @layer components{
-
   .btg_page_container{
     @apply w-full h-full
     bg-btg-primary
@@ -39,7 +38,7 @@ html, body{
     transition duration-300 ease-in-out;
   }
   .btg_container{
-    @apply w-full h-full mx-auto px-8;
+    @apply w-full h-full mx-auto px-6 lg:px-12 xl:px-24;
   }
   .btg_container_col {
     @apply w-full h-full flex flex-col items-center justify-center;
@@ -53,59 +52,58 @@ html, body{
           md:grid-cols-2 lg:grid-cols-3 gap-7;
   }
 
-
+  /* FACILITY CARD */
   .card_top{
     @apply w-full h-[250px] flex flex-col items-center 
-    overflow-hidden rounded-lg;
+    overflow-hidden rounded-lg cursor-pointer;
   }
   .card_img{
     @apply w-full h-[250px] rounded-lg
     object-cover brightness-[0.8]
-    cursor-pointer transition duration-300 ease-in-out
+    transition duration-300 ease-in-out
     transform hover:scale-110;
   }
   .card_status{
     @apply w-24 h-24 rounded-lg
   }
-
   .card_btm{
     @apply w-full h-[30%] flex flex-row align-middle;
   }
-
 
   .meter_container{
     @apply w-full h-[55px] items-center max-w-[250px] 
     max-h-[100px] relative
     flex flex-col;
-    /* overflow-hidden */
   }
   .meter_info{
-    position: absolute;
-    top: 0;
-    left: 0;
-    /* top: 50%;
-    left: 45%; */
-    @apply btg_container_col mt-2 pt-1
+    @apply absolute top-0 left-0 btg_container_col mt-2 pt-1
   }
-
-  /* svg{
-    width: 100%;
-    height: 90%;
-  } */
-
+  .meter_test{
+    transform-origin: bottom center;
+    transform: rotate(0deg);
+  }
   .nav_icon{
-    @apply
-    /* mr-3 ml-4 */mt-2
+    @apply mt-2
     transition duration-300 ease-in-out 
     hover:text-btg-red cursor-pointer text-black dark:text-white;
   }
-
+  hr{
+    position: absolute;
+    /* left: 0px;
+    top: 45px; */
+    border: none;
+    border-top: 1px dotted black;
+    width: 40px;
+    height: 20px;
+    transform: rotate(10deg);
+    transform-origin: bottom center;
+  }
   #progress,
   #progress_track{
     fill: transparent;
   }
   #progress {
-    stroke: var(--btg-green);
+    /* stroke: var(--btg-green); */
     stroke-width: 20px;
     stroke-linecap: round;
     stroke-dasharray: 400;
@@ -114,6 +112,17 @@ html, body{
   }
   #progress_track {
     @apply stroke-[20px] stroke-btg-light-grey dark:stroke-btg-dark-grey
+  }
+
+
+  .low{
+    @apply bg-btg-green stroke-btg-green;
+  }
+  .medium{
+    @apply bg-btg-yellow stroke-btg-yellow;
+  }
+  .high{
+    @apply bg-btg-red stroke-btg-red;
   }
 
 

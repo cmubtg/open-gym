@@ -32,6 +32,6 @@ export const facilities = [
         address : "",
         description : ``,
         hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/uc.jpg"
+        image: process.env.PUBLIC_URL + "./images/wiegand.jpg"
     },
 ];
