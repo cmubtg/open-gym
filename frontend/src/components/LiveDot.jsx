@@ -9,9 +9,7 @@ const LiveDot = ({msg}) => {
                 </div>
                 <div className={`w-[18px] h-[18px] border-btg-red border-2 rounded-full 
                                 absolute top-[7px] left-[-4px] animate-pulsate`}>
-
-
-                        </div>
+                </div>
             </div>
             <p className="text-xs leading-[0px] font-light">
                 {msg}

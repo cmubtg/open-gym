@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import OccMeter from './OccMeter';
 import LiveDot from './LiveDot';
 
@@ -7,7 +8,7 @@ import LiveDot from './LiveDot';
 const FacilityCard = ({facility}) => {
   const [occupancy, setOccupancy] = useState(0);
   // TODO Keep track of time since last fetch
-  const lastFetch = Math.floor(Math.random() * 10) + 10;
+  const lastFetch = Math.floor(Math.random() * 10) + 1;
 
   // TODO Craft message function in utils
 
@@ -27,7 +28,9 @@ const FacilityCard = ({facility}) => {
     <div className="w-full h-full">
 
       <div className="card_top">
-        <img className="card_img" src={facility.image} alt={facility.name} />
+        <Link className="card_img" to={`/facility/${facility.id}`}>
+          <img className="rounded-lg" src={facility.image} alt={facility.name} />
+        </Link>
       </div>
 
       <div className="card_btm">

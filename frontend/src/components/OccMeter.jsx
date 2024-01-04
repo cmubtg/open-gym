@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { getOccClass } from '../utils/utils';
 
-const OccMeter = () => {
+const OccMeter = ({occupancy}) => {
     // TODO Fetch occupancy data from API
-    var offset = Math.floor(Math.random() * 200) + 1;
+    var offset = occupancy * 2;
     var perc = Math.max(0,Math.floor((((offset/200) * 100) - 90) * -1))
     var occ_class = getOccClass(perc);
     return (
