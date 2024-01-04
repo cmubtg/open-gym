@@ -1,18 +1,29 @@
-import sys
-import json
+import argparse
 import joblib
+import numpy as np
 
-# Chat gpt solution
+# Argument parsing
+parser = argparse.ArgumentParser()
+parser.add_argument("--day_of_week", help="day of week (numeric)", type=int, required=True)
+parser.add_argument("--month", help="month", type=int, required=True)
+parser.add_argument("--hour", help="hour (24-hr)", type=int, required=True)
+parser.add_argument("--is_weekend", help="true for weekends, false otherwise", type=bool, required=True)
+parser.add_argument("--is_holiday", help="true for holidays, false otherwise", type=bool, required=True)
+parser.add_argument("--is_start_of_semester", help="true if start of semester, false otherwise", type=bool, required=True)
+parser.add_argument("--temperature", help="temperature (in Fahrenheit)", type=float, required=True)
 
-# Load the trained model
-# Or replace with our own version
-model = joblib.load('trained_model.joblib')
+# Exception handling
+try: 
+    args = parser.parse_args()
+except SystemExit:
+    raise ValueError("Invalid argument passed into predict.py.") from None
 
-# Read input data from Node.js server
-input_data = json.loads(sys.argv[1])
+# Input formatting
+input_data = np.array([args.day_of_week, args.is_weekend, args.is_holiday, args.temperature,
+                    args.is_start_of_semester, args.month, args.hour]).reshape(1, -1)
 
-# Make predictions using the loaded model
-prediction = model.predict([input_data])[0]
+# Model prediction
+model = joblib.load("model.joblib")
+prediction = max(0, round(model.predict(input_data)[0]))
 
-# Print the prediction (this output will be captured by the Node.js server)
 print(prediction)
