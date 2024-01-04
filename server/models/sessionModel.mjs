@@ -9,11 +9,11 @@ const sessionSchema = new mongoose.Schema({
 const Session = mongoose.model('Session', sessionSchema);
 
 // Extend Session model with custom methods
-export const getAllData = async () => {
-    return await Session.find({});
+export const getAllData = () => {
+    return Session.find({});
 }
 
-export const deleteAllData = async () => {
+export const deleteAllData = () => {
     // *** Insert deletion code HERE ***
 }
 
@@ -23,10 +23,10 @@ export const moveAllData = async () => {
     deleteAllData();
 }
 
-export const create = async (data) => {
-    return await Session.create(data);
+export const create = (data) => {
+    return Session.create(data);
 }
 
-export const findById = async (id) => {
-    return await Session.findById(id);
+export const findById = (id) => {
+    return Session.findById(id);
 }
