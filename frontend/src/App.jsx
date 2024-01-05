@@ -10,7 +10,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home/>} />
             {/* TODO: Add dynamic route for FacilityDetail */}
-            <Route path="/gym/:id" element={<FacilityDetail/>} />
+            <Route path="/facility/:id" element={<FacilityDetail/>} />
           </Routes>
         </Router> 
         <Footer/>
