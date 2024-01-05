@@ -1,16 +1,22 @@
 import mongoose, { Schema } from 'mongoose';
 import writeToCSV from '../utils/writeToCSV.mjs';
-import { getCurrentDay, getFormattedDate } from '../utils/date.mjs';
+// import { getCurrentDay, getFormattedDate } from '../utils/date.mjs';
 
-const docSchema = {
+const Record = {
     time: {type: Date, required: true},
     count: {type: Number, required: true}
 };
 
 const conn = mongoose.connection;
 
-const collectionExists = async (collection) => {
+export const getAllCollections = async () => {
     const collections = await conn.db.listCollections().toArray();
+    return collections;
+}
+
+// Check if a collection exists
+const collectionExists = async (collection) => {
+    const collections = await getAllCollections();
     return collections.some(c => c.name === collection);
 }
 
@@ -21,7 +27,7 @@ export const getCollection = async (collection) => {
         error.code = 'collectionDoesNotExist';
         throw error;
     }
-    return mongoose.model(collection, docSchema)
+    return mongoose.model(collection, Record, collection)
 }
 
 // Insert into a collection
@@ -31,7 +37,7 @@ export const GymInsert = async (gym, occupancy) => {
         collection.create({
             time: new Date(),
             count: occupancy
-        });
+        })
 
     } catch (err) {
       if (err.code === 'collectionDoesNotExist') {
@@ -41,6 +47,17 @@ export const GymInsert = async (gym, occupancy) => {
         throw err;
       }
     }
+    // Remove model after used so next call can recreate it
+    // for the same collection
+    mongoose.deleteModel(gym);
+}
+
+// Get most recent record from a collection (gym)
+export const GymGetRecentRecord = async (gym) => {
+    const collection = await getCollection(gym);
+    const record = collection.findOne().sort({time: -1});
+    mongoose.deleteModel(gym);
+    return record;
 }
 
 // GymFindByID from a collection
@@ -49,24 +66,26 @@ export const GymFindByID = (gym, id) => {
       throw new Error(`No such session: ${id}`);
     }
     
-    const collection = getCollection(gym);
-    return collection.findByID(id);
+    const record = getCollection(gym).findByID(id);
+    mongoose.deleteModel(gym);
+    return record;
 }
 
-// Get all from a collection 
-export const GymGetAllData = (gym) => {
-    const collection = getCollection(gym);
-    return collection.find({});
+// Get all Records from a collection 
+export const GymGetAllRecords = (gym) => {
+    const record = getCollection(gym).find({});
+    mongoose.deleteModel(gym);
+    return record
 }
 
 // Delete from a collection
-export const GymDeleteAllData = (gym) => {
+export const GymDeleteAllRecords = (gym) => {
     // *** Insert deletion code HERE ***
 }
 
 // Move all data from a collection
-export const GymMoveAllData = async (gym) => { 
-    const data = await GymGetAllData(gym);
+export const GymMoveAllRecords = async (gym) => { 
+    const data = await GymGetAllRecords(gym);
     writeToCSV(data);
-    deleteAllData(gym);
+    GymDeleteAllRecords(gym);
 }
