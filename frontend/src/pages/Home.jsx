@@ -1,7 +1,10 @@
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { facilities } from '../data/facilities'; 
 import { FacilityCard, ThemeIcon } from '../components';
+import { MINUTE_MS } from '../utils/constants';
+import { isClosed } from '../utils/utils';
+
 
 const Home = () => {
   return (
@@ -24,10 +27,17 @@ const TitleBar = () => {
 };
 
 const FacilityCards = () => {
+  const [time, setTime] = useState(new Date(Date.now()))
+
+  useEffect(() => {
+    const interval = setInterval(() => setTime(new Date(Date.now())), MINUTE_MS)
+    return () => clearInterval(interval)
+  }, [])
+
   return (
     <div className="btg_grid_container pb-8">
       {facilities.map((facility) => (
-          <FacilityCard facility={facility} />
+          <FacilityCard facility={facility} closed={isClosed(facility, time)}/>
       ))}
     </div>
   );

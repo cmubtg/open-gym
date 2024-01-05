@@ -14,6 +14,6 @@ export function getOccClass(occPercent) {
 }
 
 
-export function utilityFunction2() {
-    // Code for utility function 2
+export function isClosed(facility, time) {
+    return Math.round(Math.random())
 }
