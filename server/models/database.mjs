@@ -1,15 +1,17 @@
-import mongoose, { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import writeToCSV from '../utils/writeToCSV.mjs';
-// import { getCurrentDay, getFormattedDate } from '../utils/date.mjs';
 
-const Record = {
+
+const Record = new mongoose.Schema({
     time: {type: Date, required: true},
     count: {type: Number, required: true}
-};
+    // TODO Add model input (boolean flags etc)
+});
 
 const conn = mongoose.connection;
 
-export const getAllCollections = async () => {
+
+const getAllCollections = async () => {
     const collections = await conn.db.listCollections().toArray();
     return collections;
 }
@@ -20,35 +22,26 @@ const collectionExists = async (collection) => {
     return collections.some(c => c.name === collection);
 }
 
+// PUBLIC FUNCTIONS
+
+export const getAllGymNames = async () => {
+    const collections = await getAllCollections();
+    const names = collections.map((collection) => collection.name);
+    return names;
+}
+
 export const getCollection = async (collection) => {
     // Ensure collection exists
     if (!await collectionExists(collection)) {
-        const error = new Error(`Collection (${collection}) does not exist`);
-        error.code = 'collectionDoesNotExist';
-        throw error;
+        throw new Error(`Collection (${collection}) does not exist`);
     }
     return mongoose.model(collection, Record, collection)
 }
 
 // Insert into a collection
-export const GymInsert = async (gym, occupancy) => {
-    try {
-        const collection = await getCollection(gym);
-        collection.create({
-            time: new Date(),
-            count: occupancy
-        })
-
-    } catch (err) {
-      if (err.code === 'collectionDoesNotExist') {
-        // Error for not providing a valid collection name
-        console.log(err.message);
-      } else {
-        throw err;
-      }
-    }
-    // Remove model after used so next call can recreate it
-    // for the same collection
+export const GymInsert = async (gym, data) => {
+    const collection = await getCollection(gym);
+    collection.create(data);
     mongoose.deleteModel(gym);
 }
 
@@ -61,21 +54,23 @@ export const GymGetRecentRecord = async (gym) => {
 }
 
 // GymFindByID from a collection
-export const GymFindByID = (gym, id) => {
+export const GymFindById = async (gym, id) => {
     if (!mongoose.Types.ObjectId.isValid(id)) { 
-      throw new Error(`No such session: ${id}`);
+        throw new Error(`No such session: ${id}`);
     }
     
-    const record = getCollection(gym).findByID(id);
+    const collection = await getCollection(gym);
+    const record = collection.findById(id);
     mongoose.deleteModel(gym);
     return record;
 }
 
 // Get all Records from a collection 
-export const GymGetAllRecords = (gym) => {
-    const record = getCollection(gym).find({});
+export const GymGetAllRecords = async (gym) => {
+    const collection = await getCollection(gym);
+    const records = collection.find({});
     mongoose.deleteModel(gym);
-    return record
+    return records;
 }
 
 // Delete from a collection

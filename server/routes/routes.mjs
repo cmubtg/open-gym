@@ -12,6 +12,6 @@ router.get('/analytics', controller.getGymAnalytics)
 router.get('/:gym', controller.getGymRecords)
 
 // Bluetooth scan hits here
-router.post('/:gym', controller.createRecord)
+router.post('/:gym', controller.createGymRecord)
 
 export default router

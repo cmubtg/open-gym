@@ -3,9 +3,9 @@ import * as db from '../models/database.mjs';
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
   // list all gyms
-  const collections = await db.getAllCollections();
+  const gyms = await db.getAllGymNames();
 
-  // Loop through each and call GymGetAllData
+  // Loop through each and call GymGetAllRecords
 
   // return all data
   res.status(200).json({res : "WIP"})
@@ -14,7 +14,7 @@ export const getAllRecords = async (req, res) => {
 // TODO: Get the most recent record from every collection in database
 export const getAllOccupancy = async (req, res) => {
   // Loop through all gyms. 
-  const collections = await db.getAllCollections();
+  const gyms = await db.getAllGymNames();
 
   // Call get most recent record for each gym
 
@@ -62,35 +62,42 @@ export const predictGymOccupancy = async (req, res) => {
 
 // TODO: Get all records from a specific gym
 export const getGymRecords = async (req, res) => {
-  return db.GymGetAllRecords(req.params.gym);
-}
-
-
-// TODO: get a single session
-export const getGymSession = async (req, res) => {
-  const { gym, id } = req.params
+  const { gym } = req.params;
 
   try {
-    const session = await db.GymFindByID(gym, id);
-    res.status(200).json(session);
+    const data = await db.GymGetAllRecords(gym);
+    res.status(200).json(data);
   } catch (err) {
-    res.status(404).json({error: 'No such session'})
+    res.status(400).json({error: err.message});
+  }
+}
+
+// TODO: get a single session
+export const getGymRecordById = async (req, res) => {
+  const { gym, id } = req.params;
+
+  try {
+    const data = await db.GymFindById(gym, id);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(400).json({error: err.message});
   }
 }
 
 // create a new session
-export const createRecord = async (req, res) => {
-  const { time, occupancy } = req.body
-  const { gym } = req.params
+export const createGymRecord = async (req, res) => {
+  const { time, occupancy } = req.body;
+  const { gym } = req.params;
 
   // add to the database
-  const testOccupancy = Math.floor(Math.random() * 100);
   try {
-    console.log(`Inserting Record for ${gym}`);
-    db.GymInsert(gym, testOccupancy);
-    res.status(200).json({ success: "Working" })
+    await db.GymInsert(gym, { 
+      time: new Date(time), 
+      count: occupancy
+    });
+    res.status(200).json({success: `Inserted record into ${gym}`});
   } catch (err) {
-    res.status(400).json({ error: err.message })
+    res.status(400).json({error: err.message});
   }
 }
 
