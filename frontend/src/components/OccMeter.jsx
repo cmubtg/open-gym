@@ -5,7 +5,7 @@ const OccMeter = ({occupancy, max_occupancy}) => {
     // TODO Fetch occupancy data from API
     var offset = occupancy * 2;
     var perc = Math.max(0,Math.floor((((offset/200) * 100) - 90) * -1))
-    var max_occ_right = 3.5-String(max_occupancy).length
+    var max_occ_right = 3-String(max_occupancy).length
     var occ_class = getOccClass(perc);
     return (
         <div className="meter_container">  
@@ -20,8 +20,9 @@ const OccMeter = ({occupancy, max_occupancy}) => {
                 <p className="font-bold">{perc}<span className="text-xs">%</span></p>
                 <p className="font-light text-[7px]">of max occupancy</p>
             </div>
-            <p className={`font-light text-[7px] absolute 
-                right-${max_occ_right} bottom-0`}>{max_occupancy}</p>
+            <div className="meter_max_occupancy">
+                <p className={`font-light text-[7px] mt-11 mr-${max_occ_right}`}>{max_occupancy}</p>
+            </div>
         </div>
     );
 };
