@@ -8,7 +8,8 @@ export const facilities = [
                         The CUC hosts a variety of dining options, 
                         student organization offices, and meeting spaces.`,
        hours : "Monday - Friday : 7:00am - 12:00am",
-       image: process.env.PUBLIC_URL + "./images/uc.jpg"
+       image: process.env.PUBLIC_URL + "./images/uc.jpg",
+       max_occupancy: 150
     }, 
     {
         id : 2,
@@ -16,7 +17,8 @@ export const facilities = [
         address : "",
         description : ``,
         hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/tepper.jpg"
+        image: process.env.PUBLIC_URL + "./images/tepper.jpg",
+        max_occupancy: 70
     }, 
     {
         id : 3,
@@ -24,7 +26,8 @@ export const facilities = [
         address : "",
         description : ``,
         hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/uc.jpg"
+        image: process.env.PUBLIC_URL + "./images/uc.jpg",
+        max_occupancy: 30
     },
     {
         id : 4,
@@ -32,6 +35,7 @@ export const facilities = [
         address : "",
         description : ``,
         hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/wiegand.jpg"
+        image: process.env.PUBLIC_URL + "./images/wiegand.jpg",
+        max_occupancy: 300
     },
 ];

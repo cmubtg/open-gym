@@ -42,7 +42,7 @@ const FacilityCard = ({facility}) => {
 
         {/* // Meter */}
         <div className="w-[40%] mt-4">
-          <OccMeter id={facility.id} occupancy={occupancy}/>
+          <OccMeter id={facility.id} occupancy={occupancy} max_occupancy={facility.max_occupancy}/>
         </div>
       </div>
 
