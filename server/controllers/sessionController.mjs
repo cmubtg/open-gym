@@ -1,6 +1,4 @@
-import * as db from '../models/database.mjs'
-import mongoose from 'mongoose'
-
+import * as db from '../models/database.mjs';
 
 // Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
@@ -11,7 +9,7 @@ export const getAllRecords = async (req, res) => {
 // get the most recent record from every collection in database
 export const getAllOccupancy = async (req, res) => {
   const allGyms = await db.GymGetAllData();
-  const occupancy = sessions.map(session => session.occupancy);
+  const occupancy = allGyms.map(session => session.occupancy);
   res.status(200).json({occupancy: occupancy});
 }
 
@@ -40,19 +38,14 @@ export const getGymAnalytics = async (req, res) => {
 
 // get a single session
 export const getGymSession = async (req, res) => {
-  const { id } = req.params
+  const { gym, id } = req.params
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
-    return res.status(404).json({error: 'No such session'})
+  try {
+    const session = await db.GymFindByID(gym, id);
+    res.status(200).json(session);
+  } catch (err) {
+    res.status(404).json({error: 'No such session'})
   }
-
-  const session = await db.GymFindByID(id);
-
-  if (!session) {
-    return res.status(404).json({error: 'No such session'})
-  }
-
-  res.status(200).json(session)
 }
 
 // create a new session

@@ -44,7 +44,11 @@ export const GymInsert = async (gym, occupancy) => {
 }
 
 // GymFindByID from a collection
-export const GymFindByID = (gym) => {
+export const GymFindByID = (gym, id) => {
+    if (!mongoose.Types.ObjectId.isValid(id)) { 
+      throw new Error(`No such session: ${id}`);
+    }
+    
     const collection = getCollection(gym);
     return collection.findByID(id);
 }
