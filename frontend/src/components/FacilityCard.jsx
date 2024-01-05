@@ -29,7 +29,7 @@ const FacilityCard = ({facility}) => {
 
       <div className="card_top">
         <Link className="card_img" to={`/facility/${facility.id}`}>
-          <img className="rounded-lg" src={facility.image} alt={facility.name} />
+          <img className="w-full h-full object-cover rounded-lg" src={facility.image} alt={facility.name} />
         </Link>
       </div>
 

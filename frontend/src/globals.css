@@ -2,14 +2,9 @@
 @tailwind components;
 @tailwind utilities;
 
-html, body{
-  height: 100%;
-}
-
 :root{
   --primary: #f4f4f4;
   --primary-dark: #1A1A1A;
-  /* --primary: rgb(136, 136, 136); */
   --primary-dark: #343434;
   --secondary: #EB5958;
   --btg-dark-grey: #3b3b3b;
@@ -27,14 +22,14 @@ html, body{
     @apply text-black dark:text-white
     transition duration-300 ease-in-out;
   }
-
 }
 
 @layer components{
+
+  /* MAIN CONTAINERS */
   .btg_page_container{
     @apply w-full h-full
-    bg-btg-primary
-    dark:bg-btg-primary-dark
+    bg-btg-primary dark:bg-btg-primary-dark
     transition duration-300 ease-in-out;
   }
   .btg_container{
@@ -49,17 +44,19 @@ html, body{
   .btg_grid_container{
     grid-template-rows: 350px;
     @apply w-full h-auto pt-8 grid grid-cols-1 
-          md:grid-cols-2 lg:grid-cols-3 gap-7;
+          md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-7;
   }
 
   /* FACILITY CARD */
   .card_top{
-    @apply w-full h-[250px] flex flex-col items-center 
+    @apply w-full h-[250px] 
+    flex flex-col items-center 
     overflow-hidden rounded-lg cursor-pointer;
   }
   .card_img{
-    @apply w-full h-[250px] rounded-lg
-    object-cover brightness-[0.8]
+    @apply w-full h-[250px] 
+    rounded-lg
+    brightness-[0.8]
     transition duration-300 ease-in-out
     transform hover:scale-110;
   }
@@ -70,6 +67,7 @@ html, body{
     @apply w-full h-[30%] flex flex-row align-middle;
   }
 
+  /* OCCUPANCY METER */
   .meter_container{
     @apply w-full h-[55px] items-center max-w-[250px] 
     max-h-[100px] relative
@@ -78,43 +76,27 @@ html, body{
   .meter_info{
     @apply absolute top-0 left-0 btg_container_col mt-2 pt-1
   }
-  .meter_test{
-    transform-origin: bottom center;
-    transform: rotate(0deg);
-  }
-  .nav_icon{
-    @apply mt-2
-    transition duration-300 ease-in-out 
-    hover:text-btg-red cursor-pointer text-black dark:text-white;
-  }
-  hr{
-    position: absolute;
-    /* left: 0px;
-    top: 45px; */
-    border: none;
-    border-top: 1px dotted black;
-    width: 40px;
-    height: 20px;
-    transform: rotate(10deg);
-    transform-origin: bottom center;
-  }
-  #progress,
-  #progress_track{
+  #meter_level,
+  #meter_track{
     fill: transparent;
   }
-  #progress {
+  #meter_level {
     /* stroke: var(--btg-green); */
     stroke-width: 20px;
     stroke-linecap: round;
     stroke-dasharray: 400;
     transition: stroke-dashoffset 0.6s ease-in-out;
-    /* stroke-dashoffset: 600;  */
   }
-  #progress_track {
+  #meter_track {
     @apply stroke-[20px] stroke-btg-light-grey dark:stroke-btg-dark-grey
   }
 
-
+  /* MISC */
+  .nav_icon{
+    @apply mt-2
+    transition duration-300 ease-in-out 
+    hover:text-btg-red cursor-pointer text-black dark:text-white;
+  }
   .low{
     @apply bg-btg-green stroke-btg-green;
   }
@@ -125,17 +107,11 @@ html, body{
     @apply bg-btg-red stroke-btg-red;
   }
 
-
 }
-
 
 body {
   margin: 0;
   padding: 0;
-  /* background-color: var(--primary); */
-  /* font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-family: 'Inter', sans-serif;
