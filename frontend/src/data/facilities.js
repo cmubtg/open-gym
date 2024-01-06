@@ -1,3 +1,13 @@
+const standardHours = {
+    open : "09:00",
+    close : "23:00"
+}
+
+const testHours = {
+    open : "22:15",
+    close : "23:00"
+}
+
 export const facilities = [
     {
         id: "cohonFC",
@@ -7,31 +17,36 @@ export const facilities = [
                         campus center for Carnegie Mellon University. 
                         The CUC hosts a variety of dining options, 
                         student organization offices, and meeting spaces.`,
-       hours : "Monday - Friday : 7:00am - 12:00am",
-       image: process.env.PUBLIC_URL + "./images/uc.jpg"
+      
+       hours : Array.from({ length: 7 }, () => standardHours), // 7 days a week standard hours
+       image: process.env.PUBLIC_URL + "./images/uc.jpg",
+       max_occupancy: 150
     }, 
     {
         id : "tepperFC",
         name : "Tepper Fitness Center",
         address : "",
         description : ``,
-        hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/tepper.jpg"
+        hours : Array.from({ length: 7 }, () => standardHours), 
+        image: process.env.PUBLIC_URL + "./images/tepper.jpg",
+        max_occupancy: 70
     }, 
     {
         id : "fairfax",
         name : "Fairfax Gym",
         address : "",
         description : ``,
-        hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/uc.jpg"
+        hours : Array.from({ length: 7 }, () => testHours), 
+        image: process.env.PUBLIC_URL + "./images/uc.jpg",
+        max_occupancy: 30
     },
     {
         id : "wiegand",
         name : "Wiegand Gym",
         address : "",
         description : ``,
-        hours : "Monday - Friday : 7:00am - 12:00am", 
-        image: process.env.PUBLIC_URL + "./images/wiegand.jpg"
+        hours : Array.from({ length: 7 }, () => standardHours), 
+        image: process.env.PUBLIC_URL + "./images/wiegand.jpg",
+        max_occupancy: 300
     },
 ];

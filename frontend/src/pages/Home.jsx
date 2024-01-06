@@ -1,7 +1,10 @@
 
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { facilities } from '../data/facilities'; 
 import { FacilityCard, ThemeIcon } from '../components';
+import { MINUTE_MS } from '../utils/constants';
+import { isClosed } from '../utils/utils';
+
 
 const Home = () => {
   return (
@@ -27,7 +30,7 @@ const FacilityCards = () => {
   return (
     <div className="btg_grid_container pb-8">
       {facilities.map((facility) => (
-          <FacilityCard facility={facility} />
+          <FacilityCard facility={facility}/>
       ))}
     </div>
   );

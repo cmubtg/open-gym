@@ -54,12 +54,12 @@ html, body{
 
   /* FACILITY CARD */
   .card_top{
-    @apply w-full h-[250px] flex flex-col items-center 
-    overflow-hidden rounded-lg cursor-pointer;
+    @apply w-full h-[250px] flex flex-col items-center justify-center
+    overflow-hidden rounded-lg cursor-pointer relative;
   }
   .card_img{
     @apply w-full h-[250px] rounded-lg
-    object-cover brightness-[0.8]
+    object-cover
     transition duration-300 ease-in-out
     transform hover:scale-110;
   }
@@ -77,6 +77,9 @@ html, body{
   }
   .meter_info{
     @apply absolute top-0 left-0 btg_container_col mt-2 pt-1
+  }
+  .meter_max_occupancy {
+    @apply w-full h-full flex flex-row-reverse absolute
   }
   .meter_test{
     transform-origin: bottom center;
