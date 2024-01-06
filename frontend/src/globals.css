@@ -69,17 +69,17 @@
     @apply w-24 h-24 rounded-lg
   }
   .card_btm{
-    @apply w-full h-[30%] flex flex-row align-middle;
+    @apply w-full h-[30%] flex flex-row align-middle justify-between;
   }
 
   /* OCCUPANCY METER */
   .meter_container{
     @apply w-full h-[55px] items-center max-w-[250px] 
     max-h-[100px] relative
-    flex flex-col;
+    flex flex-col ;
   }
   .meter_info{
-    @apply absolute top-0 left-0 btg_container_col mt-2 pt-1
+    @apply absolute top-0 left-0 btg_container_col mt-2 pt-1 pl-8
   }
   .meter_max_occupancy {
     @apply w-full h-full flex flex-row-reverse absolute
