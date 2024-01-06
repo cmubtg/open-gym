@@ -1,11 +1,16 @@
 const standardHours = {
-    open : "09:00",
-    close : "23:00"
+    open : new Date(0,0,0,9,0), // 9 am
+    close : new Date(0,0,0,23,0) // 11 pm
 }
 
+const alwaysOpen = {
+    open : new Date(0,0,0,0,0), // 12 am
+    close : new Date(0,0,0,23,59) // 11:59 pm
+
+}
 const testHours = {
-    open : "22:15",
-    close : "23:00"
+    open : new Date(0,0,0,15,0), // 3 pm
+    close : new Date(0,0,0,17,0) // 5 pm
 }
 
 export const facilities = [
@@ -18,7 +23,7 @@ export const facilities = [
                         The CUC hosts a variety of dining options, 
                         student organization offices, and meeting spaces.`,
       
-       hours : Array.from({ length: 7 }, () => standardHours), // 7 days a week standard hours
+       hours : Array.from({ length: 7 }, () => alwaysOpen), // 7 days a week standard hours
        image: process.env.PUBLIC_URL + "./images/uc.jpg",
        max_occupancy: 150
     }, 
@@ -27,7 +32,7 @@ export const facilities = [
         name : "Tepper Fitness Center",
         address : "",
         description : ``,
-        hours : Array.from({ length: 7 }, () => standardHours), 
+        hours : Array.from({ length: 7 }, () => alwaysOpen), 
         image: process.env.PUBLIC_URL + "./images/tepper.jpg",
         max_occupancy: 70
     }, 

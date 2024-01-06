@@ -16,6 +16,9 @@ export function getOccClass(occPercent) {
 export function isOpen(status) {
     return (status.toLowerCase() === "open");
 }
+export function isClosed(status){
+    return (status.toLowerCase() === "closed" || status.toLowerCase() === "opening soon");
+}
 
 function createDefaultDateTime(dateTime, time){
   let res = new Date(0);
@@ -30,31 +33,80 @@ function createDefaultDateTime(dateTime, time){
   return res;
 }
 
-export function getClosingStatus(facility, currDateTime, threshold) {
+// Compares two times
+// Returns difference between two times in minutes
+  // 0 if equal
+  // positive if time1 > time2
+  // negative if time1 < time2
+function cmpTime(time1, time2) {
+  const minutesInHour = 60;
+
+  const getMinutes = date => date.getHours() * minutesInHour + date.getMinutes();
+
+  const minutes1 = getMinutes(time1);
+  const minutes2 = getMinutes(time2);
+
+  return minutes1 - minutes2;
+}
+
+function getDayOfWeekName(day) {
+  if (day < 0 || day > 6)
+    return "";
+  const days = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  return days[day];
+}
+
+function formatTime(time) {
+  const hours = time.getHours();
+  const minutes = time.getMinutes();
+
+  const formattedHours = (hours < 10 ? '0' : '') + hours;
+  const formattedMinutes = (minutes < 10 ? '0' : '') + minutes;
+  return `${formattedHours}:${formattedMinutes}`;
+}
+function formatTime12h(date) {
+  const hours = date.getHours();
+  const minutes = date.getMinutes();
+  
+  // Calculate 12-hour time and determine if it's AM or PM
+  const amPm = hours >= 12 ? 'pm' : 'am';
+  const formattedHours = (hours % 12 === 0 ? 12 : hours % 12);
+  const formattedMinutes = (minutes < 10 ? '0' : '') + minutes;
+
+  return `${formattedHours}:${formattedMinutes} ${amPm}`;
+}
+
+
+export function getNextOpenReadable(facility, currTime, threshold) {
   var thresh = threshold || CLOSING_THRESH
-  var day = currDateTime.getDay()
+  var day = currTime.getDay()
 
-  const cmpCurr = createDefaultDateTime(currDateTime, ""); 
-  
-  const openingDateTime = facility.hours[day].open;
-  const closingDateTime = facility.hours[day].close;
-  console.log(openingDateTime) 
-  
-  const cmpOpen = createDefaultDateTime(null, openingDateTime) 
-  const cmpClose = createDefaultDateTime(null, closingDateTime)
+  const openTime = facility.hours[day].open;
+  const closeTime = facility.hours[day].close;
 
-  var cmpOpenThresh = new Date(cmpOpen);
-  cmpOpenThresh.setMinutes(cmpOpen.getMinutes() - thresh)
-  if (cmpCurr >= cmpClose || cmpCurr < cmpOpenThresh) {
+  if (cmpTime(currTime, closeTime) >= 0){
+    const nextDayTime = facility.hours[(day + 1) % 7].open;
+    return `${getDayOfWeekName((day + 1) % 7)}, ${formatTime12h(nextDayTime)}`;
+  }
+  return `${getDayOfWeekName(day)}, ${formatTime12h(openTime)}`;
+}
+
+export function getClosingStatus(facility, currTime, threshold) {
+  var thresh = threshold || CLOSING_THRESH
+  var day = currTime.getDay()
+
+  const openTime = facility.hours[day].open;
+  const closeTime = facility.hours[day].close;
+
+  if (cmpTime(currTime, closeTime) >= 0 || 
+      cmpTime(currTime, openTime) < -thresh) {
     return "Closed";
   }
-  if (cmpCurr < cmpOpen) {
+  if (cmpTime(currTime, openTime) <= 0) {
     return "Opening Soon";
   }
 
-  var cmpCloseThresh = new Date(cmpClose);
-  cmpCloseThresh.setMinutes(cmpClose.getMinutes() - thresh)
-  if (cmpCurr >= cmpCloseThresh) {
+  if (cmpTime(currTime, closeTime) >= -thresh) {
     return "Closing Soon";
   }
   return "Open";

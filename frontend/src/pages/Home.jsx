@@ -1,9 +1,7 @@
 
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import { facilities } from '../data/facilities'; 
 import { FacilityCard, ThemeIcon } from '../components';
-import { MINUTE_MS } from '../utils/constants';
-import { isClosed } from '../utils/utils';
 
 
 const Home = () => {
