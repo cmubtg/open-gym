@@ -1,6 +1,6 @@
 export const facilities = [
     {
-        id: 1,
+        id: "cohonFC",
         name : "Cohon Fitness Center",
         address : "5000 Forbes Ave, Pittsburgh, PA 15213",
         description : `The Cohon University Center (CUC) is the 
@@ -11,7 +11,7 @@ export const facilities = [
        image: process.env.PUBLIC_URL + "./images/uc.jpg"
     }, 
     {
-        id : 2,
+        id : "tepperFC",
         name : "Tepper Fitness Center",
         address : "",
         description : ``,
@@ -19,7 +19,7 @@ export const facilities = [
         image: process.env.PUBLIC_URL + "./images/tepper.jpg"
     }, 
     {
-        id : 3,
+        id : "fairfax",
         name : "Fairfax Gym",
         address : "",
         description : ``,
@@ -27,7 +27,7 @@ export const facilities = [
         image: process.env.PUBLIC_URL + "./images/uc.jpg"
     },
     {
-        id : 4,
+        id : "wiegand",
         name : "Wiegand Gym",
         address : "",
         description : ``,
