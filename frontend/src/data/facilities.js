@@ -9,7 +9,7 @@ const alwaysOpen = {
 
 }
 const testHours = {
-    open : new Date(0,0,0,15,0), // 9 am
+    open : new Date(0,0,0,15,0), // 3 pm
     close : new Date(0,0,0,17,0) // 5 pm
 }
 
