@@ -11,8 +11,8 @@ const OccMeter = ({occupancy, max_occupancy}) => {
         <div className="meter_container">  
         {/* view box left, up/down, zoom in, zoom out */}
             <svg className="w-full h-full" viewBox="20 -10 90 70">
-                <circle id="progress_track" cx="65" cy="70" r="70"></circle>
-                <circle id="progress" cx="65" cy="70" r="70"
+                <circle id="meter_track" cx="65" cy="70" r="70"></circle>
+                <circle id="meter_level" cx="65" cy="70" r="70"
                 strokeDashoffset={offset}
                 className={`${occ_class}`}></circle>
             </svg>

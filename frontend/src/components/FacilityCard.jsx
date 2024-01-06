@@ -41,8 +41,8 @@ const FacilityCard = ({facility, closed}) => {
   return (
     <div className="w-full h-full">
       <div className="card_top">
-        <Link className="card_img " to={`/facility/${facility.id}`}>
-          <img className={`rounded-lg brightness-[0.7] 
+        <Link className="card_link" to={`/facility/${facility.id}`}>
+          <img className={`card_img
                            ${!isOpen(closingStatus) && 
                               "opacity-65 brightness-[0.5]"}`} 
                           src={facility.image} alt={facility.name} />
@@ -61,8 +61,9 @@ const FacilityCard = ({facility, closed}) => {
         <div className="w-[60%] h-full m-auto mt-4 flex flex-col justify-start">
           <h3 className="font-extrabold text-[17px]">
             {facility.name}
-            </h3>
-          <LiveDot msg={`${lastFetch}` + " minutes ago"}/>
+          </h3>
+            {isOpen(closingStatus) &&
+            <LiveDot msg={`${lastFetch}` + " minutes ago"}/>}
         </div>
 
         {/* // Meter */}
