@@ -16,6 +16,9 @@ export function getOccClass(occPercent) {
 export function isOpen(status) {
     return (status.toLowerCase() === "open");
 }
+export function isClosed(status){
+    return (status.toLowerCase() === "closed" || status.toLowerCase() === "opening soon");
+}
 
 function createDefaultDateTime(dateTime, time){
   let res = new Date(0);

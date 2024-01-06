@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import OccMeter from './OccMeter';
 import LiveDot from './LiveDot';
-import { getClosingStatus, isOpen } from '../utils/utils';
+import { getClosingStatus, isOpen, isClosed } from '../utils/utils';
 import { MINUTE_MS } from '../utils/constants';
 
 
@@ -55,20 +55,21 @@ const FacilityCard = ({facility, closed}) => {
          }
       </div>
 
-      <div className={`card_btm ${!isOpen(closingStatus) && "opacity-55"}`}>
+      <div className={`card_btm ${isClosed(closingStatus) && "opacity-55"}`}>
         
         {/* facility name and live results */}
-        <div className="w-[60%] h-full m-auto mt-4 flex flex-col justify-start">
-          <h3 className="font-extrabold text-[17px]">
+        <div className="w-[50%] h-full m-auto mt-4 flex flex-col justify-start
+                        sm:w-[60%]">
+          <h3 className="font-extrabold text-[17px] xs:text-8">
             {facility.name}
           </h3>
-            {isOpen(closingStatus) &&
+            {!isClosed(closingStatus) &&
             <LiveDot msg={`${lastFetch}` + " minutes ago"}/>}
         </div>
 
-        {/* // Meter */}
-        <div className="w-[40%] mt-4">
-          {isOpen(closingStatus) && 
+        {/* Meter */}
+        <div className="w-[50%] xs:w-[40%] mt-4">
+          {!isClosed(closingStatus) && 
           <OccMeter id={facility.id} occupancy={occupancy} max_occupancy={facility.max_occupancy}/>}
         </div>
 
