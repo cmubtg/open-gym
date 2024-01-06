@@ -20,7 +20,7 @@ const FacilityCard = ({facility, closed}) => {
   useEffect(() => {
     const fetchOccupancy = async () => 
     {
-      const res = await fetch('/api/occupancy');
+      const res = await fetch(`/api/occupancy/${facility.id}`);
       const data = await res.json();
       if (res.ok){
         setOccupancy(data.count);
