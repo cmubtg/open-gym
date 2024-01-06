@@ -1,10 +1,9 @@
 
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import OccMeter from './OccMeter';
-import LiveDot from './LiveDot';
-import { getClosingStatus, isOpen, isClosed } from '../utils/utils';
+import { getClosingStatus } from '../utils/utils';
 import { MINUTE_MS } from '../utils/constants';
+import FacilityCardDisplay from './FacilityCardDisplay';
+import FacilityCardInfo from './FacilityCardInfo';
 
 
 const FacilityCard = ({facility, closed}) => {
@@ -13,9 +12,6 @@ const FacilityCard = ({facility, closed}) => {
 
   // TODO Keep track of time since last fetch
   const lastFetch = Math.floor(Math.random() * 10) + 1;
-
-  // TODO Craft message function in utils
-
 
   useEffect(() => {
     const fetchOccupancy = async () => 
@@ -26,7 +22,6 @@ const FacilityCard = ({facility, closed}) => {
         setOccupancy(data.count);
       }
     }
-
     const updateClosing = () => {
       var currDateTime = new Date(Date.now());
       var closingStatus = getClosingStatus(facility, currDateTime);
@@ -35,47 +30,19 @@ const FacilityCard = ({facility, closed}) => {
     fetchOccupancy();
     updateClosing();
     const intervalId = setInterval(updateClosing, MINUTE_MS); 
+    
     return () => clearInterval(intervalId);
   }, []);
 
   return (
     <div className="w-full h-full">
-      <div className="card_top">
-        <Link className="card_link" to={`/facility/${facility.id}`}>
-          <img className={`card_img
-                           ${!isOpen(closingStatus) && 
-                              "opacity-65 brightness-[0.5]"}`} 
-                          src={facility.image} alt={facility.name} />
-        </Link>
-        
-        {!isOpen(closingStatus) && 
-          <p className="absolute font-bold justify-center text-slate-50 opacity-100">
-            {closingStatus}
-          </p>
-         }
-      </div>
-
-      <div className={`card_btm ${isClosed(closingStatus) && "opacity-55"}`}>
-        
-        {/* facility name and live results */}
-        <div className="w-auto h-full mt-4 flex flex-col">
-          <h3 className="font-extrabold text-base sm:text-[17px]">
-            {facility.name}
-          </h3>
-            {!isClosed(closingStatus) &&
-            <LiveDot msg={`${lastFetch}` + " minutes ago"}/>}
-        </div>
-
-        {/* Meter */}
-        <div className="min-w-[155px] h-full mt-4">
-          {!isClosed(closingStatus) && 
-          <OccMeter id={facility.id} occupancy={occupancy} max_occupancy={facility.max_occupancy}/>}
-        </div>
-
-      </div>
-
+      <FacilityCardDisplay {...{ facility, occupancy, closingStatus }} />
+      <FacilityCardInfo {...{ facility, occupancy, lastFetch, closingStatus }} />
     </div>
   );
 }
+
+
+
 
 export default FacilityCard;
