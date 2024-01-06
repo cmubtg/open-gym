@@ -27,17 +27,10 @@ const TitleBar = () => {
 };
 
 const FacilityCards = () => {
-  const [time, setTime] = useState(new Date(Date.now()))
-
-  useEffect(() => {
-    const interval = setInterval(() => setTime(new Date(Date.now())), MINUTE_MS)
-    return () => clearInterval(interval)
-  }, [])
-
   return (
     <div className="btg_grid_container pb-8">
       {facilities.map((facility) => (
-          <FacilityCard facility={facility} closed={isClosed(facility, time)}/>
+          <FacilityCard facility={facility}/>
       ))}
     </div>
   );

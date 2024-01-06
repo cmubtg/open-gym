@@ -20,9 +20,6 @@ const OccMeter = ({occupancy, max_occupancy}) => {
                 <p className="font-bold">{perc}<span className="text-xs">%</span></p>
                 <p className="font-light text-[7px]">of max occupancy</p>
             </div>
-            <div className="meter_max_occupancy">
-                <p className={`font-light text-[7px] mt-11 mr-${max_occ_right}`}>{max_occupancy}</p>
-            </div>
         </div>
     );
 };
