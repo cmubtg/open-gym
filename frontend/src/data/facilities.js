@@ -1,16 +1,16 @@
 const standardHours = {
-    open : "09:00",
-    close : "22:00"
+    open : new Date(0,0,0,9,0), // 9 am
+    close : new Date(0,0,0,23,0) // 11 pm
 }
 
 const alwaysOpen = {
-    open : "00:00",
-    close : "23:59"
+    open : new Date(0,0,0,0,0), // 12 am
+    close : new Date(0,0,0,23,59) // 11:59 pm
 
 }
 const testHours = {
-    open : "22:15",
-    close : "23:00"
+    open : new Date(0,0,0,15,0), // 9 am
+    close : new Date(0,0,0,17,0) // 5 pm
 }
 
 export const facilities = [
