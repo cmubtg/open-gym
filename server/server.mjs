@@ -5,7 +5,7 @@ import cron from 'node-cron';
 import express from 'express';
 import mongoose from 'mongoose';
 import OpenGymRoutes from './routes/routes.mjs';
-import * as db from './models/sessionModel.mjs'
+import * as db from './models/database.mjs'
 
 const app = express();
 

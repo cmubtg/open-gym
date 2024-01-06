@@ -51,14 +51,19 @@
   .card_top{
     @apply w-full h-[250px] 
     flex flex-col items-center 
-    overflow-hidden rounded-lg cursor-pointer;
+    overflow-hidden rounded-lg cursor-pointer
+    justify-center;
   }
-  .card_img{
+  .card_link{
     @apply w-full h-[250px] 
     rounded-lg
-    brightness-[0.8]
     transition duration-300 ease-in-out
     transform hover:scale-110;
+  }
+  .card_img{
+    @apply
+    w-full h-full object-cover 
+    rounded-lg brightness-[0.75] 
   }
   .card_status{
     @apply w-24 h-24 rounded-lg
@@ -75,6 +80,9 @@
   }
   .meter_info{
     @apply absolute top-0 left-0 btg_container_col mt-2 pt-1
+  }
+  .meter_max_occupancy {
+    @apply w-full h-full flex flex-row-reverse absolute
   }
   #meter_level,
   #meter_track{
