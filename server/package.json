@@ -5,7 +5,7 @@
   "main": "server.mjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "npx eslint ./**",
+    "lint": "eslint *.mjs *.js --no-error-on-unmatched-pattern",
     "start": "node server.mjs",
     "dev": "nodemon server.mjs"
   },
