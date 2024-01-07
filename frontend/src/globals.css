@@ -18,6 +18,12 @@
   h1{
     @apply text-3xl font-bold;
   }
+  h3{
+    @apply text-base sm:text-[20px];
+  }
+  p{
+    @apply text-[0.7rem] md:text-xs;
+  }
   h1, h3, p, circle{
     @apply text-black dark:text-white
     transition duration-300 ease-in-out;
@@ -28,7 +34,8 @@
 
   /* MAIN CONTAINERS */
   .btg_page_container{
-    @apply w-full h-full
+    @apply w-full h-full min-h-dvh
+    mx-auto px-6 lg:px-12 xl:px-24
     bg-btg-primary dark:bg-btg-primary-dark
     transition duration-300 ease-in-out;
   }
@@ -55,7 +62,7 @@
     justify-center;
   }
   .card_link{
-    @apply w-full h-[250px] 
+    @apply w-full h-full 
     rounded-lg
     transition duration-300 ease-in-out
     transform hover:scale-110;
@@ -69,7 +76,7 @@
     @apply w-24 h-24 rounded-lg
   }
   .card_btm{
-    @apply w-full h-[30%] flex flex-row align-middle justify-between;
+    @apply w-full h-[40%] flex flex-row align-middle justify-between;
   }
 
   /* OCCUPANCY METER */
