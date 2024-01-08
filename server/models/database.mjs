@@ -78,7 +78,7 @@ export const gymGetAllMetadata = async () => {
 };
 
 // Get gym metadata
-export const gymGetGymMetadata = async (gym) => {
+export const gymGetMetadata = async (gym) => {
   const collection = await getCollection(Constants.metadata);
   const metadata = await collection.find({ collection_name: gym });
   mongoose.deleteModel(Constants.metadata);
