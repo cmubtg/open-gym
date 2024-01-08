@@ -38,8 +38,8 @@ const getDateFromClock = (date, time) => {
 const isClosed = async (gym, date) => {
   const metadata = await db.gymGetMetadata(gym);
   const day = Constants.dayOfTheWeek[date.getDay()];
-  const openDate = getDateFromClock(date, metadata.hours[day]['open']);
-  const closeDate = getDateFromClock(date, metadata.hours[day]['close']);
+  const openDate = getDateFromClock(date, metadata.hours[day].open);
+  const closeDate = getDateFromClock(date, metadata.hours[day].close);
 
   return openDate.getTime() > date.getTime() ||
   date.getTime() > closeDate.getTime();
@@ -65,18 +65,16 @@ export const predictOccupancy = async (gym, date) => {
     const { stdout } = await execAsync(command);
     return parseInt(stdout, 10);
   } catch (error) {
-    console.log(`Running Python Script error: ${error}`);
-    return NaN;
+    throw new Error(`Running Python Script error: ${error.message}`);
   }
 };
 
-export const isValidReq = async (gym, date) => {
+export const validatePredictReq = async (gym, date) => {
   if (isNaN(date)) {
-    return 'Invalid Timestamp';
+    throw new Error('Invalid Timestamp');
   }
   const names = await db.getAllGymNames();
   if (!names.includes(gym)) {
-    return `Invalid Gym ${gym}`;
+    throw new Error(`Invalid Gym ${gym}`);
   }
-  return '';
 };
