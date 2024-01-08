@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { getClosingStatus } from '../utils/utils';
+import { getClosingStatus, isClosed } from '../utils/utils';
 import { MINUTE_MS } from '../utils/constants';
 import FacilityCardDisplay from './FacilityCardDisplay';
 import FacilityCardInfo from './FacilityCardInfo';
@@ -13,26 +13,34 @@ const FacilityCard = ({facility, closed}) => {
   // TODO Keep track of time since last fetch
   const lastFetch = Math.floor(Math.random() * 10) + 1;
 
-  useEffect(() => {
-    const fetchOccupancy = async () => 
-    {
+  const fetchData = async () => {
+    try {
       const res = await fetch(`/api/occupancy/${facility.id}`);
       const data = await res.json();
-      if (res.ok){
+      if (res.ok) {
         setOccupancy(data.count);
       }
+    } catch (error) {
+      console.error('Error fetching data:', error);
     }
-    const updateClosing = () => {
-      var currDateTime = new Date(Date.now());
-      var closingStatus = getClosingStatus(facility, currDateTime);
-      setClosingStatus(() => closingStatus);
+  };
+
+  const updateClosingStatus = () => {
+    const currDateTime = new Date(Date.now());
+    const newClosingStatus = getClosingStatus(facility, currDateTime);
+    if (newClosingStatus !== closingStatus) {
+      setClosingStatus(newClosingStatus);
     }
-    fetchOccupancy();
-    updateClosing();
-    const intervalId = setInterval(updateClosing, MINUTE_MS); 
-    
+  };
+
+  useEffect(() => {
+    updateClosingStatus();
+    if (!isClosed(closingStatus)) {
+      fetchData();
+    }
+    const intervalId = setInterval(updateClosingStatus, MINUTE_MS);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [closingStatus]);
 
   return (
     <div className="w-full h-full">
