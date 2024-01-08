@@ -105,6 +105,11 @@ export const getGymRecordById = async (req, res) => {
   }
 };
 
+// TODO: Implement getting metadata
+export const getGymMetadata = async (req, res) => {
+
+};
+
 // create a new session
 export const createGymRecord = async (req, res) => {
   const { time, occupancy } = req.body;
@@ -114,7 +119,7 @@ export const createGymRecord = async (req, res) => {
   try {
     await db.gymInsert(gym, {
       time: new Date(time),
-      count: occupancy,
+      occupancy: occupancy,
     });
     res.status(200).json({ success: `Inserted record into ${gym}` });
   } catch (err) {

@@ -1,11 +1,7 @@
 import mongoose from 'mongoose';
+import * as Constants from './databaseConstants.mjs';
+import * as Schema from './databaseSchema.mjs';
 import writeToCSV from '../utils/writeToCSV.mjs';
-
-const Record = new mongoose.Schema({
-  time: { type: Date, required: true },
-  count: { type: Number, required: true },
-  // TODO Add model input (boolean flags etc)
-});
 
 const conn = mongoose.connection;
 
@@ -23,7 +19,8 @@ const collectionExists = async (collection) => {
 
 export const getAllGymNames = async () => {
   const collections = await getAllCollections();
-  return collections.map((collection) => collection.name);
+  const collectionNames = collections.map((collection) => collection.name);
+  return collectionNames.filter((name) => name !== Constants.metadata);
 };
 
 export const getCollection = async (collection) => {
@@ -31,7 +28,10 @@ export const getCollection = async (collection) => {
   if (!await collectionExists(collection)) {
     throw new Error(`Collection (${collection}) does not exist`);
   }
-  return mongoose.model(collection, Record, collection);
+  const schema = collection === Constants.metadata ?
+    Schema.metaDataSchema : Schema.recordSchema;
+
+  return mongoose.model(collection, schema, collection);
 };
 
 // Insert into a collection
@@ -42,9 +42,9 @@ export const gymInsert = async (gym, data) => {
 };
 
 // Get most recent record from a collection (gym)
-export const GymGetRecentRecord = async (gym) => {
+export const gymGetRecentRecord = async (gym) => {
   const collection = await getCollection(gym);
-  const record = collection.findOne().sort({ time: -1 });
+  const record = await collection.findOne().sort({ time: -1 });
   mongoose.deleteModel(gym);
   return record;
 };
@@ -56,7 +56,7 @@ export const gymFindById = async (gym, id) => {
   }
 
   const collection = await getCollection(gym);
-  const record = collection.findById(id);
+  const record = await collection.findById(id);
   mongoose.deleteModel(gym);
   return record;
 };
@@ -64,9 +64,25 @@ export const gymFindById = async (gym, id) => {
 // Get all Records from a collection
 export const gymGetAllRecords = async (gym) => {
   const collection = await getCollection(gym);
-  const records = collection.find({});
+  const records = await collection.find({});
   mongoose.deleteModel(gym);
   return records;
+};
+
+// Get all metadata
+export const gymGetAllMetadata = async () => {
+  const collection = await getCollection(Constants.metadata);
+  const metadata = await collection.find({});
+  mongoose.deleteModel(Constants.metadata);
+  return metadata;
+};
+
+// Get gym metadata
+export const gymGetMetadata = async (gym) => {
+  const collection = await getCollection(Constants.metadata);
+  const metadata = await collection.find({ collection_name: gym });
+  mongoose.deleteModel(Constants.metadata);
+  return metadata[0];
 };
 
 // Delete from a collection
