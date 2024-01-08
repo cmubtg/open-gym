@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import * as Constants from './databaseConstants.mjs';
+import * as Constants from '../utils/constants.mjs';
 import * as Schema from './databaseSchema.mjs';
 import writeToCSV from '../utils/writeToCSV.mjs';
 
@@ -91,8 +91,16 @@ export const gymDeleteAllRecords = () => {
 };
 
 // Move all data from a collection
-export const gymMoveAllRecords = async (gym) => {
-  const data = await gymGetAllRecords(gym);
-  writeToCSV(data);
+export const gymMoveAllRecords = async () => {
+  const collectionNames = await getAllGymNames();
+  await Promise.all(collectionNames.map(async (collectionName) => {
+    const fileName = Constants.getCSVFileName(collectionName);
+    const data = await gymGetAllRecords(collectionName);
+    const dataFormat = (doc) => ({
+      time: doc.time.toISOString(),
+      occupancy: doc.occupancy,
+    });
+    writeToCSV(fileName, data, dataFormat);
+  }));
   gymDeleteAllRecords();
 };
