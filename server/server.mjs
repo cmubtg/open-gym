@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 import dotenv from 'dotenv';
 dotenv.config(); // load env variables
 
@@ -22,17 +21,18 @@ app.use((req, res, next) => {
 app.use('/api/', OpenGymRoutes);
 
 // connect to database
-mongoose.connect(process.env.MONGO_URI)
+mongoose.connect(process.env.MONGO_URI) // eslint-disable-line no-undef
     .then(() => {
       console.log('Connected to database');
 
       // weekly clearing database
       cron.schedule('0 0 * * 0', async () => {
-        db.moveAllData();
+        db.gymMoveAllRecords();
       });
 
       // listen on port
-      app.listen(process.env.PORT, () => {
+      app.listen(process.env.PORT, () => { // eslint-disable-line no-undef
+        // eslint-disable-next-line no-undef
         console.log('Listening on port', process.env.PORT);
       });
     })
