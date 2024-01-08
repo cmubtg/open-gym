@@ -77,7 +77,6 @@ export const predictGymOccupancy = async (req, res) => {
     res.status(200).json({ occupancy: 0 });
   } else {
     const prediction = await predictOccupancy(gym, date);
-    console.log(prediction);
     res.status(200).json({ occupancy: prediction });
   }
 };
