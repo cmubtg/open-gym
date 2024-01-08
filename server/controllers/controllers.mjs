@@ -71,7 +71,7 @@ export const predictGymOccupancy = async (req, res) => {
     const prediction = await predictOccupancy.predictOccupancy(gym, date);
     res.status(200).json({ occupancy: prediction });
   } catch (error) {
-    res.status(400).json({ error: error });
+    res.status(400).json({ error: error.message });
   }
 };
 
