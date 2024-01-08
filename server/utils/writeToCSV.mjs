@@ -1,24 +1,19 @@
 import fastcsv from 'fast-csv';
 import fs from 'fs';
 
-const CSV_FILE_PATH = 'data/mongodb_data.csv';
-
-const writeToCSV = async (data) => {
-  const writeStream = fs.createWriteStream(CSV_FILE_PATH, { flags: 'a' });
+const writeToCSV = async (fileName, data, dataFormat) => {
+  const writeStream = fs.createWriteStream(fileName, { flags: 'a' });
 
   const csvStream = fastcsv
       .format({ writeHeaders: false })
-      .transform((doc) => ({
-        id: doc.id,
-        time: doc.time.toISOString(),
-      }));
+      .transform(dataFormat);
 
   csvStream.pipe(writeStream);
 
   data.forEach((doc) => csvStream.write(doc));
   csvStream.end();
 
-  fs.appendFileSync(CSV_FILE_PATH, '\n');
+  fs.appendFileSync(fileName, '\n');
 };
 
 export default writeToCSV;
