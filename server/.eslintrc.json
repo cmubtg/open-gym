@@ -10,6 +10,7 @@
     },
     "rules": {
         "object-curly-spacing": ["error", "always"],
-        "linebreak-style": 0
+        "linebreak-style": 0,
+        "no-undef": 2
     }
 }
