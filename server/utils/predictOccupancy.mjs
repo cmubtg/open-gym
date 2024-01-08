@@ -1,3 +1,4 @@
+import * as Constants from '../utils/constants.mjs';
 import * as db from '../models/database.mjs';
 import util from 'util';
 import { exec } from 'child_process';
@@ -19,7 +20,34 @@ const is_weekend = (date) => {
 }
 
 const execAsync = util.promisify(exec);
-const predictOccupancy = async (gym, date) => {
+
+
+const parseTime = (time) => {
+    const [hour, minute] = time.split(":");
+    return [parseInt(hour, 10), parseInt(minute, 10)];
+}
+
+const getDateFromClock = (date, time) => {
+    const [hour, minute] = parseTime(time);
+    const newDate = new Date(date);
+    newDate.setHours(hour);
+    newDate.setMinutes(minute);
+    return newDate;
+}
+
+const isClosed = async (gym, date) => {
+    const metadata = await db.gymGetMetadata(gym);
+    const day = Constants.dayOfTheWeek[date.getDay()];
+    const openDate = getDateFromClock(date, metadata.hours[day]["open"]);
+    const closeDate = getDateFromClock(date, metadata.hours[day]["close"]);
+
+    return openDate.getTime() > date.getTime() || date.getTime() > closeDate.getTime();
+}
+// PUBLIC APIs
+export const predictOccupancy = async (gym, date) => {
+    if (await isClosed(gym, date)) {
+        return 0;
+    }
     const script = "forecast/predict.py";
     const cmd = `python ${script} 
     --day_of_week ${date.getDay()} 
@@ -41,38 +69,13 @@ const predictOccupancy = async (gym, date) => {
     }
 }
 
-const parseTime = (time) => {
-    const {hour, minute} = time.split(":");
-    return {hour: parseInt(hour, 10), minute: parseInt(minute, 10)};
+export const is_valid_req = async (gym, date) => {
+    if (isNaN(date)) {
+        return 'Invalid Timestamp';
+    } 
+    const names = await db.getAllGymNames();
+    if (!names.includes(gym)) {
+        return `Invalid Gym ${gym}`;
+    }
+    return "";
 }
-
-const getDateFromClock = (date, time) => {
-    const {hour, minute} = parseTime(time);
-    const newDate = {...date};
-    newDate.setHours(hour);
-    newDate.setMinutes(minute);
-    return newDate;
-}
-
-// TODO: Make isClosed function return close bool
-const isClosed = async (db, gym, date) => {
-    const daysOfTheWeekMap = [
-        'Sunday',
-        'Monday',
-        'Tuesday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-      ];
-    const metadata = await db.gymGetMetadata(gym);
-    console.log(metadata);
-    
-    const day = daysOfTheWeekMap[date.getDay()];
-    // const {open, close} = metadata[day];
-    const openDate = getDateFromClock(date, metadata[day]["open"]);
-    const closeDate = getDateFromClock(date, metadata[day]["close"]);
-    return openDate.getTime() <= date.getTime() && date.getTime() <= closeDate();
-}
-
-export {isClosed, predictOccupancy};

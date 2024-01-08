@@ -1,5 +1,5 @@
 import * as db from '../models/database.mjs';
-import {isClosed, predictOccupancy} from '../utils/predictOccupancy.mjs';
+import {predictOccupancy, is_valid_req} from '../utils/predictOccupancy.mjs';
 
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
@@ -67,20 +67,18 @@ export const getGymAnalytics = async (req, res) => {
 // new Date(timestamp)
 // catch any errors
 // http://
+
 export const predictGymOccupancy = async (req, res) => {
+  // timestamp: ISO format string
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
-  const names = await db.getAllGymNames();
-  if (isNaN(date)) {
-    res.status(404).json({ message: 'Invalid Timestamp' });
-  } else if (!names.includes(gym)) {
-    res.status(404).json({ message: 'Invalid Gym' });
-  } else if (await isClosed(db, gym, date)) {
-    res.status(200).json({ occupancy: 0 });
-  } else {
-    const prediction = await predictOccupancy(gym, date);
-    res.status(200).json({ occupancy: prediction });
+  const error = await is_valid_req(gym, date);
+  if (error) {
+    res.status(404).json({message: error});
+    return;
   }
+  const prediction = await predictOccupancy(gym, date);
+  res.status(200).json({ occupancy: prediction });
 };
 
 // TODO: Get all records from a specific gym
