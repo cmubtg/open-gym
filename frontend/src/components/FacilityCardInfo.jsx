@@ -6,19 +6,19 @@ import LiveDot from './LiveDot';
 import { isClosed, getNextOpenReadable} from '../utils/utils';
 
 const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStatus}) => {
-    const lastFetchMsg = (lastFetch == 1) ? `1 minute ago` : `${lastFetch} minutes ago`
+    const lastFetchMsg = (lastFetch === 1) ? `1 minute ago` : `${lastFetch} minutes ago`
 
     return (
       <div className={`card_btm ${isClosed(closingStatus) && "opacity-55"}`}>
           
         {/* facility name and live results */}
-        <div className="w-auto h-full mt-4 flex flex-col">
+        <div className="w-auto h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
           <h3 className="font-extrabold">
             {facility.name}
           </h3>
           { !isClosed(closingStatus) ?
             <LiveDot msg={lastFetchMsg}/> :
-            <p className="pt-[0.5px]">Opens {getNextOpenReadable(facility, new Date(Date.now()))}</p>
+            <p className="pt-1">Opens {getNextOpenReadable(facility, new Date(Date.now()))}</p>
           }
         </div>
   

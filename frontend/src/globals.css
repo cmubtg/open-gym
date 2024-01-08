@@ -86,7 +86,7 @@
     flex flex-col ;
   }
   .meter_info{
-    @apply absolute top-0 left-0 btg_container_col mt-2 pt-1 pl-8
+    @apply absolute top-0 left-0 btg_container_col mt-3 pt-1 pl-8
   }
   .meter_max_occupancy {
     @apply w-full h-full flex flex-row-reverse absolute
