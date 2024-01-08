@@ -1,4 +1,5 @@
 import * as db from '../models/database.mjs';
+import * as predictOccupancy from '../utils/predictOccupancy.mjs';
 
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
@@ -60,11 +61,18 @@ export const getGymAnalytics = async (req, res) => {
   res.status(200).json(analyticsData);
 };
 
-// TODO: Runs ML model to predict occupancy based on timestamp and
-// Gym from params
+// Runs ML model to predict occupancy based on timestamp
 export const predictGymOccupancy = async (req, res) => {
-  // const { gym, timestamp } = req.params;
-  res.status(404).json({ message: 'Unimplemented' });
+  // timestamp: ISO format string
+  const { gym, timestamp } = req.params;
+  const date = new Date(timestamp);
+  try {
+    await predictOccupancy.validatePredictReq(gym, date);
+    const prediction = await predictOccupancy.predictOccupancy(gym, date);
+    res.status(200).json({ occupancy: prediction });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
 };
 
 // TODO: Get all records from a specific gym

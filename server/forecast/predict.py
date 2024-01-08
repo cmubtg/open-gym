@@ -18,6 +18,9 @@ try:
 except SystemExit:
     raise ValueError("Invalid argument passed into predict.py.") from None
 
+# TODO: remove the two lines when ready to use the model
+print(69);
+quit(None)
 # Input formatting
 input_data = np.array([args.day_of_week, args.is_weekend, args.is_holiday, args.temperature,
                     args.is_start_of_semester, args.month, args.hour]).reshape(1, -1)
