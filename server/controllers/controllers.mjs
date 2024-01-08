@@ -70,10 +70,12 @@ export const getGymAnalytics = async (req, res) => {
 export const predictGymOccupancy = async (req, res) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
-
+  const names = await db.getAllGymNames();
   if (isNaN(date)) {
     res.status(404).json({ message: 'Invalid Timestamp' });
-  } else if (isClosed(date)) {
+  } else if (!names.includes(gym)) {
+    res.status(404).json({ message: 'Invalid Gym' });
+  } else if (await isClosed(db, gym, date)) {
     res.status(200).json({ occupancy: 0 });
   } else {
     const prediction = await predictOccupancy(gym, date);
