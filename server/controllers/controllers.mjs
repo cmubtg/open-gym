@@ -1,5 +1,5 @@
 import * as db from '../models/database.mjs';
-import {predictOccupancy, is_valid_req} from '../utils/predictOccupancy.mjs';
+import { predictOccupancy, isValidReq } from '../utils/predictOccupancy.mjs';
 
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
@@ -61,20 +61,14 @@ export const getGymAnalytics = async (req, res) => {
   res.status(200).json(analyticsData);
 };
 
-// TODO: Runs ML model to predict occupancy based on timestamp and
-// Gym from params
-// .toIsoString()
-// new Date(timestamp)
-// catch any errors
-// http://
-
+// Runs ML model to predict occupancy based on timestamp
 export const predictGymOccupancy = async (req, res) => {
   // timestamp: ISO format string
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
-  const error = await is_valid_req(gym, date);
+  const error = await isValidReq(gym, date);
   if (error) {
-    res.status(404).json({message: error});
+    res.status(404).json({ message: error });
     return;
   }
   const prediction = await predictOccupancy(gym, date);
