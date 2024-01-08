@@ -77,8 +77,7 @@ function formatTime12h(date) {
 }
 
 
-export function getNextOpenReadable(facility, currTime, threshold) {
-  var thresh = threshold || CLOSING_THRESH
+export function getNextOpenReadable(facility, currTime) {
   var day = currTime.getDay()
 
   const openTime = facility.hours[day].open;
