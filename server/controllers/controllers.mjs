@@ -1,5 +1,5 @@
 import * as db from '../models/database.mjs';
-import {predictOccupancy} from '../utils/predictOccupancy.mjs';
+import {isClosed, predictOccupancy} from '../utils/predictOccupancy.mjs';
 
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
@@ -70,14 +70,14 @@ export const getGymAnalytics = async (req, res) => {
 export const predictGymOccupancy = async (req, res) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
-  if (false) {
+
+  if (isNaN(date)) {
     res.status(404).json({ message: 'Invalid Timestamp' });
-  } else if (false) {
-    
+  } else if (isClosed(date)) {
     res.status(200).json({ occupancy: 0 });
   } else {
-    console.log("BAD");
-    const prediction = predictOccupancy(gym, date);
+    const prediction = await predictOccupancy(gym, date);
+    console.log(prediction);
     res.status(200).json({ occupancy: prediction });
   }
 };
