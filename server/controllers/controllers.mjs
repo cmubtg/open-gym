@@ -1,4 +1,5 @@
 import * as db from '../models/database.mjs';
+import {predictOccupancy} from '../utils/predictOccupancy.mjs';
 
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
@@ -62,9 +63,23 @@ export const getGymAnalytics = async (req, res) => {
 
 // TODO: Runs ML model to predict occupancy based on timestamp and
 // Gym from params
+// .toIsoString()
+// new Date(timestamp)
+// catch any errors
+// http://
 export const predictGymOccupancy = async (req, res) => {
-  // const { gym, timestamp } = req.params;
-  res.status(404).json({ message: 'Unimplemented' });
+  const { gym, timestamp } = req.params;
+  const date = new Date(timestamp);
+  if (false) {
+    res.status(404).json({ message: 'Invalid Timestamp' });
+  } else if (false) {
+    
+    res.status(200).json({ occupancy: 0 });
+  } else {
+    console.log("BAD");
+    const prediction = predictOccupancy(gym, date);
+    res.status(200).json({ occupancy: prediction });
+  }
 };
 
 // TODO: Get all records from a specific gym
