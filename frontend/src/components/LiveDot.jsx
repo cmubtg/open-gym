@@ -11,9 +11,7 @@ const LiveDot = ({msg}) => {
                                 absolute top-[7px] left-[-4px] animate-pulsate`}>
                 </div>
             </div>
-            <p className="text-[0.6rem] md:text-xs font-light">
-                {msg}
-            </p>
+            <p className="font-light">{msg}</p>
         </div>
     );
 };

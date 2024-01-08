@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { getClosingStatus } from '../utils/utils';
+import { getClosingStatus, isClosed } from '../utils/utils';
 import { MINUTE_MS } from '../utils/constants';
 import FacilityCardDisplay from './FacilityCardDisplay';
 import FacilityCardInfo from './FacilityCardInfo';
@@ -14,25 +14,33 @@ const FacilityCard = ({facility, closed}) => {
   const lastFetch = Math.floor(Math.random() * 10) + 1;
 
   useEffect(() => {
-    const fetchOccupancy = async () => 
-    {
-      const res = await fetch(`/api/occupancy/${facility.id}`);
-      const data = await res.json();
-      if (res.ok){
-        setOccupancy(data.count);
+    const fetchData = async () => {
+      try {
+        const res = await fetch(`/api/occupancy/${facility.id}`);
+        const data = await res.json();
+        if (res.ok) {
+          setOccupancy(data.count);
+        }
+      } catch (error) {
+        console.error('Error fetching data:', error);
       }
+    };
+  
+    const updateClosingStatus = () => {
+      const currDateTime = new Date(Date.now());
+      const newClosingStatus = getClosingStatus(facility, currDateTime);
+      if (newClosingStatus !== closingStatus) {
+        setClosingStatus(newClosingStatus);
+      }
+    };
+
+    updateClosingStatus();
+    if (!isClosed(closingStatus)) {
+      fetchData();
     }
-    const updateClosing = () => {
-      var currDateTime = new Date(Date.now());
-      var closingStatus = getClosingStatus(facility, currDateTime);
-      setClosingStatus(() => closingStatus);
-    }
-    fetchOccupancy();
-    updateClosing();
-    const intervalId = setInterval(updateClosing, MINUTE_MS); 
-    
+    const intervalId = setInterval(updateClosingStatus, MINUTE_MS);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [closingStatus, facility]);
 
   return (
     <div className="w-full h-full">
@@ -41,8 +49,6 @@ const FacilityCard = ({facility, closed}) => {
     </div>
   );
 }
-
-
 
 
 export default FacilityCard;
