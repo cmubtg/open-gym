@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import * as db from '../models/database/database';
-import * as predictOccupancy from '../utils/predict_occupancy';
+import db from '../models/database/database';
+import * as predictOccupancy from '../models/helper/predict_occupancy';
 
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -62,7 +62,7 @@ export const getGymRecords = async (req: Request, res: Response) => {
   const { gym } = req.params;
 
   try {
-    const data = await db.gymGetAllRecords(gym);
+    const data = await db.getRecords(gym);
     res.status(200).json(data);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -74,7 +74,7 @@ export const getGymRecordById = async (req: Request, res: Response) => {
   const { gym, id } = req.params;
 
   try {
-    const data = await db.gymFindById(gym, id);
+    const data = await db.getGymById(gym, id);
     res.status(200).json(data);
   } catch (err) {
     res.status(400).json({ error: err.message });
@@ -93,7 +93,7 @@ export const createGymRecord = async (req: Request, res: Response) => {
 
   // add to the database
   try {
-    await db.gymInsert(gym, {
+    await db.insert(gym, {
       time: new Date(time),
       occupancy: occupancy,
     });

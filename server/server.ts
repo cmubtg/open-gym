@@ -2,7 +2,7 @@ import cron from 'node-cron';
 import express from 'express';
 import mongoose from 'mongoose';
 import OpenGymRoutes from './routes/routes';
-import * as db from './models/database/database';
+import db from './models/database/database';
 import { MONGO_URI, PORT } from './utils/constants';
 
 const app = express();
@@ -25,7 +25,7 @@ mongoose.connect(MONGO_URI) // eslint-disable-line no-undef
 
       // weekly clearing database
       cron.schedule('0 0 * * 0', async () => {
-        db.gymMoveAllRecords();
+        db.moveAllRecords();
       });
 
       // listen on port

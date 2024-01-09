@@ -31,10 +31,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.updateGymSession = exports.deleteRecord = exports.createGymRecord = exports.getGymMetadata = exports.getGymRecordById = exports.getGymRecords = exports.predictGymOccupancy = exports.getGymAnalytics = exports.getGymOccupancy = exports.getAllOccupancy = exports.getAllRecords = void 0;
-const db = __importStar(require("../models/database/database"));
-const predictOccupancy = __importStar(require("../utils/predict_occupancy"));
+const database_1 = __importDefault(require("../models/database/database"));
+const predictOccupancy = __importStar(require("../models/helper/predict_occupancy"));
 // TODO: Show every gym and all records for that gym
 const getAllRecords = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     // list all gyms
@@ -89,7 +92,7 @@ exports.predictGymOccupancy = predictGymOccupancy;
 const getGymRecords = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { gym } = req.params;
     try {
-        const data = yield db.gymGetAllRecords(gym);
+        const data = yield database_1.default.getRecords(gym);
         res.status(200).json(data);
     }
     catch (err) {
@@ -101,7 +104,7 @@ exports.getGymRecords = getGymRecords;
 const getGymRecordById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { gym, id } = req.params;
     try {
-        const data = yield db.gymFindById(gym, id);
+        const data = yield database_1.default.getGymById(gym, id);
         res.status(200).json(data);
     }
     catch (err) {
@@ -119,7 +122,7 @@ const createGymRecord = (req, res) => __awaiter(void 0, void 0, void 0, function
     const { gym } = req.params;
     // add to the database
     try {
-        yield db.gymInsert(gym, {
+        yield database_1.default.insert(gym, {
             time: new Date(time),
             occupancy: occupancy,
         });

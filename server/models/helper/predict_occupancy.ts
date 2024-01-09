@@ -1,5 +1,5 @@
-import * as db from '../models/database/database';
-import { DAYS_OF_THE_WEEK } from './constants';
+import db from '../database/database';
+import { DAYS_OF_THE_WEEK } from '../../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';
 
@@ -35,7 +35,7 @@ const getDateFromClock = (date: Date, time: string) => {
 };
 
 const isClosed = async (gym: string, date: Date) => {
-  const metadata = await db.gymGetMetadata(gym);
+  const metadata = await db.getMetadata(gym);
   const day = DAYS_OF_THE_WEEK[date.getDay()] as keyof typeof metadata.hours;
   const openDate = getDateFromClock(date, metadata.hours[day].open);
   const closeDate = getDateFromClock(date, metadata.hours[day].close);
@@ -72,7 +72,7 @@ export const validatePredictReq = async (gym: string, timestamp: string) => {
   if (isNaN(Date.parse(timestamp))) {
     throw new Error('Invalid Timestamp');
   }
-  const names = await db.getAllGymNames();
+  const names = await db.getAllNames();
   if (!names.includes(gym)) {
     throw new Error(`Invalid Gym ${gym}`);
   }
