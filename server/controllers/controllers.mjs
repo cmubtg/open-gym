@@ -99,9 +99,24 @@ export const getGymRecordById = async (req, res) => {
   }
 };
 
-// TODO: Implement getting metadata
-export const getGymMetadata = async (req, res) => {
+export const getAllMetadata = async (req, res) => {
+  try {
+    const data = await db.gymGetAllMetadata();
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
 
+export const getGymMetadata = async (req, res) => {
+  const { gym } = req.params;
+
+  try {
+    const data = await db.gymGetMetadata(gym);
+    res.status(200).json(data);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
 };
 
 // create a new session

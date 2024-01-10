@@ -5,6 +5,8 @@ const router = express.Router(); // eslint-disable-line new-cap
 
 // Match routes to controller methods
 router.get('/', controller.getAllRecords);
+router.get('/metadata', controller.getAllMetadata);
+router.get('/metadata/:gym', controller.getGymMetadata);
 router.get('/occupancy', controller.getAllOccupancy);
 router.get('/occupancy/:gym', controller.getGymOccupancy);
 router.get('/occupancy/:gym/:timestamp', controller.predictGymOccupancy);
