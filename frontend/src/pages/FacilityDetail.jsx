@@ -1,6 +1,7 @@
 import React from 'react';
 import {facilities} from '../data/facilities';
 import {Link, useParams} from 'react-router-dom';
+import BarChart from '../components/BarChart';
 
 import { IoIosArrowBack } from "react-icons/io";
 
@@ -24,10 +25,18 @@ const FacilityDetail = () => {
 
       <FacilityDetailHours facility={facility}/>
       
+      <FacilityBarChart facility={facility}/>
     </div>
   );
 }
 
+const FacilityBarChart = ({facility}) => {
+  return (
+    <div className="w-full h-52 flex flex-col mt-4 items-center justify-center">
+      <BarChart/>
+    </div>
+  );
+}
 
 const FacilityDetailHours = ({facility}) => {
   return (
