@@ -4,38 +4,63 @@ import * as predictOccupancy from '../utils/predictOccupancy.mjs';
 // TODO: Show every gym and all records for that gym
 export const getAllRecords = async (req, res) => {
   // list all gyms
-  // const gyms = await db.getAllGymNames();
+  const gyms = await db.getAllGymNames(); 
+  const result = []; 
 
   // Loop through each and call gymGetAllRecords
+  for (let i = 0; i < gyms.length; i++) {
+    const gym = gyms[i];
+    const data = await db.gymGetAllRecords(gym);
+    result.push({"gym" : gym, "data" : data});
+  }
 
   // return all data
-  res.status(200).json({ res: 'WIP' });
+  res.status(200).json(result);
 };
 
 // TODO: Get the most recent record from every collection in database
 export const getAllOccupancy = async (req, res) => {
-  // Loop through all gyms.
-  // const gyms = await db.getAllGymNames();
+  // list all gyms & loop through 
+  const gyms = await db.getAllGymNames();
+  console.log(gyms);
+  const result = []; 
 
   // Call get most recent record for each gym
+  for (let i = 0; i < gyms.length; i++) {
+    const gym = gyms[i];
+    const mostRecentRecord = await db.GymGetRecentRecord(gym);  
+
+    if (mostRecentRecord != null) {
+      console.log(mostRecentRecord);
+
+      result.push({ gym: gym, temp: mostRecentRecord.occupancy});
+    }  
+    else {
+      console.log(`Skipping gym ${gym} due to missing or invalid occupancy data.`);
+    } 
+  }  
 
   // Return data in the form of { {gym occupancy}, {gym occupancy}, ... }}
-  res.status(200).json({ occupancy: 0 });
+  console.log(result);
+  res.status(200).json({result});
 };
 
-export const getGymOccupancy = async (req, res) => {
-  // // Get gym name from params
-  // const { gym } = req.params;
-
-  // // Get the most recent record from gym collection
+export const getGymOccupancy = async (req, res) => {  
+  // Get gym name from params
+  const {gym} = req.params;
+  
+  // Get the most recent record from gym collection
   // const collection = await db.getCollection(gym);
-  // const mostRecentRecord = await db.GymGetRecentRecord(collection);
-  // return mostRecentRecord.count;
+  const mostRecentRecord = await db.GymGetRecentRecord(gym);
+  console.log(mostRecentRecord); 
 
   const MAX_OCCUPANCY = 100;
-  const occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
-  res.status(200).json({ count: occupancy });
+  const occupancy = Math.floor(mostRecentRecord.occupancy * MAX_OCCUPANCY);
+  // res.status(200).json({ count: occupancy });
+  res.status(200).json({ count: mostRecentRecord.occupancy});
+
 };
+
 
 // TODO: Update to take specific gym into account
 export const getGymAnalytics = async (req, res) => {

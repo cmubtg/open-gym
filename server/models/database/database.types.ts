@@ -1,6 +1,6 @@
 import { InferSchemaType, Schema } from 'mongoose';
 
-export type  BTG_Record = InferSchemaType<typeof recordSchema>
+export type BTG_Record = InferSchemaType<typeof recordSchema>
 
 export const recordSchema = new Schema({
   time: { type: Date, required: true },
@@ -17,6 +17,11 @@ export type BTG_Gym_Record = {
   gym: string;
   data: BTG_Record[];
 };
+
+export type BTG_Gym_Occupancy = {
+  gym : string;
+  occupancy : number;
+} 
 
 export const metaDataSchema = new Schema({
   collection_name: { type: String, required: true },
