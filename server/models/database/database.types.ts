@@ -8,6 +8,16 @@ export const recordSchema = new Schema({
   // TODO Add model input (boolean flags etc)
 });
 
+export const gymRecordSchema = new Schema({
+  gym: { type: String, required: true },
+  data: { type: [recordSchema], required: true },
+});
+
+export type BTG_Gym_Record = {
+  gym: string;
+  data: BTG_Record[];
+};
+
 export const metaDataSchema = new Schema({
   collection_name: { type: String, required: true },
   name: { type: String, required: true },

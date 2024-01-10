@@ -20,6 +20,16 @@ const db : DB_Interface = {
     return collectionNames.filter((name) => name !== METADATA);
   },
 
+  getAllRecords : async () => {
+    const gyms = await db.getAllNames();
+    const recordsArr = await Promise.all(gyms.map((gym) => db.getRecords(gym)));
+    const transformedRecords = recordsArr.map((records, index) => ({
+      gym: gyms[index],
+      data: records,
+    }));
+    return transformedRecords;
+  },
+
   getAllMetadata: async () => {
     const collection = await getMetaDataCollection();
     const metadata: BTG_Metadata[] = await collection.find({});

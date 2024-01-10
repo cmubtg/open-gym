@@ -1,16 +1,11 @@
 import { Request, Response } from 'express';
 import db from '../models/database/database';
-import * as predictOccupancy from '../models/helper/predict_occupancy';
+import * as predict from '../models/helper/predict_occupancy';
 
-// TODO: Show every gym and all records for that gym
+// Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
-  // list all gyms
-  // const gyms = await db.getAllGymNames();
-
-  // Loop through each and call gymGetAllRecords
-
-  // return all data
-  res.status(200).json({ res: 'WIP' });
+  const records = await db.getAllRecords();
+  res.status(200).json(records);
 };
 
 // TODO: Get the most recent record from every collection in database
@@ -24,7 +19,7 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
   res.status(200).json({ occupancy: 0 });
 };
 
-export const getGymOccupancy = async (req: Request, res: Response) => {
+export const getOccupancy = async (req: Request, res: Response) => {
   // // Get gym name from params
   // const { gym } = req.params;
 
@@ -39,18 +34,18 @@ export const getGymOccupancy = async (req: Request, res: Response) => {
 };
 
 // TODO: Update to take specific gym into account
-export const getGymAnalytics = async (req: Request, res: Response) => {
+export const getAnalytics = async (req: Request, res: Response) => {
     res.status(404).json({ message: 'Unimplemented' });
 };
 
 // Runs ML model to predict occupancy based on timestamp
-export const predictGymOccupancy = async (req: Request, res: Response) => {
+export const predictOccupancy = async (req: Request, res: Response) => {
   // timestamp: ISO format string
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    await predictOccupancy.validatePredictReq(gym, timestamp);
-    const prediction = await predictOccupancy.predictOccupancy(gym, date);
+    await predict.validatePredictReq(gym, timestamp);
+    const prediction = await predict.predictOccupancy(gym, date);
     res.status(200).json({ occupancy: prediction });
   } catch (error) {
     res.status(400).json({ error: error.message });
@@ -58,7 +53,7 @@ export const predictGymOccupancy = async (req: Request, res: Response) => {
 };
 
 // TODO: Get all records from a specific gym
-export const getGymRecords = async (req: Request, res: Response) => {
+export const getRecords = async (req: Request, res: Response) => {
   const { gym } = req.params;
 
   try {
@@ -87,7 +82,7 @@ export const getGymMetadata = async (req: Request, res: Response) => {
 };
 
 // create a new session
-export const createGymRecord = async (req: Request, res: Response) => {
+export const createRecord = async (req: Request, res: Response) => {
   const { time, occupancy } = req.body;
   const { gym } = req.params;
 

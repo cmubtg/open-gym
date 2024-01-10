@@ -1,4 +1,4 @@
-import { BTG_Record, BTG_Metadata } from './database.types';
+import { BTG_Record, BTG_Gym_Record, BTG_Metadata } from './database.types';
 
 export default interface DB_Interface {
   
@@ -12,6 +12,8 @@ export default interface DB_Interface {
    */
   getAllNames(): Promise<string[]>
 
+
+  getAllRecords(): Promise<BTG_Gym_Record[]>
   /**
    * Retrieves metadata for all gym collections.
    */
