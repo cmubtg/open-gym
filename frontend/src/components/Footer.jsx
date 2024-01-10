@@ -11,13 +11,13 @@ const Footer = () => {
 
       <div className="w-42 h-full flex flex-row">
         <BTGLogo/>
-        <div className="w-42 h-full flex flex-col ml-6 "> 
-          <p className="text-white">&copy; 2023 OpenGym</p> 
-          <p className="text-white">All rights reserved.</p>
+        <div className="w-42 h-full flex flex-col ml-3 mt-1 items-center align-middle"> 
+          <p className="text-white text-[13px] font-semibold">Open Gym</p> 
+          <p className="text-white text-xs">&copy; 2023</p> 
         </div>
       </div>
       
-      <div className="flex space-x-4 mr-6"> 
+      <div className="flex space-x-4 mr-4 md:mr-6"> 
         <a href="https://github.com/cmubtg" rel="noopener noreferrer"> 
           <FiGithub size="20" className="nav_icon text-white" />
         </a>
