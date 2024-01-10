@@ -1,6 +1,10 @@
 import { BTG_Record, BTG_Gym_Record, BTG_Metadata } from './database.types';
 
 export default interface DB_Interface {
+  /**
+   * Checks if the specified collection exists.
+   */
+  collectionExists(collection: string): Promise<boolean>
   
   /**
    * Inserts a BTG_Record into the specified gym's collection.
@@ -12,8 +16,11 @@ export default interface DB_Interface {
    */
   getAllNames(): Promise<string[]>
 
-
+  /**
+   * Retrieves all records from all gym collections.
+   */
   getAllRecords(): Promise<BTG_Gym_Record[]>
+
   /**
    * Retrieves metadata for all gym collections.
    */

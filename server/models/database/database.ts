@@ -8,6 +8,11 @@ const conn = mongoose.connection;
 
 const db : DB_Interface = {
   
+  collectionExists: async (collection: string) => {
+    const gymNames = await db.getAllNames();
+    return gymNames.includes(collection);
+  },
+
   insert: async (gym, data) => {
     const collection = await getCollection(gym);
     collection.create(data);
@@ -91,19 +96,11 @@ const getAllCollections = async () => {
   return await conn.db.listCollections().toArray();
 };
 
-// Check if a collection exists
-const collectionExists = async (collection: string) => {
-  const collections = await getAllCollections();
-  return collections.some((c) => c.name === collection);
-};
-
 const getCollection = async (collection: string) => {
   // Ensure collection exists
-  const gymNames = await db.getAllNames();
-  if (!gymNames.includes(collection)) {
+  if (!db.collectionExists(collection)) {
     throw new Error(`Collection (${collection}) does not exist`);
   }
-
   return mongoose.model<BTG_Record>(collection, recordSchema, collection);
 };
 
