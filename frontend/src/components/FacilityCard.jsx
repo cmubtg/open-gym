@@ -8,7 +8,7 @@ import FacilityCardInfo from './FacilityCardInfo';
 
 const FacilityCard = ({facility, closed}) => {
   const [occupancy, setOccupancy] = useState(0);
-  const [closingStatus, setClosingStatus] = useState("open");
+  const [closingStatus, setClosingStatus] = useState("closed");
 
   // TODO Keep track of time since last fetch
   const lastFetch = Math.floor(Math.random() * 10) + 1;
@@ -36,6 +36,7 @@ const FacilityCard = ({facility, closed}) => {
 
     updateClosingStatus();
     if (!isClosed(closingStatus)) {
+      console.log(`Fetching data for ${facility.name}`);
       fetchData();
     }
     const intervalId = setInterval(updateClosingStatus, MINUTE_MS);
