@@ -72,7 +72,7 @@ export const gymGetAllRecords = async (gym) => {
 // Get all metadata
 export const gymGetAllMetadata = async () => {
   const collection = await getCollection(Constants.metadata);
-  const metadata = await collection.find({});
+  const metadata = await collection.find({}, { _id: 0, __v: 0 });
   mongoose.deleteModel(Constants.metadata);
   return metadata;
 };
@@ -80,7 +80,10 @@ export const gymGetAllMetadata = async () => {
 // Get gym metadata
 export const gymGetMetadata = async (gym) => {
   const collection = await getCollection(Constants.metadata);
-  const metadata = await collection.find({ collection_name: gym });
+  const metadata = await collection.find(
+      { collection_name: gym },
+      { _id: 0, __v: 0 },
+  );
   mongoose.deleteModel(Constants.metadata);
   return metadata[0];
 };
