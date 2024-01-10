@@ -9,7 +9,7 @@ const conn = mongoose.connection;
 const db : DB_Interface = {
   
   insert: async (gym, data) => {
-    const collection = await getGymCollection(gym);
+    const collection = await getCollection(gym);
     collection.create(data);
     mongoose.deleteModel(gym);
   },
@@ -28,14 +28,14 @@ const db : DB_Interface = {
   },
   
   getRecords: async (gym) => {
-    const collection = await getGymCollection(gym);
+    const collection = await getCollection(gym);
     const records: BTG_Record[] = await collection.find({});
     mongoose.deleteModel(gym);
     return records;
   },
 
   getRecentRecord: async (gym) => {
-    const collection = await getGymCollection(gym);
+    const collection = await getCollection(gym);
     const record: BTG_Record = await collection.findOne().sort({ time: -1 }) || dummyRecord;
     mongoose.deleteModel(gym);
     return record;  
@@ -49,7 +49,7 @@ const db : DB_Interface = {
   },
 
   getGymById: async (gym: string, id: string) => {
-    const collection = await getGymCollection(gym);
+    const collection = await getCollection(gym);
     const record: BTG_Record = await collection.findById(id) || dummyRecord;
     mongoose.deleteModel(gym);
     return record;
@@ -87,7 +87,7 @@ const collectionExists = async (collection: string) => {
   return collections.some((c) => c.name === collection);
 };
 
-const getGymCollection = async (collection: string) => {
+const getCollection = async (collection: string) => {
   // Ensure collection exists
   const gymNames = await db.getAllNames();
   if (!gymNames.includes(collection)) {
