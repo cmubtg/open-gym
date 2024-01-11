@@ -1,12 +1,17 @@
 import fastcsv from 'fast-csv';
 import fs from 'fs';
 
-const writeToCSV = async (fileName, data, dataFormat) => {
+export default async function writeToCSV(
+  name: string, 
+  data: Array<Object>, 
+  dataFormatFn: (a: any) => Object
+) {
+  const fileName = 'data/' + name + '_data.csv'
   const writeStream = fs.createWriteStream(fileName, { flags: 'a' });
 
   const csvStream = fastcsv
       .format({ writeHeaders: false })
-      .transform(dataFormat);
+      .transform(dataFormatFn);
 
   csvStream.pipe(writeStream);
 
@@ -15,5 +20,3 @@ const writeToCSV = async (fileName, data, dataFormat) => {
 
   fs.appendFileSync(fileName, '\n');
 };
-
-export default writeToCSV;

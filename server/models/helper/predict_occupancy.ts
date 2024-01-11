@@ -1,13 +1,13 @@
-import * as Constants from '../utils/constants.mjs';
-import * as db from '../models/database.mjs';
-import util from 'util';
+import db from '../database/database';
+import { DAYS_OF_THE_WEEK } from '../../utils/constants';
 import { exec } from 'child_process';
+import util from 'util';
 
-const isHoliday = (date) => {
+const isHoliday = (date: Date) => {
   return true;
 };
 
-const isStartOfSemester = (date) => {
+const isStartOfSemester = (date: Date) => {
   return false;
 };
 
@@ -15,19 +15,18 @@ const getTemperature = () => {
   return 72.0;
 };
 
-const isWeekend = (date) => {
+const isWeekend = (date: Date) => {
   return date.getDay() % 6 === 0;
 };
 
 const execAsync = util.promisify(exec);
 
-
-const parseTime = (time) => {
+const parseTime = (time: string): [number, number] => {
   const [hour, minute] = time.split(':');
   return [parseInt(hour, 10), parseInt(minute, 10)];
 };
 
-const getDateFromClock = (date, time) => {
+const getDateFromClock = (date: Date, time: string) => {
   const [hour, minute] = parseTime(time);
   const newDate = new Date(date);
   newDate.setHours(hour);
@@ -35,17 +34,17 @@ const getDateFromClock = (date, time) => {
   return newDate;
 };
 
-const isClosed = async (gym, date) => {
-  const metadata = await db.gymGetMetadata(gym);
-  const day = Constants.dayOfTheWeek[date.getDay()];
+const isClosed = async (gym: string, date: Date) => {
+  const metadata = await db.getMetadata(gym);
+  const day = DAYS_OF_THE_WEEK[date.getDay()] as keyof typeof metadata.hours;
   const openDate = getDateFromClock(date, metadata.hours[day].open);
   const closeDate = getDateFromClock(date, metadata.hours[day].close);
 
   return openDate.getTime() > date.getTime() ||
-  date.getTime() > closeDate.getTime();
+          date.getTime() > closeDate.getTime();
 };
 // PUBLIC APIs
-export const predictOccupancy = async (gym, date) => {
+export const predictOccupancy = async (gym: string, date: Date) => {
   if (await isClosed(gym, date)) {
     return 0;
   }
@@ -69,11 +68,11 @@ export const predictOccupancy = async (gym, date) => {
   }
 };
 
-export const validatePredictReq = async (gym, date) => {
-  if (isNaN(date)) {
+export const validatePredictReq = async (gym: string, timestamp: string) => {
+  if (isNaN(Date.parse(timestamp))) {
     throw new Error('Invalid Timestamp');
   }
-  const names = await db.getAllGymNames();
+  const names = await db.getAllNames();
   if (!names.includes(gym)) {
     throw new Error(`Invalid Gym ${gym}`);
   }
