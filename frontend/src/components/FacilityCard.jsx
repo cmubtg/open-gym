@@ -19,7 +19,7 @@ const FacilityCard = ({facility, closed}) => {
         const res = await fetch(`/api/occupancy/${facility.id}`);
         const data = await res.json();
         if (res.ok) {
-          setOccupancy(data.count);
+          setOccupancy(data.occupancy);
         }
       } catch (error) {
         console.error('Error fetching data:', error);
