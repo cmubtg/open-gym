@@ -8,9 +8,9 @@ const ThemeIcon = () => {
     return (
       <span onClick={handleMode}>
         {darkTheme ? (
-          <BiSun size='24' className='nav_icon' />
+          <BiSun size='24' className='nav_icon mt-2' />
         ) : (
-          <BiMoon size='24' className='nav_icon' />
+          <BiMoon size='24' className='nav_icon mt-2' />
         )}
       </span>
     );
