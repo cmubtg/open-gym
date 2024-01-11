@@ -85,7 +85,6 @@ export const getRecords = async (req: Request, res: Response) => {
   }
 };
 
-// TODO: get a single session
 export const getGymRecordById = async (req: Request, res: Response) => {
   const { gym, id } = req.params;
   try {
@@ -96,8 +95,16 @@ export const getGymRecordById = async (req: Request, res: Response) => {
   }
 };
 
-// TODO: Implement getting metadata
-export const getGymMetadata = async (req: Request, res: Response) => {
+export const getAllMetadata = async (req: Request, res: Response) => {
+  try {
+    const metadataArr : BTG_Metadata[] = await db.getAllMetadata();
+    res.status(HTTP_STATUS.OK).json(metadataArr);
+  } catch (error) {
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+  }
+}
+
+export const getMetadata = async (req: Request, res: Response) => {
   try { 
     const {gym} = req.params;
     const meta : BTG_Metadata = await db.getMetadata(gym);  
