@@ -9,30 +9,39 @@ const FacilityDetail = () => {
   const {id} = useParams();
   const facility = facilities.find((facility) => facility.id === id);
   return (
-    <div className="btg_page_container">
+    <>
+    
+    {/* <div className="h-52 w-full bg-cover bg-center bg-no-repeat fac_img"> */}
+      {/* <Link className="absolute mt-6 ml-[-0.5rem]" to="/">
+        <IoIosArrowBack size="20" className="nav_icon inline-block mr-4"/>
+      </Link> */}
+      <div className="w-full h-full bg-btg-primary">
 
-      <div className="min-h-52">
-        <Link className="absolute mt-6 ml-[-0.5rem]" to="/">
-          <IoIosArrowBack size="20" className="nav_icon inline-block mr-4"/>
-        </Link>
-          {/* <img src/> */}
+      <div className="h-52 fac_img2 ">
+        <img className="w-full h-full object-cover brightness-50" src={"../images/uc.jpg"} alt={facility.name}/>
       </div>
 
-      <div className="">
-        <h2>{facility.name}</h2>
-        <p className="font-light">{facility.description}</p>
       </div>
+    {/* </div> */}
 
-      <FacilityDetailHours facility={facility}/>
-      
-      <FacilityBarChart facility={facility}/>
-    </div>
+      <div className="btg_page_container">
+
+        <div className="">
+          <h2>{facility.name}</h2>
+          <p className="font-light">{facility.description}</p>
+        </div>
+
+        <FacilityDetailHours facility={facility}/>
+        
+        <FacilityBarChart facility={facility}/>
+      </div>
+      </>
   );
 }
 
 const FacilityBarChart = ({facility}) => {
   return (
-    <div className="w-full h-52 flex flex-col mt-4 items-center justify-center">
+    <div className="w-full h-48 flex flex-col mt-4 items-center justify-center">
       <BarChart/>
     </div>
   );

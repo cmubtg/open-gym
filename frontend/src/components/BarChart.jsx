@@ -22,17 +22,33 @@ ChartJS.defaults.font.size = 10;
 
 
 const BarChart = () => {
+  // Values to set
+  // default.labels
+  // default.datasets[0].barThickness
+  // default.datasets[0].data
+  // default.datasets[0].backgroundColor = index array
+
   const [chartData, setChartData] = useState({
     labels: ['11', '12', '1', '2', '3', '4', '5', '6'],
     datasets: [
       {
         label: 'occupancy',
-        data: [14, 40, 45, 53, 21, 88, 95, 77],
-        backgroundColor: '#EB5958',
-        barThickness: 15,
+        data: [14, 40, 45, 53, 21, 85, 62, 55],
+        backgroundColor: 
+        [
+          '#EB5958', 
+          '#EB5958', 
+          '#EB5958', 
+          '#EB5958', 
+          '#D9D9D9', 
+          '#D9D9D9', 
+          '#D9D9D9', 
+          '#D9D9D9', 
+          '#D9D9D9', 
+          '#D9D9D9', 
+      ],
+        barThickness: 17,
         borderRadius: 5,
-        borderWidth: 0,
-        color: '#EB5958',
       },
     ],
   });
@@ -45,9 +61,7 @@ const BarChart = () => {
             display: false,
         },
         title: {
-            display: true,
-            align: 'start', 
-            text: 'Occupancy',
+            display: false,
         },
     },
     tooltips: {
@@ -83,7 +97,7 @@ const BarChart = () => {
     },
   };
 
-  // Function to update the chart with new data
+// Function to update the chart with new data
 //   const updateChart = (labels, values) => {
 //     setChartData({
 //       labels: labels,
@@ -112,7 +126,6 @@ const BarChart = () => {
 
   return (
     <div className="relative w-full h-full">
-
         <Bar data={chartData} options={options} />
     </div>
   );
