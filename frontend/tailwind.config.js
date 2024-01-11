@@ -12,6 +12,7 @@ module.exports = {
       colors: {
         'btg-primary': '#f4f4f4',
         'btg-primary-dark': '#1A1A1A',
+        'btg-secondary-dark': '#1e1e1e',
         'btg-secondary': '#EB5958',
         'btg-dark-grey': '#3b3b3b',
         'btg-light-grey': '#DDDDDD',

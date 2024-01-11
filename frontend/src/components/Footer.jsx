@@ -6,18 +6,20 @@ import { FaInstagram , FaLinkedin} from "react-icons/fa";
 
 const Footer = () => {
   return (
-    <footer className="min-h-28 text-white bg-btg-dark-grey p-8 text-sm w-full flex flex-row items-center
-                      justify-between">
+    <footer className="w-full  min-h-28 text-white bg-btg-dark-grey
+                    dark:bg-btg-secondary-dark
+                    p-4 sm:p-12 text-sm 
+                    flex flex-row items-center justify-between">
 
       <div className="w-42 h-full flex flex-row">
         <BTGLogo/>
-        <div className="w-42 h-full flex flex-col ml-3 mt-1 items-center align-middle"> 
+        <div className="w-42 h-full flex flex-col ml-3 mt-1"> 
           <p className="text-white text-[13px] font-semibold">Open Gym</p> 
-          <p className="text-white text-xs">&copy; 2023</p> 
+          <p className="text-white text-xs">&copy; {new Date().getFullYear()}</p> 
         </div>
       </div>
       
-      <div className="flex space-x-4 mr-4 md:mr-6"> 
+      <div className="flex space-x-4"> 
         <a href="https://github.com/cmubtg" rel="noopener noreferrer"> 
           <FiGithub size="20" className="nav_icon text-white" />
         </a>
