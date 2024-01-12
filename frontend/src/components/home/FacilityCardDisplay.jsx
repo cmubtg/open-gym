@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import {isOpen} from '../utils/utils';
+import { isOpen } from '../../utils/utils';
 
 const FacilityCardDisplay = ({facility, occupancy, closingStatus}) => {
   return (

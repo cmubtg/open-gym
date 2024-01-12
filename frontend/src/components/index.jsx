@@ -1,9 +1,14 @@
-import FacilityCard from './FacilityCard';
-import Footer from './Footer';
-import LiveDot from './LiveDot';
-import OccMeter from './OccMeter';
-import ThemeIcon from './ThemeIcon';
+import FacilityCard from './home/FacilityCard';
+import FacilityCardDisplay from './home/FacilityCardDisplay';
+import FacilityCardInfo from './home/FacilityCardInfo';
 
-export { FacilityCard, Footer, LiveDot, 
-         OccMeter, ThemeIcon
+import Footer from './footer/Footer';
+
+import LiveDot from './misc/LiveDot';
+import OccMeter from './home/OccMeter';
+import ThemeIcon from './misc/ThemeIcon';
+
+export { FacilityCard, FacilityCardDisplay, FacilityCardInfo, 
+        Footer, LiveDot, 
+        OccMeter, ThemeIcon
         };

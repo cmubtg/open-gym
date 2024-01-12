@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getOccClass } from '../utils/utils';
+import { getOccClass } from '../../utils/utils';
 
 const OccMeter = ({occupancy, max_occupancy}) => {
     // TODO Fetch occupancy data from API

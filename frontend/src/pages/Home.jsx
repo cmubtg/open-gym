@@ -1,8 +1,7 @@
 
 import React from 'react';
-import { facilities } from '../data/facilities'; 
-import { FacilityCard, ThemeIcon } from '../components';
-
+import { FacilityCard, ThemeIcon } from '../components'; 
+import { getFacilities } from '../data/facilities';
 
 const Home = () => {
   return (
@@ -25,6 +24,7 @@ const TitleBar = () => {
 };
 
 const FacilityCards = () => {
+  const facilities = getFacilities();
   return (
     <div className="btg_grid_container pb-8">
       {facilities.map((facility) => (

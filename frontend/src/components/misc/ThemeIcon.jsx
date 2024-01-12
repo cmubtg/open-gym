@@ -1,6 +1,6 @@
 // Source: https://github.com/fireship-io/tailwind-dashboard
 import { BiSun, BiMoon } from 'react-icons/bi';
-import useDarkMode from '../hooks/useDarkMode';
+import useDarkMode from '../../hooks/useDarkMode';
 
 const ThemeIcon = () => {
     const [darkTheme, setDarkTheme] = useDarkMode();
