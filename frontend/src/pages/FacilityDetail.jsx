@@ -41,11 +41,10 @@ const FacilityDetail = () => {
 const FacilityDetailInfo = ({facility}) => {
   return (
     <div className="btg_container flex flex-col lg:flex-row">
-    <div className="w-[74%] h-auto mt-4">
+    <div className="w-full lg:w-[74%] h-auto mt-4">
       <h2 >{facility.name}</h2>
-      <p className="font-light w-80">{facility.description}</p>
+      <p className="font-light w-[100%]">{facility.description}</p>
     </div>
-    <FacilityDetailHours facility={facility}/>
   </div>
   );
 };
@@ -85,14 +84,22 @@ const FacilityDetailTopBar = () => {
     "w-full h-12 flex justify-between pt-8 pb-2 [&_*]:text-black dark:[&_*]:text-white z-10 ";
   return (
     <div className={container_class}>
+
       <Link className="z-10 flex flex-row" to="/">
         <IoIosArrowBack size="20" className="nav_icon mr-2"/>
         <p className="mt-0.5">Back</p>
       </Link>
-      <Link className="w-auto h-auto z-10 flex flex-row space-x-3 mr-1" to="/">
-        <FiMapPin size="15"/>
-        <FiInfo />
-      </Link>
+
+      <div className="flex flex-row ">
+        <Link className="w-auto h-auto z-10 flex flex-row mr-3" to="/">
+          <FiMapPin className="hover:text-btg-dark-grey" size="15"/>
+        </Link>
+        <Link className="w-auto h-auto z-10 flex flex-row" to="/">
+          <FiInfo className="hover:text-btg-dark-grey"/>
+        </Link>
+      </div>
+
+      
     </div>
   );
 }
@@ -100,7 +107,7 @@ const FacilityDetailTopBar = () => {
 
 const FacilityDetailChart = ({facility}) => {
   return (
-    <div className="btg_container h-48 w-full flex flex-col justify-center">
+    <div className="btg_container h-[450px] flex flex-col justify-center">
       <p className="font-semibold text-sm">Occupancy Forecast</p>
       <BarChart/>
     </div>
