@@ -108,7 +108,7 @@
   .meter_container{
     @apply w-full h-[50px] items-center max-w-[250px] 
     max-h-[100px] relative
-    flex flex-col ;
+    flex flex-col justify-items-end;
   }
   .meter_info{
     @apply absolute top-0 left-0 btg_container_col mt-3 pt-1 pl-8

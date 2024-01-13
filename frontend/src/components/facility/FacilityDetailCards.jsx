@@ -3,7 +3,9 @@ const FacilityDetailCards = ({facility}) => {
     const count = 85
     const occupancy = Math.round((count / 100) * 100)
     return (
-      <div className="w-full h-full px-2 lg:px-8 xl:px-14 mt-[-1rem]">
+      <div className="w-full h-full 
+            px-2 lg:px-8 xl:px-14 2xl:px-36
+             mt-[-1rem]">
         {/* md:overflow-x-auto xl:overflow-visible  */}
         <div className="carousel w-full overflow-auto p-8 pt-0">
           {/* <div className="carousel_card w-10 shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div> */}

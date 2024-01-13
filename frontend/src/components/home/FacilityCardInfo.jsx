@@ -17,7 +17,7 @@ const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStat
 
 const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
   return (
-    <div className="w-auto h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
+    <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
       
       {/* Gym Name */}
       <h3>{facility.name}</h3>
@@ -35,7 +35,7 @@ const FacilityCardMeter = ({facility, occupancy, closingStatus}) => {
   return (
     <>
       {!isClosed(closingStatus) && 
-        <div className="min-w-[155px] h-full mt-4">
+        <div className="min-w-[150px] h-full mt-4">
           <OccMeter id={facility.id} occupancy={occupancy} max_occupancy={facility.max_occupancy}/>
         </div>
       }
