@@ -20,19 +20,16 @@ const FacilityDetail = () => {
 
       <div className="btg_page_container mx-0 px-0 ">
 
-        {/* Top bar and image */}
-        {isMobile ? 
-          <FacilityDetailDisplayMobile facility={facility}/> :
-          <FacilityDetailDisplayDesktop facility={facility}/> 
-        }
+        <FacilityDetailTopBar />
+        <FacilityDetailImage facility={facility} isMobile={isMobile}/>
 
         <FacilityDetailInfo facility={facility}/>
-
-        <FacilityDetailCardWrapper {...{facility, isMobile}} >
+        {/* <FacilityDetailCardWrapper {...{facility, isMobile}} > */}
           <FacilityDetailCard/>
-        </FacilityDetailCardWrapper>
+        {/* </FacilityDetailCardWrapper> */}
 
         <FacilityDetailChart facility={facility}/>
+
     </div>
 
   );
@@ -40,40 +37,33 @@ const FacilityDetail = () => {
 
 const FacilityDetailInfo = ({facility}) => {
   return (
-    <div className="btg_container flex flex-col lg:flex-row">
-    <div className="w-full lg:w-[74%] h-auto mt-4">
-      <h2 >{facility.name}</h2>
-      <p className="font-light w-[100%]">{facility.description}</p>
+    <div className="btg_container flex justify-between 
+    mt-2 lg:mt-8
+    flex-col md:flex-row">
+      <div className="flex flex-col w-auto h-full">
+        <h1>{facility.name}</h1>
+        <p className="text-gray-500 w-[90%]">{facility.description}</p>
+      </div>
+      <FacilityDetailHours facility={facility}/>
     </div>
-  </div>
   );
 };
 
-const FacilityDetailDisplayMobile = ({facility}) => {
+const FacilityDetailImage = ({facility, isMobile}) => {
   return (
     <>
-      <FacilityDetailTopBar />
-      <div className="h-52 w-full fac_img2">
-        <img className="w-full h-full object-cover brightness-50" src={"../images/uc.jpg"} alt={facility.name}/>
-      </div>
+      {isMobile ? (
+        <div className="w-full h-52 fac_img2">
+          <img className="w-full h-full object-cover brightness-50" src={facility.image2} alt={facility.name}/>
+        </div>
+      ) : (
+        <div className="btg_container h-[250px] mt-7 flex flex-row">
+          <img className="w-full h-full img_filter" src={facility.image2} alt={facility.name}/>
+        </div>
+      )
+      }
     </>
-  );
-}
 
-const FacilityDetailDisplayDesktop = ({facility}) => {
-  return (
-    <div className="btg_container w-full *:flex flex-col">
-      <FacilityDetailTopBar />
-      <div className="w-full h-[350px] mt-8 flex flex-row">
-          <div className="flex w-[70%] h-full">
-            <img className="w-full h-ful img_filter" src={facility.image} alt={facility.name}/>
-          </div>
-          <div className="w-[30%] h-full pl-8 flex flex-col">
-            <img className="w-full h-[46%] img_filter mb-8 flex-none self-start" src={facility.image2} alt={facility.name}/>
-            <img className="w-full h-[45%] img_filter flex-none self-end" src={facility.image3} alt={facility.name}/>
-          </div>
-      </div>
-    </div>
   );
 }
 
@@ -81,7 +71,7 @@ const FacilityDetailTopBar = () => {
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' }); // Tailwind lg breakpoint
   const container_class = isMobile ? 
     "w-full h-12 flex justify-between px-2 mt-4 [&_*]:text-white z-10 absolute" : 
-    "w-full h-12 flex justify-between pt-8 pb-2 [&_*]:text-black dark:[&_*]:text-white z-10 ";
+    "w-full h-12 btg_container flex justify-between pt-10 [&_*]:text-black dark:[&_*]:text-white z-10 ";
   return (
     <div className={container_class}>
 
@@ -108,7 +98,7 @@ const FacilityDetailTopBar = () => {
 const FacilityDetailChart = ({facility}) => {
   return (
     <div className="btg_container h-[450px] flex flex-col justify-center">
-      <p className="font-semibold text-sm">Occupancy Forecast</p>
+      <h3 className="font-semibold">Occupancy Forecast</h3>
       <BarChart/>
     </div>
   );
@@ -133,20 +123,23 @@ const FacilityDetailCard = ({facility}) => {
   const count = 85
   const occupancy = Math.round((count / 100) * 100)
   return (
-    <div className="carousel pl-8 lg:pl-0">
-      {/* <div className="carousel_card w-1 shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div> */}
-      <div className="carousel_card">
-        <div className="flex flex-col justify-between h-full">
-          <p>Busiest Hours On Average</p>
-          <h3>5pm-8pm</h3>
-          <p>About {count} people, {occupancy}% occupancy</p>
+    <div className="w-full h-full px-2 lg:px-8 xl:px-14 mt-[-1rem]">
+      {/* md:overflow-x-auto xl:overflow-visible  */}
+      <div className="carousel w-full overflow-auto p-8 pt-0">
+        {/* <div className="carousel_card w-10 shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div> */}
+        <div className="carousel_card">
+          {/* <div className="flex flex-col justify-between h-full ml-20">
+            <p>Busiest Hours On Average</p>
+            <h3>5pm-8pm</h3>
+            <p>About {count} people, {occupancy}% occupancy</p>
+          </div> */}
         </div>
-      </div>
-      <div className="carousel_card"></div>
-      <div className="carousel_card"></div>
-      <div className="carousel_card shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div>
-      {/* <div className="carousel_card w-[50px] bg-btg-primary dark:bg-btg-primary-dark"></div> */}
+        <div className="carousel_card"></div>
+        <div className="carousel_card"></div>
+        {/* <div className="carousel_card shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div> */}
+        {/* <div className="carousel_card w-[50px] bg-btg-primary dark:bg-btg-primary-dark"></div> */}
     </div>
+  </div>
   );
 };
 
@@ -154,13 +147,14 @@ const FacilityDetailCard = ({facility}) => {
 const FacilityDetailHours = ({facility}) => {
   return (
     <div className="w-52 h-fit mt-4">
-      <p className="font-semibold text-sm">Operating Hours</p>
-      <div className="flex flex-row justify-between">
+      <h3 className="font-semibold">Operating Hours</h3>
+
+      <div className="flex flex-row mt-2 justify-between">
         <div>
-          <p className="text-gray-400 ">Monday - Friday</p>
-          <p className="text-gray-400">Saturday & Sunday</p>
+          <p className="text-gray-500 ">Monday - Friday</p>
+          <p className="text-gray-500">Saturday & Sunday</p>
         </div>
-        <div className="">
+        <div >
           <p className="font-light">6:30 - 11:30</p>
           <p className="font-light">9:00 - 10:00</p>
         </div>

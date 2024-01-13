@@ -17,7 +17,7 @@ const Home = () => {
 const TitleBar = () => {
   return (
     <div className="w-full h-auto flex justify-between">
-      <h1>Facility Occupancy</h1>
+      <h2>Facility Occupancy</h2>
       <ThemeIcon/>
     </div>
   );
