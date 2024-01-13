@@ -20,9 +20,7 @@ const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
     <div className="w-auto h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
       
       {/* Gym Name */}
-      <h3 className="font-extrabold">
-        {facility.name}
-      </h3>
+      <h3>{facility.name}</h3>
 
       {/* Red dot + x minutes ago */}
       { !isClosed(closingStatus) ?

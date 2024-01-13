@@ -23,10 +23,8 @@ const FacilityDetail = () => {
         <FacilityDetailTopBar />
         <FacilityDetailImage facility={facility} isMobile={isMobile}/>
 
-        <FacilityDetailInfo facility={facility}/>
-        {/* <FacilityDetailCardWrapper {...{facility, isMobile}} > */}
-          <FacilityDetailCard/>
-        {/* </FacilityDetailCardWrapper> */}
+      <FacilityDetailInfo facility={facility}/>
+        <FacilityDetailCard/>
 
         <FacilityDetailChart facility={facility}/>
 
@@ -53,11 +51,11 @@ const FacilityDetailImage = ({facility, isMobile}) => {
   return (
     <>
       {isMobile ? (
-        <div className="w-full h-52 fac_img2">
+        <div className="w-full h-52 gradient_overlay">
           <img className="w-full h-full object-cover brightness-50" src={facility.image2} alt={facility.name}/>
         </div>
       ) : (
-        <div className="btg_container h-[250px] mt-7 flex flex-row">
+        <div className="btg_container h-[200px] mt-7 flex flex-row">
           <img className="w-full h-full img_filter" src={facility.image2} alt={facility.name}/>
         </div>
       )
@@ -75,14 +73,14 @@ const FacilityDetailTopBar = () => {
   return (
     <div className={container_class}>
 
-      <Link className="z-10 flex flex-row" to="/">
-        <IoIosArrowBack size="20" className="nav_icon mr-2"/>
+      <Link className="z-10 flex flex-rowhover:[&_*]:text-white" to="/">
+        <IoIosArrowBack size="20" className="mr-2"/>
         <p className="mt-0.5">Back</p>
       </Link>
 
       <div className="flex flex-row ">
         <Link className="w-auto h-auto z-10 flex flex-row mr-3" to="/">
-          <FiMapPin className="hover:text-btg-dark-grey" size="15"/>
+          <FiMapPin className="" size="15"/>
         </Link>
         <Link className="w-auto h-auto z-10 flex flex-row" to="/">
           <FiInfo className="hover:text-btg-dark-grey"/>
@@ -128,14 +126,26 @@ const FacilityDetailCard = ({facility}) => {
       <div className="carousel w-full overflow-auto p-8 pt-0">
         {/* <div className="carousel_card w-10 shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div> */}
         <div className="carousel_card">
-          {/* <div className="flex flex-col justify-between h-full ml-20">
+          <div className="h-full flex flex-col justify-between ml-8">
             <p>Busiest Hours On Average</p>
-            <h3>5pm-8pm</h3>
+            <h2 className="text-btg-red">5pm-8pm</h2>
             <p>About {count} people, {occupancy}% occupancy</p>
-          </div> */}
+          </div>
         </div>
-        <div className="carousel_card"></div>
-        <div className="carousel_card"></div>
+        <div className="carousel_card">
+          <div className="h-full flex flex-col justify-between ml-8">
+            <p>Least Busy Hours On Average</p>
+            <h2 className="text-btg-green">6:30am-9am</h2>
+            <p>About {count} people, {occupancy}% occupancy</p>
+          </div>
+        </div>
+        <div className="carousel_card">
+          <div className="h-full flex flex-col justify-between ml-8">
+              <p>Least Busy Hours On Average</p>
+              <h2>6:30am-9am</h2>
+              <p>About {count} people, {occupancy}% occupancy</p>
+          </div>
+        </div>
         {/* <div className="carousel_card shadow-none bg-btg-primary dark:bg-btg-primary-dark"></div> */}
         {/* <div className="carousel_card w-[50px] bg-btg-primary dark:bg-btg-primary-dark"></div> */}
     </div>
@@ -147,11 +157,11 @@ const FacilityDetailCard = ({facility}) => {
 const FacilityDetailHours = ({facility}) => {
   return (
     <div className="w-52 h-fit mt-4">
-      <h3 className="font-semibold">Operating Hours</h3>
+      <h3>Operating Hours</h3>
 
       <div className="flex flex-row mt-2 justify-between">
         <div>
-          <p className="text-gray-500 ">Monday - Friday</p>
+          <p className="text-gray-500">Monday - Friday</p>
           <p className="text-gray-500">Saturday & Sunday</p>
         </div>
         <div >

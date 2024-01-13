@@ -3,11 +3,12 @@
 @tailwind utilities;
 
 :root{
-  --primary: #f4f4f4;
+  --primary: #f8f8f8;
   --primary-dark: #1A1A1A;
   --primary-dark: #343434;
   --secondary: #EB5958;
   --btg-dark-grey: #3b3b3b;
+  --btg-med-grey:rgb(104, 104, 104);
   --btg-light-grey: #DDDDDD;
   --btg-red: #EB5958;
   --btg-green: #2CBE3A;
@@ -16,18 +17,19 @@
 
 @layer base{
   h1{
-    @apply text-[26px] md:text-[45px] font-semibold;
+    @apply text-[26px] md:text-[40px] font-extrabold;
   }
   h2{
-    @apply text-[26px] md:text-3xl font-bold;;
+    @apply text-[20px] md:text-[28px] font-semibold;
   }
   h3{
-    @apply text-base sm:text-[18px];
+    @apply text-base sm:text-[18px] font-bold;
   }
   p{
-    @apply text-[0.7rem] md:text-xs;
+    @apply text-[0.7rem] md:text-xs font-normal
+    text-btg-med-grey dark:text-btg-light-grey;
   }
-  h1, h2, h3, p, circle{
+  h1, h2, h3, circle{
     @apply text-black dark:text-white
     transition duration-300 ease-in-out;
   }
@@ -39,15 +41,18 @@
 @layer components{
 
   /* MAIN CONTAINERS */
+  .btg_padding{
+    @apply px-4 md:px-8 lg:px-12 xl:px-24 2xl:px-[10%];
+  }
   .btg_page_container{
-    @apply w-full h-fit min-h-dvh
-    mx-auto 
-    px-4 md:px-8 lg:px-12 xl:px-24 2xl:px-[10%]
+    @apply w-full min-h-dvh
+    mx-auto btg_padding flex flex-col
     bg-btg-primary dark:bg-btg-primary-dark
     transition duration-300 ease-in-out;
   }
   .btg_container{
-    @apply w-full h-full mx-auto px-6 lg:px-12 xl:px-24;
+    @apply w-full h-full 
+    mx-auto btg_padding;
   }
   .btg_container_col {
     @apply w-full h-full flex flex-col items-center justify-center;
@@ -56,9 +61,11 @@
     @apply w-full h-full flex flex-row items-center justify-center;
   }
   .btg_grid_container{
-    grid-template-rows: 350px;
-    @apply w-full h-auto pt-8 grid grid-cols-1 
-          md:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-3 gap-7;
+    @apply w-full h-auto 
+          grid grid-cols-1 
+          md:grid-cols-2 xl:grid-cols-3
+          gap-7 gap-y-12 
+          pt-8 pb-8;
   }
   .flex_center{
     @apply flex items-center justify-center;
@@ -69,7 +76,7 @@
 
   /* FACILITY CARD */
   .card_top{
-    @apply w-full h-[250px] 
+    @apply w-full h-[240px] 
     flex flex-col items-center 
     overflow-hidden rounded-lg cursor-pointer
     justify-center;
@@ -81,25 +88,17 @@
     transform hover:scale-110;
   }
   .card_img{
-    @apply
-    w-full h-full object-cover 
-    rounded-lg brightness-[0.75] 
+    @apply w-full h-full img_filter brightness-[0.75];
   }
   .card_status{
     @apply w-24 h-24 rounded-lg
   }
+
   .card_btm{
-    @apply w-full h-[40%] flex flex-row align-middle justify-between;
+    @apply w-full flex flex-row align-middle justify-between;
   }
 
-  .fac_img{
-    -webkit-mask-image: url(../public/images/uc.jpg);
-    mask-image: url(../public/images/uc.jpg);
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-
-  }
-  .fac_img2{
+  .gradient_overlay{
     /* linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0.00) 100%); */
     -webkit-mask-image: linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0.00) 100%);
     mask-image: linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0.00) 100%);
@@ -107,7 +106,7 @@
   }
   /* OCCUPANCY METER */
   .meter_container{
-    @apply w-full h-[55px] items-center max-w-[250px] 
+    @apply w-full h-[50px] items-center max-w-[250px] 
     max-h-[100px] relative
     flex flex-col ;
   }
@@ -176,7 +175,7 @@
     /* padding: 20px; */
     border-radius: 5px;
     box-shadow: 0px 2px 24px 0px rgba(149, 157, 165, 0.20);
-    @apply rounded-lg w-[240px] lg:w-[360px];
+    @apply rounded-lg w-[240px] lg:w-[31%] py-10;
   }
 
 }

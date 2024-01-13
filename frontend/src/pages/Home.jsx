@@ -16,8 +16,11 @@ const Home = () => {
 
 const TitleBar = () => {
   return (
-    <div className="w-full h-auto flex justify-between">
-      <h2>Facility Occupancy</h2>
+    <div className="w-full flex flex-row justify-between">
+      <div>
+        <h1>Facility Occupancy</h1>
+        <p className="">Click on a gym for more occupancy information!</p>
+      </div>
       <ThemeIcon/>
     </div>
   );
@@ -26,7 +29,7 @@ const TitleBar = () => {
 const FacilityCards = () => {
   const facilities = getFacilities();
   return (
-    <div className="btg_grid_container pb-8">
+    <div className="btg_grid_container">
       {facilities.map((facility) => (
           <FacilityCard facility={facility}/>
       ))}
