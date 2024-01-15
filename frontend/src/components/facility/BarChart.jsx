@@ -18,6 +18,10 @@ ChartJS.register(
     Tooltip,
     Legend
   );
+
+function generateRandomArray(length, min, max) {
+  return Array.from({ length }, () => Math.random() * (max - min) + min);
+}
 ChartJS.defaults.font.size = 10;
 
 const externalTooltipHandler = (context) => {
@@ -110,26 +114,27 @@ const BarChart = () => {
   // default.datasets[0].data
   // default.datasets[0].backgroundColor = index array
 
+  // TODO Function to get hours from facilities and current day. 
+  const labels = ['6','7','8','9','10','11','12', '1', '2', '3', '4', '5', '6','7','8','9','10','11'];
+  
+  // TODO Function to get data from API
+  // Get data from current day and get predicted data from future
+  const data = generateRandomArray(labels.length, 0, 100);
+  // [14, 40, 45, 53, 21, 85, 62, 55, 33, 45]
+  const barColors = Array(labels.length - 9).fill('#EB5958').concat(Array(9).fill('#DDDDDD'));
+  console.log(barColors);
+
+  const barThickness = Math.floor(window.innerWidth / 100) + 15;
+  console.log(Window.innerWidth/100);
+
   const [chartData, setChartData] = useState({
-    labels: ['11', '12', '1', '2', '3', '4', '5', '6'],
+    labels: labels,
     datasets: [
       {
         label: 'occupancy',
-        data: [14, 40, 45, 53, 21, 85, 62, 55],
-        backgroundColor: 
-        [
-          '#EB5958', 
-          '#EB5958', 
-          '#EB5958', 
-          '#EB5958', 
-          '#D9D9D9', 
-          '#D9D9D9', 
-          '#D9D9D9', 
-          '#D9D9D9', 
-          '#D9D9D9', 
-          '#D9D9D9', 
-      ],
-        barThickness: 17,
+        data: data,
+        backgroundColor: barColors,
+        barThickness: barThickness,
         borderRadius: 5,
       },
     ],
@@ -204,10 +209,9 @@ const BarChart = () => {
 //   }, []);
 
   return (
-    // <div className="relative w-full h-full">
-    //   <div id="custom-tooltip"></div>
-        <Bar data={chartData} options={options} />
-    // </div>
+    <div className="w-full min-h-96 overflow-x-auto">
+      <Bar data={chartData} options={options} />
+    </div>
   );
 };
 
