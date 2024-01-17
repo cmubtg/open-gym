@@ -2,14 +2,14 @@ import fastcsv from 'fast-csv';
 import fs from 'fs';
 
 // Temporary fix
-type dataType = (a: any) => any // eslint-disable-line @typescript-eslint/no-explicit-any
+type dataType = (a: any) => any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 const writeToCSV = (
-  name: string, 
-  data: object[], 
+  name: string,
+  data: object[],
   dataFormatFn: dataType
 ) => {
-  const fileName = 'data/' + name + '_data.csv'
+  const fileName = 'data/' + name + '_data.csv';
   const writeStream = fs.createWriteStream(fileName, { flags: 'a' });
 
   const csvStream = fastcsv

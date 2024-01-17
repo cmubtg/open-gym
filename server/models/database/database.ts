@@ -7,7 +7,7 @@ import writeToCSV from '../../utils/write_csv';
 const conn = mongoose.connection;
 
 const db : DB = {
-  
+
   collectionExists: async (collection: string) => {
     const gymNames = await db.getAllNames();
     return gymNames.includes(collection);
@@ -25,7 +25,7 @@ const db : DB = {
     return collectionNames.filter((name) => name !== METADATA);
   },
 
-  getAllRecords : async () => {
+  getAllRecords: async () => {
     const gyms = await db.getAllNames();
     const recordsArr = await Promise.all(gyms.map((gym) => db.getRecords(gym)));
     const transformedRecords = recordsArr.map((records, index) => ({
@@ -41,7 +41,7 @@ const db : DB = {
     mongoose.deleteModel(METADATA);
     return metadata;
   },
-  
+
   getRecords: async (gym) => {
     const collection = await getCollection(gym);
     const records = await collection.find({});
@@ -53,14 +53,14 @@ const db : DB = {
     const collection = await getCollection(gym);
     const record = await collection.findOne().sort({ time: -1 }) ?? dummyRecord;
     mongoose.deleteModel(gym);
-    return record;  
+    return record;
   },
 
   getMetadata: async (gym: string) => {
     const collection = getMetaDataCollection();
-    const metadata: Metadata[] = await collection.find({ collectionName: gym });
+    const [metadata]: Metadata[] = await collection.find({ collectionName: gym });
     mongoose.deleteModel(METADATA);
-    return metadata[0];
+    return metadata;
   },
 
   getGymById: async (gym: string, id: string) => {
@@ -106,9 +106,9 @@ const getCollection = async (collection: string) => {
 
 const getMetaDataCollection = () => {
   return mongoose.model<Metadata>(METADATA, metaDataSchema, METADATA);
-}
+};
 
-const dummyRecord = { 
-  time: new Date(0), 
-  occupancy: 0 
+const dummyRecord = {
+  time: new Date(),
+  occupancy: 0
 };

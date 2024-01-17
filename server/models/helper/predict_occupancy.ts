@@ -1,5 +1,5 @@
 import db from '../database/database';
-import { DAYS_OF_THE_WEEK } from '../../utils/constants';
+import { DAYS_OF_THE_WEEK, NO_ONE } from '../../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';
 
@@ -16,7 +16,7 @@ const getTemperature = () => {
 };
 
 const isWeekend = (date: Date) => {
-  return date.getDay() % 6 === 0;
+  return date.getDay() % 6 === 0; // eslint-disable-line @typescript-eslint/no-magic-numbers
 };
 
 const execAsync = util.promisify(exec);
@@ -46,7 +46,7 @@ const isClosed = async (gym: string, date: Date) => {
 // PUBLIC APIs
 export const predictOccupancy = async (gym: string, date: Date) => {
   if (await isClosed(gym, date)) {
-    return 0;
+    return NO_ONE;
   }
   const script = 'forecast/predict.py';
   const cmd = `python ${script} 

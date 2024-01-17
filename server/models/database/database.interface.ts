@@ -5,7 +5,7 @@ export default interface DB {
    * Checks if the specified collection exists.
    */
   collectionExists(collection: string): Promise<boolean>
-  
+
   /**
    * Inserts a OccupancyRecord into the specified gym's collection.
    */

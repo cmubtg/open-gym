@@ -5,7 +5,7 @@ export const occupancyRecordSchema = new Schema({
   occupancy: { type: Number, required: true },
   // TODO Add model input (boolean flags etc)
 });
-export type OccupancyRecord = InferSchemaType<typeof occupancyRecordSchema>
+export type OccupancyRecord = InferSchemaType<typeof occupancyRecordSchema>;
 
 // Controller type definitions
 export interface GymOccupancyRecord {
@@ -28,60 +28,60 @@ export const metaDataSchema = new Schema({
   name: { type: String, required: true },
   description: { type: String, required: true },
   maxOccupancy: { type: Number, required: true },
-  hours: { 
+  hours: {
     type: {
-      sunday: { 
+      sunday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
-      monday: { 
+      monday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
-      tuesday: { 
+      tuesday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
-      wednesday: { 
+      wednesday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
-      thursday: { 
+      thursday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
-      friday: { 
+      friday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
-      saturday: { 
+      saturday: {
         type: {
           open: { type: String, required: true },
           close: { type: String, required: true },
-        }, 
-        required: true 
+        },
+        required: true
       },
     },
     required: true,
   },
 });
 
-export type Metadata = InferSchemaType<typeof metaDataSchema>
+export type Metadata = InferSchemaType<typeof metaDataSchema>;

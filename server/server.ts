@@ -34,4 +34,6 @@ mongoose.connect(MONGO_URI)
         console.log('Listening on port', PORT);
       });
     })
-    .catch((err) => { console.log(err) });
+    .catch((err) => {
+      console.log(err);
+    });

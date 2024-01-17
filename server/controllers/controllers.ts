@@ -2,15 +2,14 @@ import { Request, Response } from 'express';
 import db from '../models/database/database';
 import * as predict from '../models/helper/predict_occupancy';
 import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database/database.types';
-import { HTTP_STATUS } from '../utils/constants'
+import { HTTP_STATUS } from '../utils/constants';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
   try {
     const records = await db.getAllRecords();
     res.status(HTTP_STATUS.OK).json(records);
-  }
-  catch (error) {
+  } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
 };
@@ -20,9 +19,9 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
   try {
     const gyms = await db.getAllNames();
 
-    // Call get most recent record for each gym  
+    // Call get most recent record for each gym
     const result: CurrentGymOccupancy[] = await Promise.all(gyms.map(async (gym) => {
-      const { occupancy } = await db.getRecentRecord(gym);  
+      const { occupancy } = await db.getRecentRecord(gym);
       return { gym: gym, occupancy: occupancy };
     }));
 
@@ -31,7 +30,7 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
-  
+
 };
 
 export const getOccupancy = async (req: Request, res: Response) => {
@@ -39,20 +38,20 @@ export const getOccupancy = async (req: Request, res: Response) => {
     const {gym} = req.params;
     const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym);
     // const finalOccupancy : BTG_Occupancy = {count: mostRecentRecord.occupancy};
-    
+
     // Use Random val
     const MAX_OCCUPANCY = 100;
     const occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
 
-    res.status(HTTP_STATUS.OK).json({ occupancy : occupancy });
+    res.status(HTTP_STATUS.OK).json({ occupancy: occupancy });
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
-  
+
 };
 
 // TODO: Update to take specific gym into account
-export const getAnalytics = async (req: Request, res: Response) => {
+export const getAnalytics = (req: Request, res: Response) => {
     res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
 };
 
@@ -99,13 +98,13 @@ export const getAllMetadata = async (req: Request, res: Response) => {
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
-}
+};
 
 export const getMetadata = async (req: Request, res: Response) => {
-  try { 
+  try {
     const {gym} = req.params;
-    const meta : Metadata = await db.getMetadata(gym);  
-    res.status(HTTP_STATUS.OK).json(meta); 
+    const meta : Metadata = await db.getMetadata(gym);
+    res.status(HTTP_STATUS.OK).json(meta);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
@@ -129,11 +128,11 @@ export const createRecord = async (req: Request, res: Response) => {
 };
 
 // delete a session
-export const deleteRecord = async (req: Request, res: Response) => {
+export const deleteRecord = (req: Request, res: Response) => {
   res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
 };
 
 // update a session
-export const updateGymSession = async (req: Request, res: Response) => {
+export const updateGymSession = (req: Request, res: Response) => {
   res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
 };
