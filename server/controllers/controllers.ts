@@ -1,8 +1,8 @@
 import { Request, Response } from 'express';
 import db from '../models/database/database';
 import * as predict from '../models/helper/predict_occupancy';
-import {BTG_Record, BTG_Gym_Record, BTG_Metadata, BTG_Gym_Occupancy} from '../models/database/database.types';
-import {HTTP_STATUS} from '../utils/constants'
+import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database/database.types';
+import { HTTP_STATUS } from '../utils/constants'
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -19,17 +19,15 @@ export const getAllRecords = async (req: Request, res: Response) => {
 export const getAllOccupancy = async (req: Request, res: Response) => {
   try {
     const gyms = await db.getAllNames();
-    const result : BTG_Gym_Occupancy[] = []; 
 
     // Call get most recent record for each gym  
-    for (let i = 0; i < gyms.length; i++) {
-      const gym : string = gyms[i];
-      const mostRecentRecord : BTG_Record = await db.getRecentRecord(gym);  
-      result.push( { gym: gym, occupancy: mostRecentRecord.occupancy} ); 
-    }  
+    const result: CurrentGymOccupancy[] = await Promise.all(gyms.map(async (gym) => {
+      const { occupancy } = await db.getRecentRecord(gym);  
+      return { gym: gym, occupancy: occupancy };
+    }));
 
     // Return data in the form of [ {gym occupancy}, {gym occupancy}, ... }]
-    res.status(HTTP_STATUS.OK).json({ result });
+    res.status(HTTP_STATUS.OK).json(result);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
@@ -39,15 +37,14 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
 export const getOccupancy = async (req: Request, res: Response) => {
   try {
     const {gym} = req.params;
-    const mostRecentRecord : BTG_Record = await db.getRecentRecord(gym);
+    const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym);
     // const finalOccupancy : BTG_Occupancy = {count: mostRecentRecord.occupancy};
     
     // Use Random val
-    const MAX_OCCUPANCY : number = 100;
-    const occupancy : number = Math.floor(Math.random() * MAX_OCCUPANCY);
-    const finalOccupancy : BTG_Gym_Occupancy = {gym: gym, occupancy: occupancy};
+    const MAX_OCCUPANCY = 100;
+    const occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
 
-    res.status(HTTP_STATUS.OK).json(finalOccupancy);
+    res.status(HTTP_STATUS.OK).json({ occupancy : occupancy });
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
   }
@@ -97,7 +94,7 @@ export const getGymRecordById = async (req: Request, res: Response) => {
 
 export const getAllMetadata = async (req: Request, res: Response) => {
   try {
-    const metadataArr : BTG_Metadata[] = await db.getAllMetadata();
+    const metadataArr: Metadata[] = await db.getAllMetadata();
     res.status(HTTP_STATUS.OK).json(metadataArr);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
@@ -107,7 +104,7 @@ export const getAllMetadata = async (req: Request, res: Response) => {
 export const getMetadata = async (req: Request, res: Response) => {
   try { 
     const {gym} = req.params;
-    const meta : BTG_Metadata = await db.getMetadata(gym);  
+    const meta : Metadata = await db.getMetadata(gym);  
     res.status(HTTP_STATUS.OK).json(meta); 
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
@@ -116,7 +113,7 @@ export const getMetadata = async (req: Request, res: Response) => {
 
 // create a new session
 export const createRecord = async (req: Request, res: Response) => {
-  const { time, occupancy } = req.body;
+  const { time, occupancy } = req.body; // TODO specify the type of time, occupancy
   const { gym } = req.params;
 
   // add to the database

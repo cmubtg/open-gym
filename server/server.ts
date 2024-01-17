@@ -19,19 +19,19 @@ app.use((req, res, next) => {
 app.use('/api/', OpenGymRoutes);
 
 // connect to database
-mongoose.connect(MONGO_URI) // eslint-disable-line no-undef
+mongoose.connect(MONGO_URI)
     .then(() => {
       console.log('Connected to database');
 
       // weekly clearing database
-      cron.schedule('0 0 * * 0', async () => {
+      cron.schedule('0 0 * * 0', () => {
+        // eslint-disable-next-line @typescript-eslint/no-floating-promises
         db.moveAllRecords();
       });
 
       // listen on port
-      app.listen(PORT, () => { // eslint-disable-line no-undef
-        // eslint-disable-next-line no-undef
+      app.listen(PORT, () => {
         console.log('Listening on port', PORT);
       });
     })
-    .catch((err) => console.log(err));
+    .catch((err) => { console.log(err) });

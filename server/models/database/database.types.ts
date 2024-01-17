@@ -1,33 +1,33 @@
 import { InferSchemaType, Schema } from 'mongoose';
 
-export type BTG_Record = InferSchemaType<typeof recordSchema>
-
-export const recordSchema = new Schema({
+export const occupancyRecordSchema = new Schema({
   time: { type: Date, required: true },
   occupancy: { type: Number, required: true },
   // TODO Add model input (boolean flags etc)
 });
+export type OccupancyRecord = InferSchemaType<typeof occupancyRecordSchema>
+
+// Controller type definitions
+export interface GymOccupancyRecord {
+  gym: string
+  data: OccupancyRecord[]
+}
+
+export interface CurrentGymOccupancy {
+  gym: string
+  occupancy: number
+}
 
 export const gymRecordSchema = new Schema({
   gym: { type: String, required: true },
-  data: { type: [recordSchema], required: true },
+  data: { type: [occupancyRecordSchema], required: true },
 });
 
-export type BTG_Gym_Record = {
-  gym: string;
-  data: BTG_Record[];
-};
-
-export type BTG_Gym_Occupancy = {
-  gym : string;
-  occupancy : number;
-} 
-
 export const metaDataSchema = new Schema({
-  collection_name: { type: String, required: true },
+  collectionName: { type: String, required: true },
   name: { type: String, required: true },
   description: { type: String, required: true },
-  max_occupancy: { type: Number, required: true },
+  maxOccupancy: { type: Number, required: true },
   hours: { 
     type: {
       sunday: { 
@@ -84,4 +84,4 @@ export const metaDataSchema = new Schema({
   },
 });
 
-export type BTG_Metadata = InferSchemaType<typeof metaDataSchema>
+export type Metadata = InferSchemaType<typeof metaDataSchema>

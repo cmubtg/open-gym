@@ -1,15 +1,15 @@
-import { BTG_Record, BTG_Gym_Record, BTG_Metadata } from './database.types';
+import { OccupancyRecord, GymOccupancyRecord, Metadata } from './database.types';
 
-export default interface DB_Interface {
+export default interface DB {
   /**
    * Checks if the specified collection exists.
    */
   collectionExists(collection: string): Promise<boolean>
   
   /**
-   * Inserts a BTG_Record into the specified gym's collection.
+   * Inserts a OccupancyRecord into the specified gym's collection.
    */
-  insert(gym: string, data: BTG_Record): Promise<void>
+  insert(gym: string, data: OccupancyRecord): Promise<void>
 
   /**
    * Retrieves names of all gym collections, excludes metadata collection.
@@ -19,32 +19,32 @@ export default interface DB_Interface {
   /**
    * Retrieves all records from all gym collections.
    */
-  getAllRecords(): Promise<BTG_Gym_Record[]>
+  getAllRecords(): Promise<GymOccupancyRecord[]>
 
   /**
    * Retrieves metadata for all gym collections.
    */
-  getAllMetadata(): Promise<BTG_Metadata[]>
+  getAllMetadata(): Promise<Metadata[]>
 
   /**
    * Retrieves all records from the specified gym's collection.
    */
-  getRecords(gym: string): Promise<BTG_Record[]>
+  getRecords(gym: string): Promise<OccupancyRecord[]>
 
   /**
    * Retrieves the most recent record from the specified gym's collection.
    */
-  getRecentRecord(gym: string): Promise<BTG_Record>
+  getRecentRecord(gym: string): Promise<OccupancyRecord>
 
   /**
    * Retrieves metadata for the specified gym collection.
    */
-  getMetadata(gym: string): Promise<BTG_Metadata>
+  getMetadata(gym: string): Promise<Metadata>
 
   /**
    Retrieves a specific record from the specified gym's collection by its ID.
   */
-  getGymById(gym: string, id: string): Promise<BTG_Record>
+  getGymById(gym: string, id: string): Promise<OccupancyRecord>
 
 
   /**

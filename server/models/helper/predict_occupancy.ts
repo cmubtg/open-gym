@@ -60,12 +60,8 @@ export const predictOccupancy = async (gym: string, date: Date) => {
     // different OS use different newline breaks
     // Remove newline breaks
   const command = cmd.replace(/(\r\n|\n|\r)/gm, '');
-  try {
-    const { stdout } = await execAsync(command);
-    return parseInt(stdout, 10);
-  } catch (error) {
-    throw new Error(`Running Python Script error: ${error.message}`);
-  }
+  const { stdout } = await execAsync(command);
+  return parseInt(stdout, 10);
 };
 
 export const validatePredictReq = async (gym: string, timestamp: string) => {

@@ -1,11 +1,11 @@
 import dotenv from 'dotenv';
 dotenv.config(); // load env variables
 
-export const MONGO_URI = process.env.MONGO_URI as string;
+export const MONGO_URI = process.env.MONGO_URI ?? '';
 
-export const PORT = process.env.PORT as string;
+export const PORT = process.env.PORT ?? '';
 
-export const METADATA: string = 'metadata';
+export const METADATA = 'metadata';
 
 export const DAYS_OF_THE_WEEK: string[] = [
   'sunday',
