@@ -33,7 +33,7 @@ const FacilityDetail = () => {
 const FacilityDetailChart = ({facility}) => {
   return (
     <div className="btg_container h-[450px] flex flex-col justify-center">
-      <h3 className="font-semibold">Occupancy Forecast</h3>
+      <h3 className="font-semibold mb-4">Occupancy Forecast</h3>
       <BarChart/>
     </div>
   );
