@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
 import express from 'express';
 import * as controller from '../controllers/controllers';
 

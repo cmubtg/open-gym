@@ -1,13 +1,13 @@
 import mongoose from 'mongoose';
 import { METADATA } from '../../utils/constants';
-import { BTG_Record, BTG_Metadata, recordSchema, metaDataSchema } from './database.types';
-import DB_Interface from './database.interface';
+import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema } from './database.types';
+import DB from './database.interface';
 import writeToCSV from '../../utils/write_csv';
 
 const conn = mongoose.connection;
 
-const db : DB_Interface = {
-  
+const db : DB = {
+
   collectionExists: async (collection: string) => {
     const gymNames = await db.getAllNames();
     return gymNames.includes(collection);
@@ -15,17 +15,17 @@ const db : DB_Interface = {
 
   insert: async (gym, data) => {
     const collection = await getCollection(gym);
-    collection.create(data);
+    await collection.create(data);
     mongoose.deleteModel(gym);
   },
 
   getAllNames: async () => {
     const collections = await getAllCollections();
-    const collectionNames = collections.map((collection) => collection.name);
+    const collectionNames: string[] = collections.map((collection) => collection.name);
     return collectionNames.filter((name) => name !== METADATA);
   },
 
-  getAllRecords : async () => {
+  getAllRecords: async () => {
     const gyms = await db.getAllNames();
     const recordsArr = await Promise.all(gyms.map((gym) => db.getRecords(gym)));
     const transformedRecords = recordsArr.map((records, index) => ({
@@ -36,36 +36,36 @@ const db : DB_Interface = {
   },
 
   getAllMetadata: async () => {
-    const collection = await getMetaDataCollection();
-    const metadata: BTG_Metadata[] = await collection.find({});
+    const collection = getMetaDataCollection();
+    const metadata: Metadata[] = await collection.find({});
     mongoose.deleteModel(METADATA);
     return metadata;
   },
-  
+
   getRecords: async (gym) => {
     const collection = await getCollection(gym);
-    const records: BTG_Record[] = await collection.find({});
+    const records = await collection.find({});
     mongoose.deleteModel(gym);
     return records;
   },
 
   getRecentRecord: async (gym) => {
     const collection = await getCollection(gym);
-    const record: BTG_Record = await collection.findOne().sort({ time: -1 }) || dummyRecord;
+    const record = await collection.findOne().sort({ time: -1 }) ?? dummyRecord;
     mongoose.deleteModel(gym);
-    return record;  
+    return record;
   },
-  
+
   getMetadata: async (gym: string) => {
-    const collection = await getMetaDataCollection();
-    const metadata: BTG_Metadata[] = await collection.find({ collection_name: gym });
+    const collection = getMetaDataCollection();
+    const [metadata]: Metadata[] = await collection.find({ collectionName: gym });
     mongoose.deleteModel(METADATA);
-    return metadata[0];
+    return metadata;
   },
 
   getGymById: async (gym: string, id: string) => {
     const collection = await getCollection(gym);
-    const record: BTG_Record = await collection.findById(id) || dummyRecord;
+    const record: OccupancyRecord = await collection.findById(id) ?? dummyRecord;
     mongoose.deleteModel(gym);
     return record;
   },
@@ -74,13 +74,13 @@ const db : DB_Interface = {
     const collectionNames: string[] = await db.getAllNames();
     await Promise.all(collectionNames.map(async (collectionName) => {
       const data = await db.getRecords(collectionName);
-      const dataFormat = (doc: BTG_Record) => ({
+      const dataFormat = (doc: OccupancyRecord) => ({
         time: doc.time.toISOString(),
         occupancy: doc.occupancy,
       });
       writeToCSV(collectionName, data, dataFormat);
     }));
-    db.deleteAllRecords();
+    await db.deleteAllRecords();
   },
 
   deleteAllRecords: async () => {
@@ -98,17 +98,17 @@ const getAllCollections = async () => {
 
 const getCollection = async (collection: string) => {
   // Ensure collection exists
-  if (!db.collectionExists(collection)) {
+  if (!await db.collectionExists(collection)) {
     throw new Error(`Collection (${collection}) does not exist`);
   }
-  return mongoose.model<BTG_Record>(collection, recordSchema, collection);
+  return mongoose.model<OccupancyRecord>(collection, occupancyRecordSchema, collection);
 };
 
-const getMetaDataCollection = async () => {
-  return mongoose.model<BTG_Metadata>(METADATA, metaDataSchema, METADATA);
-}
+const getMetaDataCollection = () => {
+  return mongoose.model<Metadata>(METADATA, metaDataSchema, METADATA);
+};
 
-const dummyRecord = { 
-  time: new Date(0), 
-  occupancy: 0 
+const dummyRecord = {
+  time: new Date(),
+  occupancy: 0
 };

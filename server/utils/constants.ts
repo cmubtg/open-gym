@@ -1,11 +1,13 @@
 import dotenv from 'dotenv';
 dotenv.config(); // load env variables
 
-export const MONGO_URI = process.env.MONGO_URI as string;
+export const MONGO_URI = process.env.MONGO_URI ?? '';
 
-export const PORT = process.env.PORT as string;
+export const PORT = process.env.PORT ?? '';
 
-export const METADATA: string = 'metadata';
+export const METADATA = 'metadata';
+
+export const NO_ONE = 0;
 
 export const DAYS_OF_THE_WEEK: string[] = [
   'sunday',
@@ -20,5 +22,5 @@ export const DAYS_OF_THE_WEEK: string[] = [
 export enum HTTP_STATUS {
   OK = 200,
   BAD_REQUEST = 400,
-  NOT_FOUND = 404
+  NOT_FOUND = 404,
 }
