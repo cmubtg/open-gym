@@ -2,8 +2,8 @@ import cron from 'node-cron';
 import express from 'express';
 import mongoose from 'mongoose';
 import OpenGymRoutes from './routes/routes';
-import db from './models/database/database';
-import { MONGO_URI, PORT } from './utils/constants';
+import db from './models/database';
+import config from './config';
 
 const app = express();
 
@@ -19,7 +19,7 @@ app.use((req, res, next) => {
 app.use('/api/', OpenGymRoutes);
 
 // connect to database
-mongoose.connect(MONGO_URI)
+mongoose.connect(config.databaseURL)
     .then(() => {
       console.log('Connected to database');
 
@@ -30,8 +30,8 @@ mongoose.connect(MONGO_URI)
       });
 
       // listen on port
-      app.listen(PORT, () => {
-        console.log('Listening on port', PORT);
+      app.listen(config.port, () => {
+        console.log('Listening on port', config.port);
       });
     })
     .catch((err) => {

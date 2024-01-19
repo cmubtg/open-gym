@@ -8,7 +8,7 @@
     "lint": "eslint .",
     "build": "npx tsc",
     "start": "npm run build && node build/server.js",
-    "dev": "nodemon server.ts"
+    "dev": "nodemon"
   },
   "keywords": [],
   "author": "",
