@@ -1,5 +1,5 @@
-import db from '../database/database';
-import { DAYS_OF_THE_WEEK, NO_ONE } from '../../utils/constants';
+import db from '../models/database';
+import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';
 

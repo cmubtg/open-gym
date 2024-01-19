@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { METADATA } from '../../utils/constants';
+import { METADATA } from '../utils/constants';
 import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema } from './database.types';
 import DB from './database.interface';
-import writeToCSV from '../../utils/write_csv';
+import writeToCSV from '../utils/write_csv';
 
 const conn = mongoose.connection;
 

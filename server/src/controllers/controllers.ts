@@ -1,7 +1,7 @@
 import { Request, Response } from 'express';
-import db from '../models/database/database';
-import * as predict from '../models/helper/predict_occupancy';
-import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database/database.types';
+import db from '../models/database';
+import * as predict from '../services/predict_occupancy';
+import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database.types';
 import { HTTP_STATUS } from '../utils/constants';
 
 // Get every Record from every gym
