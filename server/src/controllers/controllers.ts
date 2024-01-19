@@ -3,6 +3,7 @@ import db from '../models/database';
 import * as predict from '../services/predict_occupancy';
 import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database.types';
 import { HTTP_STATUS } from '../utils/constants';
+import errorMessage from '../utils/errorMessage';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -10,7 +11,7 @@ export const getAllRecords = async (req: Request, res: Response) => {
     const records = await db.getAllRecords();
     res.status(HTTP_STATUS.OK).json(records);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
@@ -28,7 +29,7 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
     // Return data in the form of [ {gym occupancy}, {gym occupancy}, ... }]
     res.status(HTTP_STATUS.OK).json(result);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 
 };
@@ -45,7 +46,7 @@ export const getOccupancy = async (req: Request, res: Response) => {
 
     res.status(HTTP_STATUS.OK).json({ occupancy: occupancy });
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 
 };
@@ -65,7 +66,7 @@ export const predictOccupancy = async (req: Request, res: Response) => {
     const prediction = await predict.predictOccupancy(gym, date);
     res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
@@ -76,8 +77,8 @@ export const getRecords = async (req: Request, res: Response) => {
   try {
     const data = await db.getRecords(gym);
     res.status(HTTP_STATUS.OK).json(data);
-  } catch (err) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: err.message });
+  } catch (error) {
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
@@ -86,8 +87,8 @@ export const getGymRecordById = async (req: Request, res: Response) => {
   try {
     const data = await db.getGymById(gym, id);
     res.status(HTTP_STATUS.OK).json(data);
-  } catch (err) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: err.message });
+  } catch (error) {
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
@@ -96,7 +97,7 @@ export const getAllMetadata = async (req: Request, res: Response) => {
     const metadataArr: Metadata[] = await db.getAllMetadata();
     res.status(HTTP_STATUS.OK).json(metadataArr);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
@@ -106,7 +107,7 @@ export const getMetadata = async (req: Request, res: Response) => {
     const meta : Metadata = await db.getMetadata(gym);
     res.status(HTTP_STATUS.OK).json(meta);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: error.message });
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
@@ -122,8 +123,8 @@ export const createRecord = async (req: Request, res: Response) => {
       occupancy: occupancy,
     });
     res.status(HTTP_STATUS.OK).json({ success: `Inserted record into ${gym}` });
-  } catch (err) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: err.message });
+  } catch (error) {
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
