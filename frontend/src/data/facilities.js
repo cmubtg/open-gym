@@ -13,18 +13,19 @@ const testHours = {
     close : new Date(0,0,0,17,0) // 5 pm
 }
 
-export const facilities = [
+
+const facilities = [
     {
         id: "cohonFC",
         name : "Cohon Fitness Center",
         address : "5000 Forbes Ave, Pittsburgh, PA 15213",
-        description : `The Cohon University Center (CUC) is the 
-                        campus center for Carnegie Mellon University. 
-                        The CUC hosts a variety of dining options, 
-                        student organization offices, and meeting spaces.`,
+        description : `Two floors dedicated to cardio and weight equipment in
+        the Cohon Univeristy Center.`,
       
        hours : Array.from({ length: 7 }, () => alwaysOpen), // 7 days a week standard hours
-       image: process.env.PUBLIC_URL + "./images/uc.jpg",
+       image: process.env.PUBLIC_URL + "../images/uc.jpg",
+       image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
+       image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
        max_occupancy: 150
     }, 
     {
@@ -55,3 +56,7 @@ export const facilities = [
         max_occupancy: 300
     },
 ];
+
+export const getFacilities = () => {
+    return facilities;
+};

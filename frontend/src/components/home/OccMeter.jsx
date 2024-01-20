@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getOccClass } from '../utils/utils';
+import { getOccClass } from '../../utils/utils';
 
 const OccMeter = ({occupancy, max_occupancy}) => {
     // TODO Fetch occupancy data from API
@@ -17,7 +17,7 @@ const OccMeter = ({occupancy, max_occupancy}) => {
                 className={`${occ_class}`}></circle>
             </svg>
             <div className="meter_info">
-                <p className="font-bold text-base">{perc}<span className="text-xs">%</span></p>
+                <p className="font-bold text-base text-black dark:text-white">{perc}<span className="text-xs">%</span></p>
                 <p className="font-light text-[7px] mt-[-5px]">of max occupancy</p>
             </div>
         </div>

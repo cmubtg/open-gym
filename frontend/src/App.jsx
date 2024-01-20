@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Home, FacilityDetail } from './pages';
-import Footer from './components/Footer';
+import Footer from './components/footer/Footer';
 
 function App() {
   return (
@@ -9,7 +9,6 @@ function App() {
         <Router>
           <Routes>
             <Route path="/" element={<Home/>} />
-            {/* TODO: Add dynamic route for FacilityDetail */}
             <Route path="/facility/:id" element={<FacilityDetail/>} />
           </Routes>
         </Router> 
