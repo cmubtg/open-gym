@@ -7,8 +7,9 @@ import Footer from './footer/Footer';
 import LiveDot from './misc/LiveDot';
 import OccMeter from './home/OccMeter';
 import ThemeIcon from './misc/ThemeIcon';
+import FacilityCardOccTag from './home/FacilityCardOccTag'
 
 export { FacilityCard, FacilityCardDisplay, FacilityCardInfo, 
         Footer, LiveDot, 
-        OccMeter, ThemeIcon
+        OccMeter, ThemeIcon, FacilityCardOccTag
         };
