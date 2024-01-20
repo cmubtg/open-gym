@@ -1,6 +1,10 @@
 import React from "react";
 
 const FacilityDetailImage = ({facility, isMobile}) => {
+    if (facility === null) {
+      return (<></>);
+    }
+    
     return (
       <>
         {isMobile ? (

@@ -1,5 +1,8 @@
 
 const FacilityDetailInfo = ({facility}) => {
+    if (facility === null) {
+      return (<></>);
+    }
     return (
       <div className="btg_container flex justify-between 
       mt-2 lg:mt-8
