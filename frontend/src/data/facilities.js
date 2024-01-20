@@ -29,12 +29,13 @@ const facilities = [
        max_occupancy: 150
     }, 
     {
-        id : "tepperFC",
+    id : "tepperFC",
         name : "Tepper Fitness Center",
         address : "",
         description : ``,
         hours : Array.from({ length: 7 }, () => alwaysOpen), 
         image: process.env.PUBLIC_URL + "./images/tepper.jpg",
+        image2: process.env.PUBLIC_URL + "../images/tepper2.jpg",
         max_occupancy: 70
     }, 
     {
@@ -44,6 +45,7 @@ const facilities = [
         description : ``,
         hours : Array.from({ length: 7 }, () => testHours), 
         image: process.env.PUBLIC_URL + "./images/uc.jpg",
+        image2: process.env.PUBLIC_URL + "../images/fairfax2.jpg",
         max_occupancy: 30
     },
     {
