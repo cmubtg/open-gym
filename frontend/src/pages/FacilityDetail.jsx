@@ -1,5 +1,5 @@
 
-import { getFacilities } from '../data/facilities';
+import { facilitiesImages } from '../data/facilities';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 import { useState, useEffect } from 'react';
@@ -12,17 +12,14 @@ const FacilityDetail = () => {
   const {id} = useParams();
 
   const [facilityMetadata, setMetadata] = useState(null);
-  console.log(facilityMetadata);
 
   useEffect(() => {
-    console.log("hello")
     const fetchData = async () => {
       try {
         const res = await fetch(`/api/metadata/${id}`);
         const data = await res.json();
-        console.log(data);
         if (res.ok) {
-          setMetadata(data);
+          setMetadata({...data, ...facilitiesImages[id]});
         }
       } catch (error) {
         console.error('Error fetching data:', error);
@@ -30,7 +27,7 @@ const FacilityDetail = () => {
     };
 
     fetchData();
-  }, [])
+  }, []);
 
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   return (
