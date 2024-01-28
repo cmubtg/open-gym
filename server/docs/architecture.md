@@ -1,6 +1,8 @@
 ## Architecture Overview
 ![OpenGym Architecture](./artifacts/OpenGym.drawio.png)
 
+![OpenGym Architecture](./artifacts/OpenGymDataStream.png)
+
 ### Middleware
 It acts as a bridge or intermediary that helps manage communication, handle requests, and streamline the flow of data between different components of a server-based application. Here are some key functions of middleware:
 
