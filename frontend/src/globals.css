@@ -62,6 +62,8 @@
     @apply w-full h-full flex flex-row items-center justify-center;
   }
   .btg_grid_container{
+
+
     @apply w-full h-auto 
           grid grid-cols-1 
           md:grid-cols-2 xl:grid-cols-3
@@ -86,7 +88,8 @@
     @apply w-full h-full 
     rounded-lg
     transition duration-300 ease-in-out
-    transform hover:scale-110;
+    transform hover:scale-110
+    absolute;
   }
   .card_img{
     @apply w-full h-full img_filter brightness-[0.75];

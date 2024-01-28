@@ -13,6 +13,19 @@ export function getOccClass(occPercent) {
     }
 }
 
+// Gets corresponding tag phrase
+// based on occupancy class
+export function getOccPhrase(occClass) {
+    switch(true) {
+        case occClass == 'low': 
+            return 'Available';
+        case occClass == 'medium':
+            return 'Moderate';
+        default: 
+            return 'Busy';
+    }
+}
+
 export function isOpen(status) {
     return (status.toLowerCase() === "open");
 }
