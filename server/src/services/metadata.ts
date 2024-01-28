@@ -1,5 +1,6 @@
 import * as metadata from '../../data/metadata.json';
-import { gymNameType } from '../utils/constants';
+import { DAYS_OF_THE_WEEK, GYM_NAMES, gymNameType } from '../utils/constants';
+import db from '../models/database';
 
 export const getAllMetadataHelper = () => {
   return metadata;

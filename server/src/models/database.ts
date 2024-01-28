@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import { METADATA, GYM_HOURS } from '../utils/constants';
-import { dateInFuture, startOfDay } from '../utils/date';
+import { dateInFuture, startOfDay, endOfDay } from '../utils/date';
 import { GymHours, Hours, OccupancyRecord, gymHoursSchema, occupancyRecordSchema } from './database.types';
 import DB from './database.interface';
 import writeToCSV from '../utils/write_csv';
@@ -59,10 +59,10 @@ const db : DB = {
 
   getGymHours: async (gym: string, date: Date) => {
     const startDate = startOfDay(date);
-    const endDate = startOfDay(dateInFuture(date, 1));
+    const endDate = endOfDay(date);
     const hoursCollection = getHoursCollection();
     const hours: Hours[] = await hoursCollection.find(
-      { gym: gym, date: { $gte: startDate, $lte: endDate } },
+      { gym: gym, date: { $gte: startDate, $lt: endDate } },
       { _id: 0, gym: 0 }
     );
     mongoose.deleteModel(GYM_HOURS);
@@ -71,7 +71,7 @@ const db : DB = {
 
   getNextWeekGymHours: async (gym: string, date: Date) => {
     const startDate = startOfDay(date);
-    const endDate = startOfDay(dateInFuture(date, 7));
+    const endDate = endOfDay(dateInFuture(date, 6));
     const hoursCollection = getHoursCollection();
     const hours: Hours[] = await hoursCollection.find(
       { gym: gym, date: { $gte: startDate, $lte: endDate } },

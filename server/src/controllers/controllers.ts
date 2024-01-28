@@ -5,6 +5,7 @@ import * as predict from '../services/predict_occupancy';
 import { OccupancyRecord, CurrentGymOccupancy } from '../models/database.types';
 import { HTTP_STATUS, gymNameType } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
+import { getSpecialHours } from '../services/hours';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -137,4 +138,15 @@ export const deleteRecord = (req: Request, res: Response) => {
 // update a session
 export const updateGymSession = (req: Request, res: Response) => {
   res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
+};
+
+export const getWeekSchedule = async (req: Request, res: Response) => {
+  const { gym, date } = req.params;
+
+  try {
+    const data = await getSpecialHours(new Date(date), gym as gymNameType);
+    res.status(HTTP_STATUS.OK).json(data);
+  } catch (error) {
+    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+  }
 };
