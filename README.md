@@ -32,5 +32,5 @@ OpenGym is a web app designed to give CMU students access to occupancy levels of
 5. In the `frontend` directory, start the frontend application:
 
     ```bash
-    npm run start
+    npm run dev
     ```
