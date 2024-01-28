@@ -22,7 +22,6 @@ module.exports = {
     "prefer-const": "error",
     "no-var": "error",
     "no-underscore-dangle": "error",
-    "no-plusplus": "error",
     "no-lonely-if": "error",
     "no-eval": "error",
     "no-alert": "error",
@@ -39,8 +38,7 @@ module.exports = {
     "@typescript-eslint/no-for-in-array": "error",
     "@typescript-eslint/semi": "error", // deprecated moved to stylistic
     "@typescript-eslint/brace-style": "error", // deprecated moved to stylistic
-    "@typescript-eslint/key-spacing": "error",
-    "@typescript-eslint/no-magic-numbers": ["error", { "ignoreEnums": true }]
+    "@typescript-eslint/key-spacing": "error"
   }
 }
   

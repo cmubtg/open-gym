@@ -23,65 +23,17 @@ export const gymRecordSchema = new Schema({
   data: { type: [occupancyRecordSchema], required: true },
 });
 
-export const metaDataSchema = new Schema({
-  collectionName: { type: String, required: true },
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  maxOccupancy: { type: Number, required: true },
-  hours: {
-    type: {
-      sunday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      monday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      tuesday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      wednesday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      thursday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      friday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      saturday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-    },
-    required: true,
-  },
+export const gymHoursSchema = new Schema({
+  gym: { type: String, required: true },
+  date: { type: Date, required: true },
+  open: { type: String, required: true },
+  close: { type: String, required: true },
 });
 
-export type Metadata = InferSchemaType<typeof metaDataSchema>;
+export type GymHours = InferSchemaType<typeof gymHoursSchema>;
+
+export interface Hours {
+  date: Date,
+  open: string,
+  close: string
+}

@@ -1,5 +1,6 @@
 import db from '../models/database';
-import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
+import { getGymMetadataHelper } from './metadata';
+import { DAYS_OF_THE_WEEK, NO_ONE, gymNameType } from '../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';
 
@@ -35,8 +36,8 @@ const getDateFromClock = (date: Date, time: string) => {
 };
 
 const isClosed = async (gym: string, date: Date) => {
-  const metadata = await db.getMetadata(gym);
-  const day = DAYS_OF_THE_WEEK[date.getDay()] as keyof typeof metadata.hours;
+  const metadata = await getGymMetadataHelper(gym as gymNameType);
+  const day = DAYS_OF_THE_WEEK[date.getDay()];
   const openDate = getDateFromClock(date, metadata.hours[day].open);
   const closeDate = getDateFromClock(date, metadata.hours[day].close);
 

@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
+import { getAllMetadataHelper, getGymMetadataHelper } from '../services/metadata';
 import * as predict from '../services/predict_occupancy';
-import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database.types';
-import { HTTP_STATUS } from '../utils/constants';
+import { OccupancyRecord, CurrentGymOccupancy } from '../models/database.types';
+import { HTTP_STATUS, gymNameType } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
 
 // Get every Record from every gym
@@ -94,18 +95,18 @@ export const getGymRecordById = async (req: Request, res: Response) => {
 
 export const getAllMetadata = async (req: Request, res: Response) => {
   try {
-    const metadataArr: Metadata[] = await db.getAllMetadata();
-    res.status(HTTP_STATUS.OK).json(metadataArr);
+    const data = await getAllMetadataHelper();
+    res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
 export const getMetadata = async (req: Request, res: Response) => {
+  const { gym } = req.params;
   try {
-    const {gym} = req.params;
-    const meta : Metadata = await db.getMetadata(gym);
-    res.status(HTTP_STATUS.OK).json(meta);
+    const data = await getGymMetadataHelper(gym as gymNameType); // Temporary until validation
+    res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }

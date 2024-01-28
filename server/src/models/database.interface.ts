@@ -1,4 +1,4 @@
-import { OccupancyRecord, GymOccupancyRecord, Metadata } from './database.types';
+import { OccupancyRecord, GymOccupancyRecord, Hours } from './database.types';
 
 export default interface DB {
   /**
@@ -22,11 +22,6 @@ export default interface DB {
   getAllRecords(): Promise<GymOccupancyRecord[]>
 
   /**
-   * Retrieves metadata for all gym collections.
-   */
-  getAllMetadata(): Promise<Metadata[]>
-
-  /**
    * Retrieves all records from the specified gym's collection.
    */
   getRecords(gym: string): Promise<OccupancyRecord[]>
@@ -37,15 +32,19 @@ export default interface DB {
   getRecentRecord(gym: string): Promise<OccupancyRecord>
 
   /**
-   * Retrieves metadata for the specified gym collection.
-   */
-  getMetadata(gym: string): Promise<Metadata>
-
-  /**
    Retrieves a specific record from the specified gym's collection by its ID.
   */
   getGymById(gym: string, id: string): Promise<OccupancyRecord>
 
+  /**
+   Retrieves a special gym schedule for a gym for a given date.
+  */
+  getGymHours(gym: string, date: Date): Promise<Hours[]>
+
+  /**
+   Retrieves a special gym schedules for the next 7-days for a gym from a given date.
+  */
+  getNextWeekGymHours(gym: string, date: Date): Promise<Hours[]>
 
   /**
    * Moves all records from gym collections to CSV files, then deletes all records.

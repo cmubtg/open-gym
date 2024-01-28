@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
-import { METADATA } from '../utils/constants';
-import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema } from './database.types';
+import { METADATA, GYM_HOURS } from '../utils/constants';
+import { dateInFuture, startOfDay } from '../utils/date';
+import { GymHours, Hours, OccupancyRecord, gymHoursSchema, occupancyRecordSchema } from './database.types';
 import DB from './database.interface';
 import writeToCSV from '../utils/write_csv';
 
@@ -35,13 +36,6 @@ const db : DB = {
     return transformedRecords;
   },
 
-  getAllMetadata: async () => {
-    const collection = getMetaDataCollection();
-    const metadata: Metadata[] = await collection.find({});
-    mongoose.deleteModel(METADATA);
-    return metadata;
-  },
-
   getRecords: async (gym) => {
     const collection = await getCollection(gym);
     const records = await collection.find({});
@@ -56,18 +50,35 @@ const db : DB = {
     return record;
   },
 
-  getMetadata: async (gym: string) => {
-    const collection = getMetaDataCollection();
-    const [metadata]: Metadata[] = await collection.find({ collectionName: gym });
-    mongoose.deleteModel(METADATA);
-    return metadata;
-  },
-
   getGymById: async (gym: string, id: string) => {
     const collection = await getCollection(gym);
     const record: OccupancyRecord = await collection.findById(id) ?? dummyRecord;
     mongoose.deleteModel(gym);
     return record;
+  },
+
+  getGymHours: async (gym: string, date: Date) => {
+    const startDate = startOfDay(date);
+    const endDate = startOfDay(dateInFuture(date, 1));
+    const hoursCollection = getHoursCollection();
+    const hours: Hours[] = await hoursCollection.find(
+      { gym: gym, date: { $gte: startDate, $lte: endDate } },
+      { _id: 0, gym: 0 }
+    );
+    mongoose.deleteModel(GYM_HOURS);
+    return hours;
+  },
+
+  getNextWeekGymHours: async (gym: string, date: Date) => {
+    const startDate = startOfDay(date);
+    const endDate = startOfDay(dateInFuture(date, 7));
+    const hoursCollection = getHoursCollection();
+    const hours: Hours[] = await hoursCollection.find(
+      { gym: gym, date: { $gte: startDate, $lte: endDate } },
+      { _id: 0, gym: 0 }
+    );
+    mongoose.deleteModel(GYM_HOURS);
+    return hours;
   },
 
   moveAllRecords: async () => {
@@ -104,8 +115,8 @@ const getCollection = async (collection: string) => {
   return mongoose.model<OccupancyRecord>(collection, occupancyRecordSchema, collection);
 };
 
-const getMetaDataCollection = () => {
-  return mongoose.model<Metadata>(METADATA, metaDataSchema, METADATA);
+const getHoursCollection = () => {
+  return mongoose.model<GymHours>(GYM_HOURS, gymHoursSchema, GYM_HOURS);
 };
 
 const dummyRecord = {
