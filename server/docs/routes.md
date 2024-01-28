@@ -10,7 +10,6 @@ Get ```http://localhost/api/metadata```
 ```JavaScript
 [
   {
-    collectionName: String
     name: String,
     description: String,
     maxOccupancy: Number, 
@@ -23,7 +22,6 @@ Get ```http://localhost/api/metadata```
 Get ```http://localhost/api/metadata/:gym```
 ```JavaScript
 {
-  collectionName: String
   name: String,
   description: String,
   maxOccupancy: Number, 
@@ -32,7 +30,21 @@ Get ```http://localhost/api/metadata/:gym```
   }
 }
 ```
+Get ```http://localhost/api/hours/:gym/:date```
 
+```JavaScript
+{
+  sunday: {
+    open: String
+    close: String
+  },
+  ...
+  saturday: {
+    open: String
+    close: String
+  }
+}
+```
 ### Occupancy Data
 Get ```http://localhost/api/occupancy```
 ```JavaScript

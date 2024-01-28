@@ -1,5 +1,5 @@
 import db from '../models/database';
-import { getGymMetadataHelper } from './metadata';
+import { getGymMetadataHelper } from './gymMetadata';
 import { DAYS_OF_THE_WEEK, NO_ONE, gymNameType } from '../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';

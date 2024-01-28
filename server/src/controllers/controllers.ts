@@ -1,11 +1,12 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
-import { getAllMetadataHelper, getGymMetadataHelper } from '../services/metadata';
-import * as predict from '../services/predict_occupancy';
 import { OccupancyRecord, CurrentGymOccupancy } from '../models/database.types';
-import { HTTP_STATUS, gymNameType } from '../utils/constants';
+import { HTTP_STATUS } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
-import { getSpecialHours } from '../services/hours';
+import { GymName } from '../types';
+import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
+import * as predict from '../services/predict_occupancy';
+import { getWeekSchedule } from '../services/gymSchedule';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -94,19 +95,19 @@ export const getGymRecordById = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllMetadata = async (req: Request, res: Response) => {
+export const getAllMetadata = (req: Request, res: Response) => {
   try {
-    const data = await getAllMetadataHelper();
+    const data = getAllMetadataHelper();
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
-export const getMetadata = async (req: Request, res: Response) => {
+export const getMetadata = (req: Request, res: Response) => {
   const { gym } = req.params;
   try {
-    const data = await getGymMetadataHelper(gym as gymNameType); // Temporary until validation
+    const data = getGymMetadataHelper(gym as GymName); // Temporary until validation
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -144,7 +145,7 @@ export const getWeekSchedule = async (req: Request, res: Response) => {
   const { gym, date } = req.params;
 
   try {
-    const data = await getSpecialHours(new Date(date), gym as gymNameType);
+    const data = await getWeekSchedule(new Date(date), gym as gymNameType);
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });

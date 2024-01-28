@@ -4,8 +4,6 @@ export const GYM_HOURS = 'gymHours';
 
 export const NO_ONE = 0;
 
-export type gymNameType = 'cohonFC' | 'tepperFC' | 'fairfax' | 'wiegand';
-
 export const GYM_NAMES = ['cohonFC', 'tepperFC', 'fairfax', 'wiegand'] as const;
 
 export const DAYS_OF_THE_WEEK = [
