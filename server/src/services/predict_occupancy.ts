@@ -1,8 +1,9 @@
-import db from '../models/database';
-import { getGymMetadataHelper } from './gymMetadata';
-import { DAYS_OF_THE_WEEK, NO_ONE, gymNameType } from '../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';
+import db from '../models/database';
+import { weekSchedule } from './gymSchedule';
+import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
+import { GymName } from '../types';
 
 const isHoliday = (date: Date) => {
   return true;
@@ -36,10 +37,10 @@ const getDateFromClock = (date: Date, time: string) => {
 };
 
 const isClosed = async (gym: string, date: Date) => {
-  const metadata = await getGymMetadataHelper(gym as gymNameType);
+  const hours = await weekSchedule(date, gym as GymName);
   const day = DAYS_OF_THE_WEEK[date.getDay()];
-  const openDate = getDateFromClock(date, metadata.hours[day].open);
-  const closeDate = getDateFromClock(date, metadata.hours[day].close);
+  const openDate = getDateFromClock(date, hours[day].open);
+  const closeDate = getDateFromClock(date, hours[day].close);
 
   return openDate.getTime() > date.getTime() ||
           date.getTime() > closeDate.getTime();

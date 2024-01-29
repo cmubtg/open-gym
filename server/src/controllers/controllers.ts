@@ -1,12 +1,12 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
 import { OccupancyRecord, CurrentGymOccupancy } from '../models/database.types';
+import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
+import * as predict from '../services/predict_occupancy';
+import { weekSchedule } from '../services/gymSchedule';
 import { HTTP_STATUS } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
 import { GymName } from '../types';
-import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
-import * as predict from '../services/predict_occupancy';
-import { getWeekSchedule } from '../services/gymSchedule';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -145,7 +145,7 @@ export const getWeekSchedule = async (req: Request, res: Response) => {
   const { gym, date } = req.params;
 
   try {
-    const data = await getWeekSchedule(new Date(date), gym as gymNameType);
+    const data = await weekSchedule(new Date(date), gym as GymName);
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });

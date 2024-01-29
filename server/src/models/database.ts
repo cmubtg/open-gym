@@ -1,8 +1,8 @@
 import mongoose from 'mongoose';
-import { METADATA, GYM_HOURS } from '../utils/constants';
-import { dateInFuture, startOfDay, endOfDay } from '../utils/date';
 import { GymHours, Hours, OccupancyRecord, gymHoursSchema, occupancyRecordSchema } from './database.types';
 import DB from './database.interface';
+import { dateInFuture, startOfDay, endOfDay } from '../utils/date';
+import { METADATA, GYM_HOURS } from '../utils/constants';
 import writeToCSV from '../utils/write_csv';
 
 const conn = mongoose.connection;
