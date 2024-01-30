@@ -57,6 +57,29 @@ const facilities = [
     },
 ];
 
+export const facilitiesImages = {
+    cohonFC: {
+        image: "../images/uc.jpg",
+        image2: "../images/uc2.jpg",
+        image3: "../images/uc3.jpg"
+    },
+    tepperFC: {
+        image: "../images/tepper.jpg",
+        image2: "",
+        image3: ""
+    },
+    fairfax: {
+        image: "../images/uc.jpg",
+        image2: "",
+        image3: ""
+    },
+    wiegand: {
+        image: "../images/wiegand.jpg",
+        image2: "",
+        image3: ""
+    }
+}
+
 export const getFacilities = () => {
     return facilities;
 };
