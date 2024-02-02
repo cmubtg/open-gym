@@ -5,26 +5,13 @@ import { MEDIUM_THRESH, HIGH_THRESH, CLOSING_THRESH } from './constants';
 export function getOccClass(occPercent) {
     switch (true) {
         case occPercent < MEDIUM_THRESH:
-          return 'low';
+          return 'available';
         case occPercent < HIGH_THRESH:
-          return 'medium';
+          return 'moderate';
         default:
-          return 'high';
+          return 'busy';
     }
-}
-
-// Gets corresponding tag phrase
-// based on occupancy class
-export function getOccPhrase(occClass) {
-    switch(true) {
-        case occClass == 'low': 
-            return 'Available';
-        case occClass == 'medium':
-            return 'Moderate';
-        default: 
-            return 'Busy';
-    }
-}
+}  
 
 export function isOpen(status) {
     return (status.toLowerCase() === "open");
