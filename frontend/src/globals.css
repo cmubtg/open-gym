@@ -146,6 +146,8 @@
   .ease{
     @apply transition duration-300 ease-in-out
   }
+
+   {/* TODO: Change the low med high to busy, avail, ...  */}
   .low{
     @apply bg-btg-green stroke-btg-green;
   }

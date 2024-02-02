@@ -9,7 +9,10 @@ const FacilityCardOccTag = ({occupancy}) => {
     var occ_tag = getOccPhrase(occ_class);
     return (  
         <div className={`${occ_class} absolute right-4 top-4 z-30 p-[3px] rounded  w-[4rem] flex justify-center`}>
-            <p className={`text-white text-[10px]`}>{occ_tag}</p>
+            <p className={`text-white text-[10px]`}>{occ_class}</p>
+            {/* TODO: Display the results gotten from the occ_class. Make a capitilize function to display the cap names*/}
+
+
         </div>
     );
 };
