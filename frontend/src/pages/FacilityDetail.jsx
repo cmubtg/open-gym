@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
 import { FacilityDetailTopBar, FacilityDetailImage, FacilityDetailInfo, 
-         FacilityDetailCards, BarChart } from '../components/facility';
+         FacilityDetailCards, BarChart, FacilityDetailGeneralAmenities } from '../components/facility';
 
 
 const FacilityDetail = () => {
@@ -24,7 +24,7 @@ const FacilityDetail = () => {
         
         <FacilityDetailCards/>
         <FacilityDetailChart facility={facility}/>
-
+        <FacilityDetailGeneralAmenities facility={facility}/>
     </div>
 
   );
@@ -33,7 +33,7 @@ const FacilityDetail = () => {
 const FacilityDetailChart = ({facility}) => {
   return (
     <div className="btg_container h-[450px] flex flex-col justify-center">
-      <h3 className="font-semibold mb-4">Occupancy Forecast</h3>
+      <h2 className="font-semibold mb-4">Occupancy Forecast</h2>
       <BarChart/>
     </div>
   );
