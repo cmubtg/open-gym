@@ -1,4 +1,3 @@
-
 const FacilityDetailInfo = ({facility}) => {
     return (
       <div className="btg_container flex justify-between 
@@ -14,18 +13,29 @@ const FacilityDetailInfo = ({facility}) => {
   };
   
   const FacilityDetailHours = ({facility}) => {
+    const convHoursToStr = (hours) => {
+      const openHrs = hours.open.toLocaleTimeString("en-US", 
+        {hour: "2-digit", minute: "2-digit"})
+      const closedHrs = hours.close.toLocaleTimeString("en-US", 
+      {hour: "2-digit", minute: "2-digit"})
+      return `${openHrs} - ${closedHrs}`
+    }
+
+    const weekdayHours = facility.hours[0]
+    const weekendHours = facility.hours[6]
+
     return (
-      <div className="w-52 h-fit mt-4">
+      <div className="w-56 h-fit mt-4">
         <h3>Operating Hours</h3>
   
         <div className="flex flex-row mt-2 justify-between">
           <div>
             <p className="text-gray-500">Monday - Friday</p>
-            <p className="text-gray-500">Saturday & Sunday</p>
+            <p className="text-gray-500">Saturday - Sunday</p>
           </div>
           <div >
-            <p className="font-light">6:30 - 11:30</p>
-            <p className="font-light">9:00 - 10:00</p>
+            <p className="font-light">{convHoursToStr(weekdayHours)}</p>
+            <p className="font-light">{convHoursToStr(weekendHours)}</p>
           </div>
         </div>
       </div>
