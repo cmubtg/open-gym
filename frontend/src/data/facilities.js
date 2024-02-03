@@ -55,6 +55,7 @@ const facilities = [
         description : ``,
         hours : Array.from({ length: 7 }, () => standardHours), 
         image: process.env.PUBLIC_URL + "./images/wiegand.jpg",
+        image2: process.env.PUBLIC_URL + "../images/wiegand.jpg",
         max_occupancy: 300
     },
 ];
