@@ -10,18 +10,28 @@ import {
     Legend,
   } from 'chart.js';
 
+  import tailwindConfig from '../../../tailwind.config.js'; // Adjust the path accordingly
+  import annotationPlugin from 'chartjs-plugin-annotation';
+
 ChartJS.register(
     CategoryScale,
     LinearScale,
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    annotationPlugin,
   );
 
 function generateRandomArray(length, min, max) {
   return Array.from({ length }, () => Math.random() * (max - min) + min);
 }
+
+function getAverage(data) {
+  const sum = data.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+  return Math.round(sum / data.length);
+}
+
 ChartJS.defaults.font.size = 10;
 
 const externalTooltipHandler = (context) => {
@@ -107,7 +117,8 @@ const externalTooltipHandler = (context) => {
 
 
 
-const BarChart = () => {
+const BarChart = ({facility},{isMobile}) => {
+  const themeColors = tailwindConfig.theme.extend.colors
   // Values to set
   // default.labels
   // default.datasets[0].barThickness
@@ -115,12 +126,17 @@ const BarChart = () => {
   // default.datasets[0].backgroundColor = index array
 
   // TODO Function to get hours from facilities and current day. 
-  const labels = ['6','7','8','9','10','11','12', '1', '2', '3', '4', '5', '6','7','8','9','10','11'];
-  
+  const labels = getHours(facility);
+  // const labels = ['6','7','8','9','10','11','12', '1', '2', '3', '4', '5', '6','7','8','9','10','11'];
+
   // TODO Function to get data from API
   // Get data from current day and get predicted data from future
   const data = generateRandomArray(labels.length, 0, 100);
   // [14, 40, 45, 53, 21, 85, 62, 55, 33, 45]
+
+  const average = getAverage(data);
+
+  // TODO get current time (and update center after set amount of time)
   const barColors = Array(labels.length - 9).fill('#EB5958').concat(Array(9).fill('#DDDDDD'));
   console.log(barColors);
 
@@ -154,7 +170,20 @@ const BarChart = () => {
           enabled : false,
           position: 'nearest',
           external: externalTooltipHandler,
-        }
+        },
+        annotation: {
+          annotations: {
+            line1: {
+              type: 'line',
+              yMin: average,
+              yMax: average,
+              // TO DO make responsive size
+              borderDash: [8],
+              borderColor: themeColors.red,
+              borderWidth: 2,
+            },
+          }
+        },
     },
     scales: {
         x: {

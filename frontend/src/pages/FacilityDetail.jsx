@@ -23,18 +23,18 @@ const FacilityDetail = () => {
         <FacilityDetailInfo facility={facility}/>
         
         <FacilityDetailCards/>
-        <FacilityDetailChart facility={facility}/>
+        <FacilityDetailChart facility={facility} isMobile={isMobile}/>
 
     </div>
 
   );
 }
 
-const FacilityDetailChart = ({facility}) => {
+const FacilityDetailChart = ({facility},{isMobile}) => {
   return (
     <div className="btg_container h-[450px] flex flex-col justify-center">
       <h3 className="font-semibold mb-4">Occupancy Forecast</h3>
-      <BarChart/>
+      <BarChart facility={facility}/>
     </div>
   );
 }
