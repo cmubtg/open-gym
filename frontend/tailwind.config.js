@@ -1,6 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 
-const themeColors = require('./src/colors')
+import colors from './src/styles/colors'
 
 module.exports = {
   content: [
@@ -12,7 +12,7 @@ module.exports = {
       fontFamily: {
         inter : ['Inter', 'sans-serif'],
       },
-      colors: themeColors, 
+      colors: colors, 
 
       keyframes: {
         pulsate: {
