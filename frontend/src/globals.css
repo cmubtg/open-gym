@@ -188,6 +188,26 @@
     @apply rounded-lg w-[240px] lg:w-[31%] py-10;
   }
 
+  .amenities{
+    scroll-snap-type: x mandatory; 
+    scroll-padding: 0 24px;
+    overflow: auto;
+    display: flex;
+    align-items: center; 
+    @apply flex-row items-center justify-between space-x-4; 
+  }
+  .amenities::-webkit-scrollbar {
+    display: none;
+  } 
+  .amenities_card{
+    scroll-snap-align: start;
+    flex: 0 0 auto;  
+    min-height: 170px; 
+    border-radius: 5px;
+    /* box-shadow: 0px 2px 24px 0px rgba(149, 157, 165, 0.20); */
+    @apply rounded-lg w-[240px] lg:w-[31%];
+  }
+
 }
 
 body {

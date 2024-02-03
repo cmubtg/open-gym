@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { getOccClass} from '../../utils/utils';
 
-const FacilityCardOccTag = ({occupancy}) => {
-    // TODO Fetch occupancy data from API
+const FacilityCardOccTag = ({occupancy}) => { 
     var offset = occupancy * 2;
     var perc = Math.max(0,Math.floor((((offset/200) * 100) - 90) * -1))
     var occ_class = getOccClass(perc); 
