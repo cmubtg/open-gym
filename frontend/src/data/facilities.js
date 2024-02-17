@@ -13,6 +13,15 @@ const testHours = {
     close : new Date(0,0,0,17,0) // 5 pm
 }
 
+const cohonMFHours = {
+    open: new Date(0,0,0,6,30), // 6:30 am
+    close: new Date(0,0,0,23,29), // 11:30 pm
+}
+
+const cohonWeekendHours = {
+    open: new Date(0,0,0,9,0), // 9:00 am
+    close: new Date(0,0,0,21, 59), // 10:00 pm
+}
 
 const facilities = [
     {
@@ -22,11 +31,14 @@ const facilities = [
         description : `Two floors dedicated to cardio and weight equipment in
         the Cohon Univeristy Center.`,
       
-       hours : Array.from({ length: 7 }, () => alwaysOpen), // 7 days a week standard hours
-       image: process.env.PUBLIC_URL + "../images/uc.jpg",
-       image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
-       image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
-       max_occupancy: 150
+        hours : Array.from({ length: 7 }, (_, index) => { 
+            if(index === 0 | index === 6) { return cohonWeekendHours } 
+            else { return cohonMFHours }
+        }), 
+        image: process.env.PUBLIC_URL + "../images/uc.jpg",
+        image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
+        image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
+        max_occupancy: 150
     }, 
     {
         id : "tepperFC",

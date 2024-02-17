@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, createRef } from 'react';
 import { Bar } from 'react-chartjs-2';
+import { getChartOptions, getFacilityHours } from '../../utils/chart_utils';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -10,8 +11,8 @@ import {
     Legend,
   } from 'chart.js';
 
-  import tailwindConfig from '../../../tailwind.config.js'; // Adjust the path accordingly
-  import annotationPlugin from 'chartjs-plugin-annotation';
+import annotationPlugin from 'chartjs-plugin-annotation';
+import { externalTooltipHandler } from "./BarChartTooltip.jsx"
 
 ChartJS.register(
     CategoryScale,
@@ -23,6 +24,7 @@ ChartJS.register(
     annotationPlugin,
   );
 
+
 function generateRandomArray(length, min, max) {
   return Array.from({ length }, () => Math.random() * (max - min) + min);
 }
@@ -32,116 +34,58 @@ function getAverage(data) {
   return Math.round(sum / data.length);
 }
 
+const useRefDimensions = (ref) => {
+  const [dimensions, setDimensions] = useState({ width: 1, height: 2 })
+  React.useEffect(() => {
+    if (ref.current) {
+      const { current } = ref
+      const boundingRect = current.getBoundingClientRect()
+      const { width, height } = boundingRect
+      setDimensions({ width: Math.round(width), height: Math.round(height) })
+    }
+  }, [ref])
+  return dimensions
+}
+
 ChartJS.defaults.font.size = 10;
 
-const externalTooltipHandler = (context) => {
-  // Tooltip Element
-  const {chart, tooltip} = context;
-  const tooltipEl = getOrCreateTooltip(chart);
-
-  // Hide if no tooltip
-  if (tooltip.opacity === 0) {
-    tooltipEl.style.opacity = 0;
-    return;
-  }
-
-  // Set Text
-  if (tooltip.body) {
-    const titleLines = tooltip.title || [];
-    const bodyLines = tooltip.body.map(b => b.lines);
-
-    const tableHead = document.createElement('thead');
-
-    titleLines.forEach(title => {
-      const tr = document.createElement('tr');
-      tr.style.borderWidth = 0;
-
-      const th = document.createElement('th');
-      th.style.borderWidth = 0;
-      const text = document.createTextNode(title);
-
-      th.appendChild(text);
-      tr.appendChild(th);
-      tableHead.appendChild(tr);
-    });
-
-    const tableBody = document.createElement('tbody');
-    bodyLines.forEach((body, i) => {
-      const colors = tooltip.labelColors[i];
-
-      const span = document.createElement('span');
-      span.style.background = colors.backgroundColor;
-      span.style.borderColor = colors.borderColor;
-      span.style.borderWidth = '2px';
-      span.style.marginRight = '10px';
-      span.style.height = '10px';
-      span.style.width = '10px';
-      span.style.display = 'inline-block';
-
-      const tr = document.createElement('tr');
-      tr.style.backgroundColor = 'inherit';
-      tr.style.borderWidth = 0;
-
-      const td = document.createElement('td');
-      td.style.borderWidth = 0;
-
-      const text = document.createTextNode(body);
-
-      td.appendChild(span);
-      td.appendChild(text);
-      tr.appendChild(td);
-      tableBody.appendChild(tr);
-    });
-
-    const tableRoot = tooltipEl.querySelector('table');
-
-    // Remove old children
-    while (tableRoot.firstChild) {
-      tableRoot.firstChild.remove();
-    }
-
-    // Add new children
-    tableRoot.appendChild(tableHead);
-    tableRoot.appendChild(tableBody);
-  }
-
-  const {offsetLeft: positionX, offsetTop: positionY} = chart.canvas;
-
-  // Display, position, and set styles for font
-  tooltipEl.style.opacity = 1;
-  tooltipEl.style.left = positionX + tooltip.caretX + 'px';
-  tooltipEl.style.top = positionY + tooltip.caretY + 'px';
-  tooltipEl.style.font = tooltip.options.bodyFont.string;
-  tooltipEl.style.padding = tooltip.options.padding + 'px ' + tooltip.options.padding + 'px';
-};
-
-
-
 const BarChart = ({facility},{isMobile}) => {
-  const themeColors = tailwindConfig.theme.extend.colors
+  const divRef = createRef();
   // Values to set
   // default.labels
   // default.datasets[0].barThickness
   // default.datasets[0].data
   // default.datasets[0].backgroundColor = index array
-
-  // TODO Function to get hours from facilities and current day. 
-  const labels = getHours(facility);
-  // const labels = ['6','7','8','9','10','11','12', '1', '2', '3', '4', '5', '6','7','8','9','10','11'];
+  const today = new Date();
+  const labels = getFacilityHours(facility)[today.getDate()];
 
   // TODO Function to get data from API
   // Get data from current day and get predicted data from future
   const data = generateRandomArray(labels.length, 0, 100);
-  // [14, 40, 45, 53, 21, 85, 62, 55, 33, 45]
+  const average = Math.floor(getAverage(data));
 
-  const average = getAverage(data);
+  const maxPeople = Math.max(...data, facility.max_occupancy);
+  const ticks = 6;
+  const stepSize = Math.floor(maxPeople / ticks);
 
-  // TODO get current time (and update center after set amount of time)
+  const x_axis_func = function (value, index, values) {
+    const tickArray = Array.from({length: ticks}, (_, idx) => idx*stepSize);
+    return tickArray.includes(value) ? value : '';
+  }
+
   const barColors = Array(labels.length - 9).fill('#EB5958').concat(Array(9).fill('#DDDDDD'));
-  console.log(barColors);
 
-  const barThickness = Math.floor(window.innerWidth / 100) + 15;
-  console.log(Window.innerWidth/100);
+  // const barThickness = Math.floor(window.innerWidth / 100) + 15;
+  const barThickness = 30;
+  // const maxBars = 18;
+  if (isMobile) {
+    barThickness = 4;
+    // maxBars = 6;
+  }
+  // const maxChartWidth = maxBars*barThickness
+  const maxChartWidth = barThickness*labels.length
+  console.log(window.innerWidth/100);
+  console.log(window.innerWidth);
 
   const [chartData, setChartData] = useState({
     labels: labels,
@@ -151,64 +95,21 @@ const BarChart = ({facility},{isMobile}) => {
         data: data,
         backgroundColor: barColors,
         barThickness: barThickness,
+        categoryPercentage: 0.9,
         borderRadius: 5,
       },
     ],
   });
+  
 
-  const options = {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-        legend: {
-            display: false,
-        },
-        title: {
-            display: false,
-        },
-        tooltip: {
-          enabled : false,
-          position: 'nearest',
-          external: externalTooltipHandler,
-        },
-        annotation: {
-          annotations: {
-            line1: {
-              type: 'line',
-              yMin: average,
-              yMax: average,
-              // TO DO make responsive size
-              borderDash: [8],
-              borderColor: themeColors.red,
-              borderWidth: 2,
-            },
-          }
-        },
-    },
-    scales: {
-        x: {
-          grid: {
-            display: false
-          },
-          ticks: {
-            color: '#818181'
-          }
-
-        },
-        y: {
-            grid: {
-                display: true
-            },
-            ticks: {
-                stepSize: 22,
-                color: '#818181',
-                callback: function (value, index, values) {
-                    return value === 0 || value === 22 || value === 44 || value === 66 || value === 88 ? value : '';
-                }
-            }
-        }
-    },
-  };
+  const options = getChartOptions(x_axis_func, stepSize, average, externalTooltipHandler);
+  // const dimensions = useRefDimensions(divRef);
+  const chartContainerBody = document.querySelector('.chartContainerBody');
+  console.log(maxChartWidth);
+  // console.log(dimensions.width);
+  // if (maxChartWidth > dimensions.width) {
+  //   chartContainerBody.width = maxChartWidth;
+  // }
 
 // Function to update the chart with new data
 //   const updateChart = (labels, values) => {
@@ -238,36 +139,12 @@ const BarChart = ({facility},{isMobile}) => {
 //   }, []);
 
   return (
-    <div className="w-full min-h-96 overflow-x-auto">
-      <Bar data={chartData} options={options} />
+    <div className="w-full min-h-96 overflow-x-auto chart_container" ref={divRef}>
+      {/* <div className="chart_container_body"> */}
+        <Bar data={chartData} options={options} />
+      {/* </div> */}
     </div>
   );
 };
 
 export default BarChart;
-
-
-const getOrCreateTooltip = (chart) => {
-  let tooltipEl = chart.canvas.parentNode.querySelector('div');
-
-  if (!tooltipEl) {
-    tooltipEl = document.createElement('div');
-    tooltipEl.style.background = 'rgba(0, 0, 0, 0.7)';
-    tooltipEl.style.borderRadius = '3px';
-    tooltipEl.style.color = 'white';
-    tooltipEl.style.opacity = 1;
-    tooltipEl.style.pointerEvents = 'none';
-    tooltipEl.style.position = 'absolute';
-    tooltipEl.style.transform = 'translate(-50%, 0)';
-    tooltipEl.style.transition = 'all .1s ease';
-
-    const table = document.createElement('table');
-    table.style.margin = '0px';
-
-    tooltipEl.appendChild(table);
-    chart.canvas.parentNode.appendChild(tooltipEl);
-  }
-
-  return tooltipEl;
-};
-
