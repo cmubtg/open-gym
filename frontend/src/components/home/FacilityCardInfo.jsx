@@ -3,7 +3,7 @@
 import React from 'react';
 import OccMeter from './OccMeter';
 import LiveDot from '../misc/LiveDot';
-import { isClosed, getNextOpenReadable} from '../../utils/utils';
+import { isClosed, getNextOpenReadable, getGymHours} from '../../utils/utils';
 
 import { FaFlag } from "react-icons/fa";
 
@@ -19,16 +19,18 @@ const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStat
   }
 
 const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
-  var isSpecialHour = true
-
+  // const [specialHour, setSpecialHour] = useState(null);
+  // specialHour = getGymHours(facility);
+  // ({Sunday : Open : close, Monday : Open, close})
+  var isSpecialHour = facility.hours.data
   return (
     <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
       
       {/* Gym Name */}
-      {/* <div className="flex flex-row"> */}
-        <h3><span className="flex">{facility.name} <FaFlag className="flex flag_icon"/></span></h3>
-        
-      {/* </div>   */}
+      <div className="flex flex-row">
+        <h3><span className="flex">{facility.name} </span></h3> 
+        <FaFlag className="flex flag_icon"/>
+      </div>  
       
 
       {/* Red dot + x minutes ago */}

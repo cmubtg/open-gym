@@ -1,5 +1,6 @@
 import { MEDIUM_THRESH, HIGH_THRESH, CLOSING_THRESH } from './constants';
 
+
 // Gets corresponding css occupancy class 
 // based on occupancy percentage
 export function getOccClass(occPercent) {
@@ -80,11 +81,11 @@ function formatTime12h(date) {
 export function getNextOpenReadable(facility, currTime) {
   var day = currTime.getDay()
 
-  const openTime = facility.hours[day].open;
-  const closeTime = facility.hours[day].close;
+  const openTime = facility.hours.data[day].open;
+  const closeTime = facility.hours.data[day].close;
 
   if (cmpTime(currTime, closeTime) >= 0){
-    const nextDayTime = facility.hours[(day + 1) % 7].open;
+    const nextDayTime = facility.hours.data[(day + 1) % 7].open;
     return `${getDayOfWeekName((day + 1) % 7)}, ${formatTime12h(nextDayTime)}`;
   }
   return `${getDayOfWeekName(day)}, ${formatTime12h(openTime)}`;
@@ -94,8 +95,8 @@ export function getClosingStatus(facility, currTime, threshold) {
   var thresh = threshold || CLOSING_THRESH
   var day = currTime.getDay()
 
-  const openTime = facility.hours[day].open;
-  const closeTime = facility.hours[day].close;
+  const openTime = facility.hours.data[day].open;
+  const closeTime = facility.hours.data[day].close;
 
   if (cmpTime(currTime, closeTime) >= 0 || 
       cmpTime(currTime, openTime) < -thresh) {

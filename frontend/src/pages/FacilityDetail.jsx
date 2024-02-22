@@ -1,5 +1,5 @@
 
-import { getFacilities } from '../data/facilities';
+import { GetFacilities } from '../data/facilities';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
 
@@ -7,10 +7,9 @@ import { FacilityDetailTopBar, FacilityDetailImage, FacilityDetailInfo,
          FacilityDetailCards, BarChart } from '../components/facility';
 
 
-const FacilityDetail = () => {
+const FacilityDetail = async () => {
   const {id} = useParams();
-  const facilities = getFacilities();
-  
+  const facilities = GetFacilities();
   const facility = facilities.find((facility) => facility.id === id);
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   return (
