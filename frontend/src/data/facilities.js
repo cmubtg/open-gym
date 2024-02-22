@@ -78,7 +78,7 @@ const facilities = [
 ];
 
 export const GetFacilities = () => {  
-    const [facilities, setFacilities] = useState(null);
+    // const [facilities, setFacilities] = useState(null);
     useEffect(() => {
         // try {
         //     return facilities;
