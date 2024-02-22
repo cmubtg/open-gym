@@ -5,22 +5,31 @@ import OccMeter from './OccMeter';
 import LiveDot from '../misc/LiveDot';
 import { isClosed, getNextOpenReadable} from '../../utils/utils';
 
+import { FaFlag } from "react-icons/fa";
+
 const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStatus}) => {
     const lastFetchMsg = (lastFetch === 1) ? `1 minute ago` : `${lastFetch} minutes ago`
     return (
       <div className={`card_btm ${isClosed(closingStatus) && "opacity-55"}`}>   
         <FacilityCardTitle {...{facility, closingStatus, lastFetchMsg}}/>
-        <FacilityCardMeter {...{facility, occupancy, closingStatus}}/>
+        <FacilityCardMeter {...{facility, occupancy, closingStatus}}/> 
+
       </div>
     );
   }
 
 const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
+  var isSpecialHour = true
+
   return (
     <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
       
       {/* Gym Name */}
-      <h3>{facility.name}</h3>
+      {/* <div className="flex flex-row"> */}
+        <h3><span className="flex">{facility.name} <FaFlag className="flex flag_icon"/></span></h3>
+        
+      {/* </div>   */}
+      
 
       {/* Red dot + x minutes ago */}
       { !isClosed(closingStatus) ?
