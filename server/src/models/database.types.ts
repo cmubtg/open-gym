@@ -24,16 +24,11 @@ export const gymRecordSchema = new Schema({
 });
 
 export const gymHoursSchema = new Schema({
-  gym: { type: String, required: true },
+  gym: { type: String },
   date: { type: Date, required: true },
   open: { type: String, required: true },
   close: { type: String, required: true },
+  description: { type: String }
 });
 
 export type GymHours = InferSchemaType<typeof gymHoursSchema>;
-
-export interface Hours {
-  date: Date,
-  open: string,
-  close: string
-}

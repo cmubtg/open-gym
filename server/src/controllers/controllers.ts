@@ -3,7 +3,6 @@ import db from '../models/database';
 import { OccupancyRecord, CurrentGymOccupancy } from '../models/database.types';
 import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
 import * as predict from '../services/predict_occupancy';
-import { weekSchedule } from '../services/gymSchedule';
 import { HTTP_STATUS } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
 import { GymName } from '../types';
@@ -95,19 +94,19 @@ export const getGymRecordById = async (req: Request, res: Response) => {
   }
 };
 
-export const getAllMetadata = (req: Request, res: Response) => {
+export const getAllMetadata = async (req: Request, res: Response) => {
   try {
-    const data = getAllMetadataHelper();
+    const data = await getAllMetadataHelper();
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
-export const getMetadata = (req: Request, res: Response) => {
+export const getMetadata = async (req: Request, res: Response) => {
   const { gym } = req.params;
   try {
-    const data = getGymMetadataHelper(gym as GymName); // Temporary until validation
+    const data = await getGymMetadataHelper(gym as GymName); // Temporary until validation
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -139,15 +138,4 @@ export const deleteRecord = (req: Request, res: Response) => {
 // update a session
 export const updateGymSession = (req: Request, res: Response) => {
   res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
-};
-
-export const getWeekSchedule = async (req: Request, res: Response) => {
-  const { gym, date } = req.params;
-
-  try {
-    const data = await weekSchedule(new Date(date), gym as GymName);
-    res.status(HTTP_STATUS.OK).json(data);
-  } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
-  }
 };

@@ -1,4 +1,4 @@
-import { OccupancyRecord, GymOccupancyRecord, Hours } from './database.types';
+import { OccupancyRecord, GymOccupancyRecord, GymHours } from './database.types';
 
 export default interface DB {
   /**
@@ -39,12 +39,12 @@ export default interface DB {
   /**
    Retrieves a special gym schedule for a gym for a given date.
   */
-  getGymHours(gym: string, date: Date): Promise<Hours[]>
+  getGymHours(gym: string, date: Date): Promise<GymHours[]>
 
   /**
    Retrieves a special gym schedules for the next 7-days for a gym from a given date.
   */
-  getNextWeekGymHours(gym: string, date: Date): Promise<Hours[]>
+  getNextWeekGymHours(gym: string, date: Date): Promise<GymHours[]>
 
   /**
    * Moves all records from gym collections to CSV files, then deletes all records.

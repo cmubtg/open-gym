@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import { GymHours, Hours, OccupancyRecord, gymHoursSchema, occupancyRecordSchema } from './database.types';
+import { GymHours, OccupancyRecord, gymHoursSchema, occupancyRecordSchema } from './database.types';
 import DB from './database.interface';
 import { dateInFuture, startOfDay, endOfDay } from '../utils/date';
 import { METADATA, GYM_HOURS } from '../utils/constants';
@@ -61,7 +61,7 @@ const db : DB = {
     const startDate = startOfDay(date);
     const endDate = endOfDay(date);
     const hoursCollection = getHoursCollection();
-    const hours: Hours[] = await hoursCollection.find(
+    const hours: GymHours[] = await hoursCollection.find(
       { gym: gym, date: { $gte: startDate, $lt: endDate } },
       { _id: 0, gym: 0 }
     );
@@ -73,7 +73,7 @@ const db : DB = {
     const startDate = startOfDay(date);
     const endDate = endOfDay(dateInFuture(date, 6));
     const hoursCollection = getHoursCollection();
-    const hours: Hours[] = await hoursCollection.find(
+    const hours: GymHours[] = await hoursCollection.find(
       { gym: gym, date: { $gte: startDate, $lte: endDate } },
       { _id: 0, gym: 0 }
     );

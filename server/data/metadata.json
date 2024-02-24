@@ -6,31 +6,38 @@
         "hours": {
             "sunday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "monday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "tuesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "wednesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "thursday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "friday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "saturday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             }
         },
         "maxOccupancy": 150
@@ -38,35 +45,42 @@
     "tepperFC": {
         "name": "Tepper Fitness Center",
         "address": "5000 Forbes Ave, Pittsburgh, PA 15213",
-        "description": "",
+        "description": "Two floors dedicated to cardio and weight equipment in the Cohon University Center.",
         "hours": {
             "sunday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "monday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "tuesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "wednesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "thursday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "friday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "saturday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             }
         },
         "maxOccupancy": 150
@@ -74,35 +88,42 @@
     "fairfax": {
         "name": "Fairfax Gym",
         "address": "5000 Forbes Ave, Pittsburgh, PA 15213",
-        "description": "",
+        "description": "Two floors dedicated to cardio and weight equipment in the Cohon University Center.",
         "hours": {
             "sunday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "monday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "tuesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "wednesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "thursday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "friday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "saturday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             }
         },
         "maxOccupancy": 150
@@ -110,35 +131,42 @@
     "wiegand": {
         "name": "Wiegand Gym",
         "address": "5000 Forbes Ave, Pittsburgh, PA 15213",
-        "description": "",
+        "description": "Two floors dedicated to cardio and weight equipment in the Cohon University Center.",
         "hours": {
             "sunday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "monday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "tuesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "wednesday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "thursday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "friday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             },
             "saturday": {
                 "open": "09:00",
-                "close": "23:00"
+                "close": "23:00",
+                "description": ""
             }
         },
         "maxOccupancy": 150
