@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { AGGREGATE_DATA_COLLECTION, METADATA } from '../utils/constants';
-import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema, AggregateData, aggregateDataSchema } from './database.types';
+import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema,
+         AggregateData, aggregateDataSchema } from './database.types';
 import DB from './database.interface';
 import writeToCSV from '../utils/write_csv';
 import { getRelativeDate } from '../utils/date';
@@ -72,7 +73,7 @@ const db : DB = {
     const date = getRelativeDate(inputDate, 0);
     const dayAfter = getRelativeDate(date, 1);
 
-    const records = await collection.find({ 
+    const records = await collection.find({
       time: { $gte: date, $lt: dayAfter },
     });
 
@@ -88,8 +89,7 @@ const db : DB = {
         const collection = await getCollection(gym);
         const date = getRelativeDate(inputDate, 0);
         const dayAfter = getRelativeDate(date, 1);
-    
-        await collection.deleteMany({ 
+        await collection.deleteMany({
           time: { $gte: date, $lt: dayAfter },
         });
       })

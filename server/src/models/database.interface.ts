@@ -27,13 +27,13 @@ export default interface DB {
 
   /**
    * Retrieves all records from all gym collections for a specific date
-   * @param date 
+   * @param date
    */
   getAllRecordsByDate(date: Date): Promise<GymOccupancyRecord[]>
 
   /**
    * Retrieves all records from all gym collections for a specific date
-   * @param date 
+   * @param date
    */
   deleteAllRecordsByDate(date: Date): Promise<void>
 
@@ -81,7 +81,7 @@ export default interface DB {
 
   /**
    * Inserts aggregate data into aggregate database
-   * @param aggregateData 
+   * @param aggregateData
    */
   insertAggregate(aggregateData: AggregateData): Promise<void>;
 }

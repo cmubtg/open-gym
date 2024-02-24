@@ -4,10 +4,10 @@ import { OccupancyRecord, GymOccupancyRecord, AggregateData } from "../../models
 /**
  * Groups occupancy records by hour
  * @param data array of occupancy records
- * @returns array of occupancy records grouped by hour 
+ * @returns array of occupancy records grouped by hour
  * (A[i] = OccupancyRecord[] from i:00-i+1:00)
  */
-function groupGymDataByHours(data: OccupancyRecord[]) {
+const groupGymDataByHours = (data: OccupancyRecord[]) => {
   const occupancyAtEachHour = Array.from<null, number[]>({ length: 24 }, () => []);
 
   return data.reduce((group, record) => {
@@ -18,14 +18,14 @@ function groupGymDataByHours(data: OccupancyRecord[]) {
     group[hour] = prevData;
     return group;
   }, occupancyAtEachHour);
-}
+};
 
 /**
  * Aggregates daily occupancy data for all gyms by the hour
  * @param dailyData  occupancy data
  * @returns aggregated data by the hour
  */
-export function aggregateOccucpancyData(dailyData: GymOccupancyRecord[]) {
+export const aggregateOccucpancyData = (dailyData: GymOccupancyRecord[]) => {
   return dailyData.map(({ gym, data}) => {
     const groupedByHour = groupGymDataByHours(data);
 
@@ -35,16 +35,16 @@ export function aggregateOccucpancyData(dailyData: GymOccupancyRecord[]) {
         occupancies.reduce((total, occ) => total + occ, 0) / occupancies.length
     );
 
-    return { gym, data: averagedByHour }
-  })
-}
+    return { gym, data: averagedByHour };
+  });
+};
 
 /**
  * Inserts aggregate data in the db
  * @param date date of aggregated data
  * @param allAggregateData data
  */
-export async function insertAllAggregate(date: Date, allAggregateData: { gym: string; data: number[]; }[]) {
+export const insertAllAggregate = async (date: Date, allAggregateData: { gym: string; data: number[]; }[]) => {
   const formattedDBData: AggregateData[] = allAggregateData.map(
     ({ gym, data }) => {
       const aggregateData: AggregateData = {
@@ -52,10 +52,10 @@ export async function insertAllAggregate(date: Date, allAggregateData: { gym: st
         occupancy: data,
         collectionName: gym
       };
-      return aggregateData
+      return aggregateData;
     });
-  
-  for (let i = 0; i < formattedDBData.length; i++) {
-    await db.insertAggregate(formattedDBData[i]);
+
+  for (const data of formattedDBData) {
+    await db.insertAggregate(data);
   }
-}
+};
