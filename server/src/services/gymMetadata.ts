@@ -1,12 +1,12 @@
 import * as metadata from '../../data/metadata.json';
 import db from '../models/database';
-import { GYM_NAMES, DAYS_OF_THE_WEEK } from '../utils/constants';
+import { GymName } from '../models/database.types';
+import { DAYS_OF_THE_WEEK } from '../utils/constants';
 import { startOfWeek } from '../utils/date';
-import { GymName } from '../types';
 
 export const getAllMetadataHelper = async () => {
   const date = new Date();
-  for (const gymName of GYM_NAMES) {
+  for (const gymName of db.getGymCollections()) {
     const hours = await getSpecialSchedule(date, gymName);
     metadata[gymName].hours = hours;
   }

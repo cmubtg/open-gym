@@ -1,9 +1,9 @@
 import { exec } from 'child_process';
 import util from 'util';
 import db from '../models/database';
+import { GymName } from '../models/database.types';
 import { getSpecialSchedule } from './gymMetadata';
 import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
-import { GymName } from '../types';
 
 const isHoliday = (date: Date) => {
   return true;
@@ -66,11 +66,11 @@ export const predictOccupancy = async (gym: string, date: Date) => {
   return parseInt(stdout, 10);
 };
 
-export const validatePredictReq = async (gym: string, timestamp: string) => {
+export const validatePredictReq = (gym: GymName, timestamp: string) => {
   if (isNaN(Date.parse(timestamp))) {
     throw new Error('Invalid Timestamp');
   }
-  const names = await db.getAllNames();
+  const names = db.getGymCollections();
   if (!names.includes(gym)) {
     throw new Error(`Invalid Gym ${gym}`);
   }

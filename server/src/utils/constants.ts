@@ -1,10 +1,8 @@
-export const METADATA = 'metadata';
+export const AGGREGATE_DATA_COLLECTION = 'aggregate';
 
 export const GYM_HOURS = 'gymHours';
 
 export const NO_ONE = 0;
-
-export const GYM_NAMES = ['cohonFC', 'tepperFC', 'fairfax', 'wiegand'] as const;
 
 export const DAYS_OF_THE_WEEK = [
   'sunday',
