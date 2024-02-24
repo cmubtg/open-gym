@@ -1,4 +1,4 @@
-import { OccupancyRecord, GymOccupancyRecord, Metadata } from './database.types';
+import { OccupancyRecord, GymOccupancyRecord, Metadata, AggregateData } from './database.types';
 
 export default interface DB {
   /**
@@ -17,9 +17,25 @@ export default interface DB {
   getAllNames(): Promise<string[]>
 
   /**
+   * Returns array of gym collections
+   */
+  getGymCollections(): string[]
+  /**
    * Retrieves all records from all gym collections.
    */
   getAllRecords(): Promise<GymOccupancyRecord[]>
+
+  /**
+   * Retrieves all records from all gym collections for a specific date
+   * @param date
+   */
+  getAllRecordsByDate(date: Date): Promise<GymOccupancyRecord[]>
+
+  /**
+   * Retrieves all records from all gym collections for a specific date
+   * @param date
+   */
+  deleteAllRecordsByDate(date: Date): Promise<void>
 
   /**
    * Retrieves metadata for all gym collections.
@@ -30,6 +46,13 @@ export default interface DB {
    * Retrieves all records from the specified gym's collection.
    */
   getRecords(gym: string): Promise<OccupancyRecord[]>
+
+  /**
+   * Retrieves all records from the specified gym's collection and date
+   * @param gym gym to filter records
+   * @param date date to filter records
+   */
+  getRecordsByDate(gym: string, date: Date): Promise<OccupancyRecord[]>
 
   /**
    * Retrieves the most recent record from the specified gym's collection.
@@ -46,7 +69,6 @@ export default interface DB {
   */
   getGymById(gym: string, id: string): Promise<OccupancyRecord>
 
-
   /**
    * Moves all records from gym collections to CSV files, then deletes all records.
    */
@@ -57,4 +79,9 @@ export default interface DB {
    */
   deleteAllRecords(): Promise<void>
 
+  /**
+   * Inserts aggregate data into aggregate database
+   * @param aggregateData
+   */
+  insertAggregate(aggregateData: AggregateData): Promise<void>;
 }

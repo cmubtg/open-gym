@@ -1,8 +1,10 @@
 import mongoose from 'mongoose';
-import { METADATA } from '../utils/constants';
-import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema } from './database.types';
+import { AGGREGATE_DATA_COLLECTION, METADATA } from '../utils/constants';
+import { OccupancyRecord, Metadata, occupancyRecordSchema, metaDataSchema,
+         AggregateData, aggregateDataSchema } from './database.types';
 import DB from './database.interface';
 import writeToCSV from '../utils/write_csv';
+import { getRelativeDate } from '../utils/date';
 
 const conn = mongoose.connection;
 
@@ -25,9 +27,25 @@ const db : DB = {
     return collectionNames.filter((name) => name !== METADATA);
   },
 
+  getGymCollections: () => {
+    return ['tepperFC', 'fairfax', 'cohonFC', 'wiegand'];
+  },
+
   getAllRecords: async () => {
     const gyms = await db.getAllNames();
     const recordsArr = await Promise.all(gyms.map((gym) => db.getRecords(gym)));
+    const transformedRecords = recordsArr.map((records, index) => ({
+      gym: gyms[index],
+      data: records,
+    }));
+    return transformedRecords;
+  },
+
+  getAllRecordsByDate: async (date: Date) => {
+    const gyms = db.getGymCollections();
+    const recordsArr = await Promise.all(
+      gyms.map((gym) => db.getRecordsByDate(gym, date))
+    );
     const transformedRecords = recordsArr.map((records, index) => ({
       gym: gyms[index],
       data: records,
@@ -47,6 +65,35 @@ const db : DB = {
     const records = await collection.find({});
     mongoose.deleteModel(gym);
     return records;
+  },
+
+  getRecordsByDate: async (gym, inputDate) => {
+    const collection = await getCollection(gym);
+
+    const date = getRelativeDate(inputDate, 0);
+    const dayAfter = getRelativeDate(date, 1);
+
+    const records = await collection.find({
+      time: { $gte: date, $lt: dayAfter },
+    });
+
+    return records;
+  },
+
+
+
+  deleteAllRecordsByDate: async (inputDate) => {
+    const gyms = db.getGymCollections();
+    await Promise.all(
+      gyms.map(async (gym) => {
+        const collection = await getCollection(gym);
+        const date = getRelativeDate(inputDate, 0);
+        const dayAfter = getRelativeDate(date, 1);
+        await collection.deleteMany({
+          time: { $gte: date, $lt: dayAfter },
+        });
+      })
+    );
   },
 
   getRecentRecord: async (gym) => {
@@ -87,6 +134,11 @@ const db : DB = {
     // *** Insert deletion code HERE ***
   },
 
+  insertAggregate: async (data) => {
+    const collection = getAggregateCollection();
+    await collection.create(data);
+    mongoose.deleteModel(AGGREGATE_DATA_COLLECTION);
+  }
 };
 
 export default db;
@@ -106,6 +158,10 @@ const getCollection = async (collection: string) => {
 
 const getMetaDataCollection = () => {
   return mongoose.model<Metadata>(METADATA, metaDataSchema, METADATA);
+};
+
+const getAggregateCollection = () => {
+  return mongoose.model<AggregateData>(AGGREGATE_DATA_COLLECTION, aggregateDataSchema, AGGREGATE_DATA_COLLECTION);
 };
 
 const dummyRecord = {

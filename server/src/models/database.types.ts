@@ -85,3 +85,11 @@ export const metaDataSchema = new Schema({
 });
 
 export type Metadata = InferSchemaType<typeof metaDataSchema>;
+
+export const aggregateDataSchema = new Schema({
+  collectionName: { type: String, required: true },
+  date: { type: Date, required: true },
+  occupancy: { type: [Number], required: true },
+});
+
+export type AggregateData = InferSchemaType<typeof aggregateDataSchema>;

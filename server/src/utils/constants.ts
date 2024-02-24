@@ -1,4 +1,5 @@
 export const METADATA = 'metadata';
+export const AGGREGATE_DATA_COLLECTION = 'aggregate';
 
 export const NO_ONE = 0;
 

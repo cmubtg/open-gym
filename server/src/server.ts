@@ -1,9 +1,8 @@
-import cron from 'node-cron';
 import express from 'express';
 import mongoose from 'mongoose';
 import OpenGymRoutes from './routes/routes';
-import db from './models/database';
 import config from './config';
+import { initJobs } from './jobs';
 
 const app = express();
 
@@ -22,12 +21,7 @@ app.use('/api/', OpenGymRoutes);
 mongoose.connect(config.databaseURL)
     .then(() => {
       console.log('Connected to database');
-
-      // weekly clearing database
-      cron.schedule('0 0 * * 0', () => {
-        // eslint-disable-next-line @typescript-eslint/no-floating-promises
-        db.moveAllRecords();
-      });
+      initJobs();
 
       // listen on port
       app.listen(config.port, () => {
