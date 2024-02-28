@@ -29,7 +29,7 @@ const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
       {/* Gym Name */}
       <div className="flex flex-row">
         <h3><span className="flex">{facility.name} </span></h3> 
-        <FaFlag className="flex flag_icon"/>
+        <FaFlag className="flex ml-2 mt-1 flag_icon"/>
       </div>  
       
 
