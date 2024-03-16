@@ -1,7 +1,13 @@
 export const AGGREGATE_DATA_COLLECTION = 'aggregate';
 
+export const GYM_NAMES = ['tepperFC', 'fairfax', 'cohonFC', 'wiegand']
 export const GYM_HOURS = 'gymHours';
 
+export enum TENSE {
+  PAST = "past",
+  PRESENT = "present",
+  FUTURE = "future",
+}
 export const NO_ONE = 0;
 
 export const DAYS_OF_THE_WEEK = [

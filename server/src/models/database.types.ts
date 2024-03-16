@@ -1,13 +1,21 @@
-import { InferSchemaType, Schema } from 'mongoose';
+import mongoose, { InferSchemaType, Schema } from 'mongoose';
+import { GYM_NAMES } from '../utils/constants';
 
 export type GymName = 'cohonFC' | 'tepperFC' | 'fairfax' | 'wiegand';
 
+
 export const occupancyRecordSchema = new Schema({
+  gym: { type: String, require: true },
   time: { type: Date, required: true },
   occupancy: { type: Number, required: true },
   // TODO Add model input (boolean flags etc)
 });
 export type OccupancyRecord = InferSchemaType<typeof occupancyRecordSchema>;
+
+export const PastModel = mongoose.model('past', occupancyRecordSchema);
+export const PresentModel = mongoose.model('present', occupancyRecordSchema);
+export const FutureModel = mongoose.model('future', occupancyRecordSchema);
+export const metadataModel = mongoose.model('metadata', occupancyRecordSchema);
 
 // Controller type definitions
 export interface GymOccupancyRecord {
@@ -35,10 +43,8 @@ export const gymHoursSchema = new Schema({
 
 export type GymHours = InferSchemaType<typeof gymHoursSchema>;
 
-export const aggregateDataSchema = new Schema({
-  collectionName: { type: String, required: true },
-  date: { type: Date, required: true },
-  occupancy: { type: [Number], required: true },
-});
-
-export type AggregateData = InferSchemaType<typeof aggregateDataSchema>;
+export interface DBOptionType {
+  start: Date;
+  end: Date;
+  tense: string;
+}

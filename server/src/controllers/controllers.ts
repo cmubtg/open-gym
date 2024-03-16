@@ -7,9 +7,9 @@ import { HTTP_STATUS } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
 
 // Get every Record from every gym
-export const getAllRecords = async (req: Request, res: Response) => {
+export const getAllRecords = (req: Request, res: Response) => {
   try {
-    const records = await db.getAllRecords();
+    // Todo fix get all records function
     res.status(HTTP_STATUS.OK).json(records);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -63,7 +63,7 @@ export const predictOccupancy = async (req: Request, res: Response) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    predict.validatePredictReq(gym as GymName, timestamp);
+    await predict.validatePredictReq(gym as GymName, timestamp);
     const prediction = await predict.predictOccupancy(gym, date);
     res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
   } catch (error) {

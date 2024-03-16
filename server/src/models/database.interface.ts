@@ -1,10 +1,10 @@
-import { OccupancyRecord, GymOccupancyRecord, GymHours, AggregateData, GymName } from './database.types';
+import { OccupancyRecord, GymOccupancyRecord, GymHours, DBOptionType, GymName } from './database.types';
 
 export default interface DB {
   /**
    * Checks if the specified collection exists.
    */
-  collectionExists(collection: GymName): boolean
+  collectionExists(collection: string): boolean
 
   /**
    * Inserts a OccupancyRecord into the specified gym's collection.
@@ -35,7 +35,7 @@ export default interface DB {
   /**
    * Retrieves all records from the specified gym's collection.
    */
-  getRecords(gym: GymName): Promise<OccupancyRecord[]>
+  getRecords(gym: GymName, options?: DBOptionType): Promise<OccupancyRecord[]>
 
   /**
    * Retrieves all records from the specified gym's collection and date
@@ -47,7 +47,7 @@ export default interface DB {
   /**
    * Retrieves the most recent record from the specified gym's collection.
    */
-  getRecentRecord(gym: GymName): Promise<OccupancyRecord>
+  getRecentRecord(gym: GymName, options?: DBOptionType): Promise<OccupancyRecord>
 
   /**
    Retrieves a specific record from the specified gym's collection by its ID.

@@ -1,5 +1,6 @@
 import { CronJob } from 'cron';
 import db from '../../models/database';
+import { GYM_NAMES } from '../../utils/constants';
 import { getRelativeDate } from '../../utils/date';
 import { aggregateOccucpancyData, insertAllAggregate } from './aggregateDataUtils';
 
@@ -23,6 +24,10 @@ export default function initAggregateScheduler() {
  */
 const aggregateOccupancyJob = async () => {
   const yesterday = getRelativeDate(new Date(), -1);
+  for (const gymName of GYM_NAMES) {
+    
+  }
+  const yesterdaysData = await db.getRecords()
   const yesterdaysData = await db.getAllRecordsByDate(yesterday);
   const allAggregateData = aggregateOccucpancyData(yesterdaysData);
   await insertAllAggregate(yesterday, allAggregateData);
