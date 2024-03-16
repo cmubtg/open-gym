@@ -73,3 +73,10 @@ export const validatePredictReq = async (gym: string, timestamp: string) => {
     throw new Error(`Invalid Gym ${gym}`);
   }
 };
+
+export const validateGymReq = async (gym: string) => {
+  const names = await db.getAllNames();
+  if (!names.includes(gym)) {
+    throw new Error(`Inavalid Gym ${gym}`);
+  }
+};

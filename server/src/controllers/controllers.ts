@@ -35,8 +35,9 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
 };
 
 export const getOccupancy = async (req: Request, res: Response) => {
+  const {gym} = req.params;
   try {
-    const {gym} = req.params;
+    await predict.validateGymReq(gym);
     const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym);
     // const finalOccupancy : BTG_Occupancy = {count: mostRecentRecord.occupancy};
 
@@ -73,8 +74,8 @@ export const predictOccupancy = async (req: Request, res: Response) => {
 // TODO: Get all records from a specific gym
 export const getRecords = async (req: Request, res: Response) => {
   const { gym } = req.params;
-
   try {
+    await predict.validateGymReq(gym);
     const data = await db.getRecords(gym);
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
@@ -102,8 +103,9 @@ export const getAllMetadata = async (req: Request, res: Response) => {
 };
 
 export const getMetadata = async (req: Request, res: Response) => {
+  const {gym} = req.params;
   try {
-    const {gym} = req.params;
+    await predict.validateGymReq(gym);
     const meta : Metadata = await db.getMetadata(gym);
     res.status(HTTP_STATUS.OK).json(meta);
   } catch (error) {
