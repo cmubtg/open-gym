@@ -22,7 +22,6 @@ module.exports = {
     "prefer-const": "error",
     "no-var": "error",
     "no-underscore-dangle": "error",
-    "no-plusplus": "error",
     "no-lonely-if": "error",
     "no-eval": "error",
     "no-alert": "error",
