@@ -28,7 +28,6 @@ const TitleBar = () => {
 
 const FacilityCards = () => {
   const facilities = GetFacilities();
-  console.log("facilitiesi are" , facilities);
   return (
     <div className="btg_grid_container">
       {facilities.map((facility) => (

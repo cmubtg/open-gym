@@ -7,7 +7,7 @@ import { FacilityDetailTopBar, FacilityDetailImage, FacilityDetailInfo,
          FacilityDetailCards, BarChart } from '../components/facility';
 
 
-const FacilityDetail = async () => {
+const FacilityDetail = () => {
   const {id} = useParams();
   const facilities = GetFacilities();
   const facility = facilities.find((facility) => facility.id === id);
