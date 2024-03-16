@@ -3,7 +3,7 @@ import { OccupancyRecord, occupancyRecordSchema,
          AggregateData, aggregateDataSchema,
          GymHours, gymHoursSchema, GymName } from './database.types';
 import DB from './database.interface';
-import { dateInFuture, startOfDay, endOfDay, getRelativeDate } from '../utils/date';
+import { startOfDay, endOfDay, getRelativeDate } from '../utils/date';
 import { GYM_HOURS, AGGREGATE_DATA_COLLECTION } from '../utils/constants';
 import writeToCSV from '../utils/write_csv';
 
@@ -96,24 +96,12 @@ const db : DB = {
     return record;
   },
 
-  getGymHours: async (gym, date) => {
-    const startDate = startOfDay(date);
-    const endDate = endOfDay(date);
+  getGymHours: async (gym, startDate, endDate=(new Date(startDate))) => {
+    startDate = startOfDay(startDate);
+    endDate = endOfDay(endDate);
     const hoursCollection = getHoursCollection();
     const hours: GymHours[] = await hoursCollection.find(
       { gym: gym, date: { $gte: startDate, $lt: endDate } },
-      { _id: 0, gym: 0 }
-    );
-    mongoose.deleteModel(GYM_HOURS);
-    return hours;
-  },
-
-  getNextWeekGymHours: async (gym, date) => {
-    const startDate = startOfDay(date);
-    const endDate = endOfDay(dateInFuture(date, 6));
-    const hoursCollection = getHoursCollection();
-    const hours: GymHours[] = await hoursCollection.find(
-      { gym: gym, date: { $gte: startDate, $lte: endDate } },
       { _id: 0, gym: 0 }
     );
     mongoose.deleteModel(GYM_HOURS);

@@ -57,12 +57,7 @@ export default interface DB {
   /**
    Retrieves a special gym schedule for a gym for a given date.
   */
-  getGymHours(gym: GymName, date: Date): Promise<GymHours[]>
-
-  /**
-   Retrieves a special gym schedules for the next 7-days for a gym from a given date.
-  */
-  getNextWeekGymHours(gym: GymName, date: Date): Promise<GymHours[]>
+  getGymHours(gym: GymName, startDate: Date, endDate: Date): Promise<GymHours[]>
 
   /**
    * Moves all records from gym collections to CSV files, then deletes all records.
