@@ -5,7 +5,7 @@ import OccMeter from './OccMeter';
 import LiveDot from '../misc/LiveDot';
 import { isClosed, getNextOpenReadable, getGymHours} from '../../utils/utils';
 
-import { FaFlag } from "react-icons/fa";
+import FlagModal from './FlagModal';
 
 const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStatus}) => {
     const lastFetchMsg = (lastFetch === 1) ? `1 minute ago` : `${lastFetch} minutes ago`
@@ -29,7 +29,7 @@ const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
       {/* Gym Name */}
       <div className="flex flex-row">
         <h3><span className="flex">{facility.name} </span></h3> 
-        <FaFlag className="flex flag_icon"/>
+        <FlagModal />
       </div>  
       
 
