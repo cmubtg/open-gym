@@ -25,10 +25,10 @@ const FacilityDetailHours = ({facility}) => {
   const weekendHours = facility.hours[6]
 
   return (
-    <div className="w-56 h-fit mt-4">
+    <div className="w-auto h-fit mt-4">
       <h3>Operating Hours</h3>
 
-      <div className="flex flex-row mt-2 justify-between">
+      <div className="flex flex-row mt-2 justify-between space-x-2">
         <div>
           <p className="text-gray-500">Monday - Friday</p>
           <p className="text-gray-500">Saturday - Sunday</p>
