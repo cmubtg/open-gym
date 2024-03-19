@@ -1,5 +1,7 @@
 import { InferSchemaType, Schema } from 'mongoose';
 
+export type GymName = 'cohonFC' | 'tepperFC' | 'fairfax' | 'wiegand';
+
 export const occupancyRecordSchema = new Schema({
   time: { type: Date, required: true },
   occupancy: { type: Number, required: true },
@@ -23,65 +25,20 @@ export const gymRecordSchema = new Schema({
   data: { type: [occupancyRecordSchema], required: true },
 });
 
-export const metaDataSchema = new Schema({
-  collectionName: { type: String, required: true },
-  name: { type: String, required: true },
-  description: { type: String, required: true },
-  maxOccupancy: { type: Number, required: true },
-  hours: {
-    type: {
-      sunday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      monday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      tuesday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      wednesday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      thursday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      friday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-      saturday: {
-        type: {
-          open: { type: String, required: true },
-          close: { type: String, required: true },
-        },
-        required: true
-      },
-    },
-    required: true,
-  },
+export const gymHoursSchema = new Schema({
+  gym: { type: String },
+  date: { type: Date, required: true },
+  open: { type: String, required: true },
+  close: { type: String, required: true },
+  description: { type: String }
 });
 
-export type Metadata = InferSchemaType<typeof metaDataSchema>;
+export type GymHours = InferSchemaType<typeof gymHoursSchema>;
+
+export const aggregateDataSchema = new Schema({
+  collectionName: { type: String, required: true },
+  date: { type: Date, required: true },
+  occupancy: { type: [Number], required: true },
+});
+
+export type AggregateData = InferSchemaType<typeof aggregateDataSchema>;

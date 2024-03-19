@@ -1,8 +1,10 @@
-export const METADATA = 'metadata';
+export const AGGREGATE_DATA_COLLECTION = 'aggregate';
+
+export const GYM_HOURS = 'gymHours';
 
 export const NO_ONE = 0;
 
-export const DAYS_OF_THE_WEEK: string[] = [
+export const DAYS_OF_THE_WEEK = [
   'sunday',
   'monday',
   'tuesday',
@@ -10,7 +12,7 @@ export const DAYS_OF_THE_WEEK: string[] = [
   'thursday',
   'friday',
   'saturday',
-];
+] as const;
 
 export enum HTTP_STATUS {
   OK = 200,

@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
+import { OccupancyRecord, CurrentGymOccupancy, GymName } from '../models/database.types';
+import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
 import * as predict from '../services/predict_occupancy';
-import { OccupancyRecord, CurrentGymOccupancy, Metadata } from '../models/database.types';
 import { HTTP_STATUS } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
 
@@ -18,7 +19,7 @@ export const getAllRecords = async (req: Request, res: Response) => {
 // Get every gym's occupancy
 export const getAllOccupancy = async (req: Request, res: Response) => {
   try {
-    const gyms = await db.getAllNames();
+    const gyms = db.getGymCollections();
 
     // Call get most recent record for each gym
     const result: CurrentGymOccupancy[] = await Promise.all(gyms.map(async (gym) => {
@@ -37,7 +38,7 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
 export const getOccupancy = async (req: Request, res: Response) => {
   try {
     const {gym} = req.params;
-    const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym);
+    const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym as GymName);
     // const finalOccupancy : BTG_Occupancy = {count: mostRecentRecord.occupancy};
 
     // Use Random val
@@ -62,7 +63,7 @@ export const predictOccupancy = async (req: Request, res: Response) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    await predict.validatePredictReq(gym, timestamp);
+    predict.validatePredictReq(gym as GymName, timestamp);
     const prediction = await predict.predictOccupancy(gym, date);
     res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
   } catch (error) {
@@ -75,7 +76,7 @@ export const getRecords = async (req: Request, res: Response) => {
   const { gym } = req.params;
 
   try {
-    const data = await db.getRecords(gym);
+    const data = await db.getRecords(gym as GymName);
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -85,7 +86,7 @@ export const getRecords = async (req: Request, res: Response) => {
 export const getGymRecordById = async (req: Request, res: Response) => {
   const { gym, id } = req.params;
   try {
-    const data = await db.getGymById(gym, id);
+    const data = await db.getGymById(gym as GymName, id);
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -94,18 +95,18 @@ export const getGymRecordById = async (req: Request, res: Response) => {
 
 export const getAllMetadata = async (req: Request, res: Response) => {
   try {
-    const metadataArr: Metadata[] = await db.getAllMetadata();
-    res.status(HTTP_STATUS.OK).json(metadataArr);
+    const data = await getAllMetadataHelper();
+    res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
 };
 
 export const getMetadata = async (req: Request, res: Response) => {
+  const { gym } = req.params;
   try {
-    const {gym} = req.params;
-    const meta : Metadata = await db.getMetadata(gym);
-    res.status(HTTP_STATUS.OK).json(meta);
+    const data = await getGymMetadataHelper(gym as GymName); // Temporary until validation
+    res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
@@ -118,7 +119,7 @@ export const createRecord = async (req: Request, res: Response) => {
 
   // add to the database
   try {
-    await db.insert(gym, {
+    await db.insert(gym as GymName, {
       time: new Date(time),
       occupancy: occupancy,
     });

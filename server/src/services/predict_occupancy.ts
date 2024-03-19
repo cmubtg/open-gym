@@ -1,7 +1,9 @@
-import db from '../models/database';
-import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
 import { exec } from 'child_process';
 import util from 'util';
+import db from '../models/database';
+import { GymName } from '../models/database.types';
+import { getSpecialSchedule } from './gymMetadata';
+import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
 
 const isHoliday = (date: Date) => {
   return true;
@@ -35,10 +37,10 @@ const getDateFromClock = (date: Date, time: string) => {
 };
 
 const isClosed = async (gym: string, date: Date) => {
-  const metadata = await db.getMetadata(gym);
-  const day = DAYS_OF_THE_WEEK[date.getDay()] as keyof typeof metadata.hours;
-  const openDate = getDateFromClock(date, metadata.hours[day].open);
-  const closeDate = getDateFromClock(date, metadata.hours[day].close);
+  const hours = await getSpecialSchedule(date, gym as GymName);
+  const day = DAYS_OF_THE_WEEK[date.getDay()];
+  const openDate = getDateFromClock(date, hours[day].open);
+  const closeDate = getDateFromClock(date, hours[day].close);
 
   return openDate.getTime() > date.getTime() ||
           date.getTime() > closeDate.getTime();
@@ -64,11 +66,11 @@ export const predictOccupancy = async (gym: string, date: Date) => {
   return parseInt(stdout, 10);
 };
 
-export const validatePredictReq = async (gym: string, timestamp: string) => {
+export const validatePredictReq = (gym: GymName, timestamp: string) => {
   if (isNaN(Date.parse(timestamp))) {
     throw new Error('Invalid Timestamp');
   }
-  const names = await db.getAllNames();
+  const names = db.getGymCollections();
   if (!names.includes(gym)) {
     throw new Error(`Invalid Gym ${gym}`);
   }
