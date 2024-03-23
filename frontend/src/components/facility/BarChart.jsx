@@ -49,7 +49,7 @@ const useRefDimensions = (ref) => {
 
 ChartJS.defaults.font.size = 10;
 
-const BarChart = ({facility},{isMobile},{hours},{day}) => {
+const BarChart = ({facility, isMobile, hours, day}) => {
   const divRef = createRef();
   // Values to set
   // default.labels
