@@ -16,7 +16,7 @@ OpenGym is a web app designed to give CMU students access to occupancy levels of
     npm install
     ```
 
-3. In the `server` folder, add a `.env` file with the following content, replacing `<port>` and `<uri>` with your desired values:
+3. In the `server` folder, make sure to add a `.env` file with the following content, replacing `<port>` and `<uri>` with your desired values:
 
     ```env
     PORT=<port>
