@@ -12,14 +12,14 @@ const FacilityDetailCards = ({facility}) => {
           <div className="carousel_card">
             <div className="h-full flex flex-col justify-between ml-8">
               <p>Busiest Hours On Average</p>
-              <h2 className="text-btg-red">5pm-8pm</h2>
+              <h2 className="">5pm-8pm</h2>
               <p>About {count} people, {occupancy}% occupancy</p>
             </div>
           </div>
           <div className="carousel_card">
             <div className="h-full flex flex-col justify-between ml-8">
               <p>Least Busy Hours On Average</p>
-              <h2 className="text-btg-green">6:30am-9am</h2>
+              <h2 className="">6:30am-9am</h2>
               <p>About {count} people, {occupancy}% occupancy</p>
             </div>
           </div>
