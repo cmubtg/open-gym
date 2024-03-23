@@ -4,7 +4,8 @@ import FacilityDetailTopBar from './FacilityDetailTopBar';
 import FacilityDetailImage from './FacilityDetailImage';
 import FacilityDetailInfo from './FacilityDetailInfo';
 import FacilityDetailCards from './FacilityDetailCards';
+import BarChartTabs from './BarChartTabs';
 
 // Export all components
-export { BarChart, FacilityDetailTopBar, FacilityDetailImage, 
+export { BarChart, BarChartTabs, FacilityDetailTopBar, FacilityDetailImage, 
          FacilityDetailCards, FacilityDetailInfo};

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, createRef } from 'react';
 import { Bar } from 'react-chartjs-2';
-import { getChartOptions, getFacilityHours } from '../../utils/chart_utils';
+import { getChartOptions } from '../../utils/chart_utils';
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -49,19 +49,18 @@ const useRefDimensions = (ref) => {
 
 ChartJS.defaults.font.size = 10;
 
-const BarChart = ({facility},{isMobile}) => {
+const BarChart = ({facility},{isMobile},{hours},{day}) => {
   const divRef = createRef();
   // Values to set
   // default.labels
   // default.datasets[0].barThickness
   // default.datasets[0].data
   // default.datasets[0].backgroundColor = index array
-  const today = new Date();
-  const labels = getFacilityHours(facility)[today.getDate()];
-
+  console.log("hours", hours);
+  
   // TODO Function to get data from API
   // Get data from current day and get predicted data from future
-  const data = generateRandomArray(labels.length, 0, 100);
+  const data = generateRandomArray(hours.length, 0, 100);
   const average = Math.floor(getAverage(data));
 
   const maxPeople = Math.max(...data, facility.max_occupancy);
@@ -73,7 +72,7 @@ const BarChart = ({facility},{isMobile}) => {
     return tickArray.includes(value) ? value : '';
   }
 
-  const barColors = Array(labels.length - 9).fill('#EB5958').concat(Array(9).fill('#DDDDDD'));
+  const barColors = Array(hours.length - 9).fill('#EB5958').concat(Array(9).fill('#DDDDDD'));
 
   // const barThickness = Math.floor(window.innerWidth / 100) + 15;
   const barThickness = 30;
@@ -83,12 +82,12 @@ const BarChart = ({facility},{isMobile}) => {
     // maxBars = 6;
   }
   // const maxChartWidth = maxBars*barThickness
-  const maxChartWidth = barThickness*labels.length
+  const maxChartWidth = barThickness*hours.length
   console.log(window.innerWidth/100);
   console.log(window.innerWidth);
 
   const [chartData, setChartData] = useState({
-    labels: labels,
+    labels: hours,
     datasets: [
       {
         label: 'occupancy',
@@ -104,8 +103,8 @@ const BarChart = ({facility},{isMobile}) => {
 
   const options = getChartOptions(x_axis_func, stepSize, average, externalTooltipHandler);
   // const dimensions = useRefDimensions(divRef);
-  const chartContainerBody = document.querySelector('.chartContainerBody');
-  console.log(maxChartWidth);
+  // const chartContainerBody = document.querySelector('.chartContainerBody');
+  // console.log(maxChartWidth);
   // console.log(dimensions.width);
   // if (maxChartWidth > dimensions.width) {
   //   chartContainerBody.width = maxChartWidth;
