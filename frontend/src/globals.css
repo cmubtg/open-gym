@@ -184,6 +184,22 @@
     @apply rounded-lg w-[240px] lg:w-[31%] py-10;
   }
 
+
+  /* chart display */
+  .selected_tab
+  {
+    display:inline-block;
+    /* background: var(--btg-red); */
+  }
+    .selected_tab::after
+  {
+    content: '';
+    height: 4px;
+    background: var(--btg-red);
+    border-radius: 5px;
+    display: block
+  }
+
 }
 
 body {

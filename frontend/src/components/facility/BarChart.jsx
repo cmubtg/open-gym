@@ -50,7 +50,6 @@ const useRefDimensions = (ref) => {
 ChartJS.defaults.font.size = 10;
 
 const BarChart = ({facility, isMobile, hours, day}) => {
-  const divRef = createRef();
   // Values to set
   // default.labels
   // default.datasets[0].barThickness
@@ -72,7 +71,18 @@ const BarChart = ({facility, isMobile, hours, day}) => {
     return tickArray.includes(value) ? value : '';
   }
 
-  const barColors = Array(hours.length - 9).fill('#EB5958').concat(Array(9).fill('#DDDDDD'));
+  const currTime = (new Date()).getHours();
+  const indexTime = hours.indexOf(currTime);
+  var barColors;
+  if (indexTime >= hours.length) {
+    barColors = Array(hours.length).fill('#EB5958');
+  }
+  else if (indexTime != -1) {
+    barColors = Array(indexTime).fill('#EB5958').concat(Array(hours.length - indexTime).fill('#DDDDDD'));
+  }
+  else {
+    barColors = Array(hours.length).fill('#DDDDDD')
+  };
 
   // const barThickness = Math.floor(window.innerWidth / 100) + 15;
   const barThickness = 30;
@@ -138,7 +148,7 @@ const BarChart = ({facility, isMobile, hours, day}) => {
 //   }, []);
 
   return (
-    <div className="w-full min-h-96 overflow-x-auto chart_container" ref={divRef}>
+    <div className="w-full min-h-96 overflow-x-auto chart_container">
       {/* <div className="chart_container_body"> */}
         <Bar data={chartData} options={options} />
       {/* </div> */}

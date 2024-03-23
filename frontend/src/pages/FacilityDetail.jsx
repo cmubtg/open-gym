@@ -32,7 +32,7 @@ const FacilityDetail = () => {
 
 const FacilityDetailChart = ({facility},{isMobile}) => {
   return (
-    <div className="btg_container h-[450px] flex flex-col justify-center">
+    <div className="btg_container justify-center">
       <h3 className="font-semibold mb-4">Occupancy Forecast</h3>
       <BarChartTabs facility={facility} isMobile={isMobile}></BarChartTabs>
     </div>
