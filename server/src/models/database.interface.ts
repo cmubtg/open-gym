@@ -9,12 +9,18 @@ export default interface DB {
   /**
    * Inserts a OccupancyRecord into the specified gym's collection.
    */
-  insert(gym: GymName, data: OccupancyRecord): Promise<void>
+  insertOne(data: OccupancyRecord, tense: string): Promise<void>
+
+  /**
+   * Inserts many into a OccupancyRecord into the specified gym's collection.
+   */
+  insertMany(data: OccupancyRecord[], tense: string): Promise<void>
 
   /**
    * Returns array of gym collections
    */
   getGymCollections(): GymName[]
+
   /**
    * Retrieves all records from all gym collections.
    */
@@ -35,7 +41,7 @@ export default interface DB {
   /**
    * Retrieves all records from the specified gym's collection.
    */
-  getRecords(gym: GymName, options?: DBOptionType): Promise<OccupancyRecord[]>
+  getRecords(gym?: GymName, options?: DBOptionType): Promise<OccupancyRecord[]>
 
   /**
    * Retrieves all records from the specified gym's collection and date
@@ -67,11 +73,11 @@ export default interface DB {
   /**
    * Deletes all records from all gym collections.
    */
-  deleteAllRecords(): Promise<void>
+  deleteRecords(gym?: GymName, options?: DBOptionType): Promise<void>
 
   /**
    * Inserts aggregate data into aggregate database
    * @param aggregateData
    */
-  insertAggregate(aggregateData: AggregateData): Promise<void>;
+  // insertAggregate(aggregateData: AggregateData): Promise<void>;
 }

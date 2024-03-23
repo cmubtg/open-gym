@@ -1,20 +1,20 @@
 import mongoose, { InferSchemaType, Schema } from 'mongoose';
-import { GYM_NAMES } from '../utils/constants';
+import { TENSE } from '../utils/constants';
 
 export type GymName = 'cohonFC' | 'tepperFC' | 'fairfax' | 'wiegand';
 
 
 export const occupancyRecordSchema = new Schema({
-  gym: { type: String, require: true },
+  gym: { type: String, required: true },
   time: { type: Date, required: true },
   occupancy: { type: Number, required: true },
   // TODO Add model input (boolean flags etc)
 });
 export type OccupancyRecord = InferSchemaType<typeof occupancyRecordSchema>;
 
-export const PastModel = mongoose.model('past', occupancyRecordSchema);
-export const PresentModel = mongoose.model('present', occupancyRecordSchema);
-export const FutureModel = mongoose.model('future', occupancyRecordSchema);
+export const PastModel = mongoose.model(TENSE.PAST, occupancyRecordSchema);
+export const PresentModel = mongoose.model(TENSE.PRESENT, occupancyRecordSchema);
+export const FutureModel = mongoose.model(TENSE.FUTURE, occupancyRecordSchema);
 export const metadataModel = mongoose.model('metadata', occupancyRecordSchema);
 
 // Controller type definitions

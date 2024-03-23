@@ -3,13 +3,13 @@ import db from '../models/database';
 import { OccupancyRecord, CurrentGymOccupancy, GymName } from '../models/database.types';
 import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
 import * as predict from '../services/predict_occupancy';
-import { HTTP_STATUS } from '../utils/constants';
+import { HTTP_STATUS, GYM_NAMES, TENSE } from '../utils/constants';
 import errorMessage from '../utils/errorMessage';
 
 // Get every Record from every gym
-export const getAllRecords = (req: Request, res: Response) => {
+export const getAllRecords = async (req: Request, res: Response) => {
   try {
-    // Todo fix get all records function
+    // const records = await db.getAllRecords();
     res.status(HTTP_STATUS.OK).json(records);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -19,7 +19,7 @@ export const getAllRecords = (req: Request, res: Response) => {
 // Get every gym's occupancy
 export const getAllOccupancy = async (req: Request, res: Response) => {
   try {
-    const gyms = db.getGymCollections();
+    // const gyms = db.getGymCollections();
 
     // Call get most recent record for each gym
     const result: CurrentGymOccupancy[] = await Promise.all(gyms.map(async (gym) => {
@@ -63,7 +63,7 @@ export const predictOccupancy = async (req: Request, res: Response) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    await predict.validatePredictReq(gym as GymName, timestamp);
+    predict.validatePredictReq(gym as GymName, timestamp);
     const prediction = await predict.predictOccupancy(gym, date);
     res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
   } catch (error) {
@@ -119,10 +119,11 @@ export const createRecord = async (req: Request, res: Response) => {
 
   // add to the database
   try {
-    await db.insert(gym as GymName, {
+    await db.insertOne({
+      gym: gym,
       time: new Date(time),
-      occupancy: occupancy,
-    });
+      occupancy: occupancy
+    }, TENSE.PRESENT);
     res.status(HTTP_STATUS.OK).json({ success: `Inserted record into ${gym}` });
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });

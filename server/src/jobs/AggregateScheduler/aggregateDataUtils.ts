@@ -44,18 +44,18 @@ export const aggregateOccucpancyData = (dailyData: GymOccupancyRecord[]) => {
  * @param date date of aggregated data
  * @param allAggregateData data
  */
-export const insertAllAggregate = async (date: Date, allAggregateData: { gym: string; data: number[]; }[]) => {
-  const formattedDBData: AggregateData[] = allAggregateData.map(
-    ({ gym, data }) => {
-      const aggregateData: AggregateData = {
-        date: date,
-        occupancy: data,
-        collectionName: gym
-      };
-      return aggregateData;
-    });
+// export const insertAllAggregate = async (date: Date, allAggregateData: { gym: string; data: number[]; }[]) => {
+//   const formattedDBData: AggregateData[] = allAggregateData.map(
+//     ({ gym, data }) => {
+//       const aggregateData: AggregateData = {
+//         date: date,
+//         occupancy: data,
+//         collectionName: gym
+//       };
+//       return aggregateData;
+//     });
 
-  for (const data of formattedDBData) {
-    await db.insertAggregate(data);
-  }
-};
+//   for (const data of formattedDBData) {
+//     await db.insertAggregate(data);
+//   }
+// };

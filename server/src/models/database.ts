@@ -16,60 +16,87 @@ const db : DB = {
     return collectionNames.includes(collection);
   },
 
-  insert: async (gym, data, tense=TENSE.PRESENT) => {
-    const collection = getCollection(tense);
-    await collection.create(data);
+  insertOne: async (record, tense=TENSE.PRESENT) => {
+    await db.insertMany([record], tense);
   },
 
-  getRecords: async (gym: GymName, options = {
+  insertMany: async (records, tense=TENSE.PRESENT) => {
+    const collection = getCollection(tense);
+    for (const record of records) {
+      await collection.create(record);
+    }
+  },
+
+  getRecords: async (gym = "", options = {
     start: startOfDay(new Date()),
     end: endOfDay(new Date()),
-    tense: TENSE.PRESENT
+    tense: TENSE.PRESENT,
   }) => {
 
     const { start, end, tense } = options;
     const collection = getCollection(tense);
+    if (gym !== ""){
+      const records = await collection.find(
+        { gym: gym, date: { $gte: start, $lt: end } },
+        { _id: 0 }
+      ).sort({time: -1});
+      return records;
+    }
+
     const records = await collection.find(
-      { gym: gym, date: { $gte: start, $lt: end } },
+      { date: { $gte: start, $lt: end } },
       { _id: 0 }
     ).sort({time: -1});
-
     return records;
   },
 
-  getRecentRecord: async (gym: GymName, options = {
-    start: startOfDay(new Date()),
-    end: endOfDay(new Date()),
-    tense: TENSE.PRESENT
-  }) => {
-
-    const records = await db.getRecords(gym, options);
+  getRecentRecord: async (gym: GymName) => {
+    const records = await db.getRecords(gym);
     return records.limit(1).next() ?? dummyRecord;
   },
 
-  getAllRecordsByDate: async () => {
-    const recordsArr = await Promise.all(
-      GYM_NAMES.map((gym) => db.getRecords(gym as GymName))
-    );
-    const transformedRecords = recordsArr.map((records, index) => ({
-      gym: GYM_NAMES[index],
-      data: records,
-    }));
-    return transformedRecords;
-  },
+  // getAllRecordsByDate: async () => {
+  //   const recordsArr = await Promise.all(
+  //     GYM_NAMES.map((gym) => db.getRecords(gym as GymName))
+  //   );
+  //   const transformedRecords = recordsArr.map((records, index) => ({
+  //     gym: GYM_NAMES[index],
+  //     data: records,
+  //   }));
+  //   return transformedRecords;
+  // },
 
-  deleteAllRecordsByDate: async (inputDate) => {
-    await Promise.all(
-      GYM_NAMES.map(async (gym) => {
-        const collection = getCollection(gym);
-        const date = getRelativeDate(inputDate, 0);
-        const dayAfter = getRelativeDate(date, 1);
-        await collection.deleteMany({
-          time: { $gte: date, $lt: dayAfter },
-        });
-      })
-    );
+  deleteRecords: async (gym = "", options = {
+    start: startOfDay(new Date()),
+    end: endOfDay(new Date()),
+    tense: TENSE.PRESENT,
+  }) => {
+    const {start, end, tense} = options;
+    const collection = getCollection(tense);
+    if (gym !== ""){
+      await collection.deleteMany({
+        time: { $gte: start, $lt: end },
+      });
+      return;
+    }
+
+    await collection.deleteMany({
+      time: { $gte: start, $lt: end },
+    });
+    return;
   },
+  // deleteAllRecordsByDate: async (inputDate) => {
+  //   await Promise.all(
+  //     GYM_NAMES.map(async (gym) => {
+  //       const collection = getCollection(gym);
+  //       const date = getRelativeDate(inputDate, 0);
+  //       const dayAfter = getRelativeDate(date, 1);
+  //       await collection.deleteMany({
+  //         time: { $gte: date, $lt: dayAfter },
+  //       });
+  //     })
+  //   );
+  // },
 
   getGymHours: async (gym, startDate, endDate=(new Date(startDate))) => {
     startDate = startOfDay(startDate);
@@ -100,11 +127,11 @@ const db : DB = {
     // *** Insert deletion code HERE ***
   },
 
-  insertAggregate: async (data) => {
-    const collection = getAggregateCollection();
-    await collection.create(data);
-    mongoose.deleteModel(AGGREGATE_DATA_COLLECTION);
-  }
+//   insertAggregate: async (data) => {
+//     const collection = getAggregateCollection();
+//     await collection.create(data);
+//     mongoose.deleteModel(AGGREGATE_DATA_COLLECTION);
+//   }
 };
 
 export default db;
