@@ -2,8 +2,8 @@ import { CronJob } from 'cron';
 import db from '../../models/database';
 import { GYM_NAMES, TENSE } from '../../utils/constants';
 import { endOfDay, getRelativeDate } from '../../utils/date';
-import { aggregateOccucpancyData, insertAllAggregate } from './aggregateDataUtils';
-import { GymName, GymOccupancyRecord } from '../../models/database.types';
+import { aggregateOccupancyData } from './aggregateDataUtils';
+import { GymName } from '../../models/database.types';
 
 /**
  * Initialize aggregate scheduler
@@ -24,19 +24,26 @@ export default function initAggregateScheduler() {
  * and inserts new data into aggregate collection
  */
 const aggregateOccupancyJob = async () => {
+  const currentDate = new Date();
   const yesterday = getRelativeDate(new Date(), -1);
   for (const gymName of GYM_NAMES) {
-    const yesterdaysData = await db.getRecords(gymName as GymName, {
-      start: yesterday,
-      end: endOfDay(yesterday),
+    const yesterdaysData = await db.getRecords({
+      gym: gymName as GymName,
+      dateRange: {
+        start: getRelativeDate(currentDate, -1),
+        end: getRelativeDate(currentDate, 0)
+      },
       tense: TENSE.PRESENT,
     });
-    await db.insertMany(yesterdaysData, TENSE.PAST);
+    const data = aggregateOccupancyData(yesterday, { gym: gymName, data: yesterdaysData });
+    await db.insertMany(data, TENSE.PAST);
   }
-  
-  await db.deleteRecords("",{
-    start: yesterday,
-    end: endOfDay(yesterday),
+
+  await db.deleteRecords({
+    dateRange: {
+      start: yesterday,
+      end: endOfDay(yesterday)
+    },
     tense: TENSE.PRESENT,
   });
 };

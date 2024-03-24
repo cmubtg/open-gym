@@ -1,7 +1,4 @@
-export const AGGREGATE_DATA_COLLECTION = 'aggregate';
-
-export const GYM_NAMES = ['tepperFC', 'fairfax', 'cohonFC', 'wiegand']
-export const GYM_HOURS = 'gymHours';
+export const GYM_NAMES = ['tepperFC', 'fairfax', 'cohonFC', 'wiegand'] as const;
 
 export enum TENSE {
   PAST = "past",

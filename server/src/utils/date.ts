@@ -13,6 +13,19 @@ export const getRelativeDate = (date: Date, dayDelta: number) => {
   return relDate;
 };
 
+export const getDateFromClock = (date: Date, time: string) => {
+  const [hour, minute] = time.split(':').map(x => parseInt(x, 10));
+  const newDate = new Date(date);
+  newDate.setHours(hour);
+  newDate.setMinutes(minute);
+  return newDate;
+};
+
+export const getNthHour = (date: Date, n: number) => {
+  date.setHours(n, 0, 0, 0);
+  return date;
+};
+
 export const startOfDay = (date: Date) => {
   return new Date(date.setHours(0, 0, 0, 0));
 };

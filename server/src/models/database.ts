@@ -1,20 +1,10 @@
-import mongoose from 'mongoose';
-import { OccupancyRecord, occupancyRecordSchema,
-         GymHours, gymHoursSchema, GymName, DBOptionType } from './database.types';
+import { GymHours, GymHoursModel, GymName, ModelMap, OccupancyRecord } from './database.types';
 import DB from './database.interface';
-import { startOfDay, endOfDay, getRelativeDate } from '../utils/date';
-import { GYM_NAMES, GYM_HOURS, TENSE, AGGREGATE_DATA_COLLECTION } from '../utils/constants';
-import writeToCSV from '../utils/write_csv';
-
-const conn = mongoose.connection;
-
+import { getRelativeDate } from '../utils/date';
+import { GYM_NAMES, TENSE } from '../utils/constants';
+import { isIn } from '../utils/helper';
 
 const db : DB = {
-
-  collectionExists: (collection) => {
-    const collectionNames = conn.db.listCollections();
-    return collectionNames.includes(collection);
-  },
 
   insertOne: async (record, tense=TENSE.PRESENT) => {
     await db.insertMany([record], tense);
@@ -27,54 +17,76 @@ const db : DB = {
     }
   },
 
-  getRecords: async (gym = "", options = {
-    start: startOfDay(new Date()),
-    end: endOfDay(new Date()),
-    tense: TENSE.PRESENT,
-  }) => {
+  getRecords: async (options) => {
+    const defaultOptions = {
+      dateRange: defaultDateRange,
+      tense: TENSE.PRESENT,
+    };
+    const { gym, dateRange, tense } = { ...defaultOptions, ...options };
+    const { start, end } = dateRange;
 
-    const { start, end, tense } = options;
     const collection = getCollection(tense);
-    if (gym !== ""){
-      const records = await collection.find(
+    if (isIn(GYM_NAMES, gym)) {
+      const records: OccupancyRecord[] = await collection.find(
         { gym: gym, date: { $gte: start, $lt: end } },
         { _id: 0 }
-      ).sort({time: -1});
+      ).sort({ time: -1 }).lean();
       return records;
     }
 
-    const records = await collection.find(
+    const records: OccupancyRecord[] = await collection.find(
       { date: { $gte: start, $lt: end } },
       { _id: 0 }
-    ).sort({time: -1});
+    ).sort({ time: -1 }).lean();
     return records;
   },
 
-  getRecentRecord: async (gym: GymName) => {
-    const records = await db.getRecords(gym);
-    return records.limit(1).next() ?? dummyRecord;
+  getRecentRecords: async (options) => {
+    const defaultOptions = {
+      dateRange: defaultDateRange,
+      tense: TENSE.PRESENT,
+    };
+    const { gym, dateRange, tense } = { ...defaultOptions, ...options };
+
+    const recordsData = [];
+    if (isIn(GYM_NAMES, gym)) {
+      const records: OccupancyRecord[] = await db.getRecords({
+        gym: gym,
+        dateRange: dateRange,
+        tense: tense
+      });
+      if (records.length > 0) {
+        return [records[0]];
+      }
+      return [dummyRecord];
+    }
+
+    for (const gym of GYM_NAMES) {
+      const records: OccupancyRecord[] = await db.getRecords({
+        gym: gym as GymName,
+        dateRange: dateRange,
+        tense: tense
+      });
+      if (records.length > 0) {
+        recordsData.push(records[0]);
+      }
+    }
+    return recordsData;
   },
 
-  // getAllRecordsByDate: async () => {
-  //   const recordsArr = await Promise.all(
-  //     GYM_NAMES.map((gym) => db.getRecords(gym as GymName))
-  //   );
-  //   const transformedRecords = recordsArr.map((records, index) => ({
-  //     gym: GYM_NAMES[index],
-  //     data: records,
-  //   }));
-  //   return transformedRecords;
-  // },
+  deleteRecords: async (options) => {
+    const defaultOptions = {
+      gym: "",
+      dateRange: defaultDateRange,
+      tense: TENSE.PRESENT,
+    };
+    const { gym, dateRange, tense } = { ...defaultOptions, ...options };
+    const { start, end } = dateRange;
 
-  deleteRecords: async (gym = "", options = {
-    start: startOfDay(new Date()),
-    end: endOfDay(new Date()),
-    tense: TENSE.PRESENT,
-  }) => {
-    const {start, end, tense} = options;
     const collection = getCollection(tense);
-    if (gym !== ""){
+    if (isIn(GYM_NAMES, gym)) {
       await collection.deleteMany({
+        gym: gym,
         time: { $gte: start, $lt: end },
       });
       return;
@@ -85,80 +97,43 @@ const db : DB = {
     });
     return;
   },
-  // deleteAllRecordsByDate: async (inputDate) => {
-  //   await Promise.all(
-  //     GYM_NAMES.map(async (gym) => {
-  //       const collection = getCollection(gym);
-  //       const date = getRelativeDate(inputDate, 0);
-  //       const dayAfter = getRelativeDate(date, 1);
-  //       await collection.deleteMany({
-  //         time: { $gte: date, $lt: dayAfter },
-  //       });
-  //     })
-  //   );
-  // },
 
-  getGymHours: async (gym, startDate, endDate=(new Date(startDate))) => {
-    startDate = startOfDay(startDate);
-    endDate = endOfDay(endDate);
-    const hoursCollection = getHoursCollection();
-    const hours: GymHours[] = await hoursCollection.find(
-      { gym: gym, date: { $gte: startDate, $lt: endDate } },
-      { _id: 0, gym: 0 }
+  getGymHours: async (options) => {
+    const defaultOptions = {
+      dateRange: defaultDateRange,
+    };
+    const { gym, dateRange } = { ...defaultOptions, ...options };
+    const { start, end } = dateRange;
+
+    const startDate = getRelativeDate(start, 0);
+    const endDate = getRelativeDate(end, 1);
+    if (isIn(GYM_NAMES, gym)) {
+      const hours: GymHours[] = await GymHoursModel.find(
+        { gym: gym, date: { $gte: startDate, $lt: endDate } },
+        { _id: 0 }
+      );
+      return hours;
+    }
+
+    const hours: GymHours[] = await GymHoursModel.find(
+      { date: { $gte: startDate, $lt: endDate } },
+      { _id: 0 }
     );
-    mongoose.deleteModel(GYM_HOURS);
     return hours;
   },
 
-  moveAllRecords: async () => {
-    const collectionNames = db.getGymCollections();
-    await Promise.all(collectionNames.map(async (collectionName) => {
-      const data = await db.getRecords(collectionName);
-      const dataFormat = (doc: OccupancyRecord) => ({
-        time: doc.time.toISOString(),
-        occupancy: doc.occupancy,
-      });
-      writeToCSV(collectionName, data, dataFormat);
-    }));
-    await db.deleteAllRecords();
-  },
-
-  deleteAllRecords: async () => {
-    // *** Insert deletion code HERE ***
-  },
-
-//   insertAggregate: async (data) => {
-//     const collection = getAggregateCollection();
-//     await collection.create(data);
-//     mongoose.deleteModel(AGGREGATE_DATA_COLLECTION);
-//   }
 };
 
 export default db;
 
-// PRIVATE HELPERS
-const getAllCollections = async () => {
-  return await conn.db.listCollections().toArray();
+const getCollection = (collection: TENSE) => {
+  return ModelMap[collection];
 };
 
-const getCollection = (collection) => {
-  // Ensure collection exists
-  if (!db.collectionExists(collection)) {
-    throw new Error(`Collection (${collection}) does not exist`);
-  }
+const defaultDateRange = { start: getRelativeDate(new Date(), 0), end: getRelativeDate(new Date(), 1) };
 
-  return mongoose.model<OccupancyRecord>(collection, occupancyRecordSchema, collection);
-};
-
-const getHoursCollection = () => {
-  return mongoose.model<GymHours>(GYM_HOURS, gymHoursSchema, GYM_HOURS);
-};
-
-const getAggregateCollection = () => {
-  return mongoose.model<AggregateData>(AGGREGATE_DATA_COLLECTION, aggregateDataSchema, AGGREGATE_DATA_COLLECTION);
-};
-
-const dummyRecord = {
-  time: new Date(),
+const dummyRecord: OccupancyRecord = {
+  gym: "cohonFC",
+  time: getRelativeDate(new Date(), 0),
   occupancy: 0
 };

@@ -1,15 +1,15 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
-import { OccupancyRecord, CurrentGymOccupancy, GymName } from '../models/database.types';
-import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
-import * as predict from '../services/predict_occupancy';
-import { HTTP_STATUS, GYM_NAMES, TENSE } from '../utils/constants';
-import errorMessage from '../utils/errorMessage';
+import { GymName } from '../models/database.types';
+import * as Metadata from '../services/gymMetadataService';
+import * as Predict from '../services/predictOccupancyService';
+import { HTTP_STATUS, TENSE } from '../utils/constants';
+import errorMessage from '../utils/helper';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
   try {
-    // const records = await db.getAllRecords();
+    const records = await db.getRecords();
     res.status(HTTP_STATUS.OK).json(records);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -19,16 +19,11 @@ export const getAllRecords = async (req: Request, res: Response) => {
 // Get every gym's occupancy
 export const getAllOccupancy = async (req: Request, res: Response) => {
   try {
-    // const gyms = db.getGymCollections();
-
     // Call get most recent record for each gym
-    const result: CurrentGymOccupancy[] = await Promise.all(gyms.map(async (gym) => {
-      const { occupancy } = await db.getRecentRecord(gym);
-      return { gym: gym, occupancy: occupancy };
-    }));
+    const data = await db.getRecentRecords();
 
     // Return data in the form of [ {gym occupancy}, {gym occupancy}, ... }]
-    res.status(HTTP_STATUS.OK).json(result);
+    res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
   }
@@ -37,13 +32,9 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
 
 export const getOccupancy = async (req: Request, res: Response) => {
   try {
-    const {gym} = req.params;
-    const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym as GymName);
-    // const finalOccupancy : BTG_Occupancy = {count: mostRecentRecord.occupancy};
-
-    // Use Random val
-    const MAX_OCCUPANCY = 100;
-    const occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
+    const { gym } = req.params;
+    const [record] = await db.getRecentRecords({ gym: gym as GymName});
+    const { occupancy } = record;
 
     res.status(HTTP_STATUS.OK).json({ occupancy: occupancy });
   } catch (error) {
@@ -63,8 +54,8 @@ export const predictOccupancy = async (req: Request, res: Response) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    predict.validatePredictReq(gym as GymName, timestamp);
-    const prediction = await predict.predictOccupancy(gym, date);
+    Predict.validatePredictReq(gym as GymName, timestamp);
+    const prediction = await Predict.predictOccupancy(gym, date);
     res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -76,17 +67,7 @@ export const getRecords = async (req: Request, res: Response) => {
   const { gym } = req.params;
 
   try {
-    const data = await db.getRecords(gym as GymName);
-    res.status(HTTP_STATUS.OK).json(data);
-  } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
-  }
-};
-
-export const getGymRecordById = async (req: Request, res: Response) => {
-  const { gym, id } = req.params;
-  try {
-    const data = await db.getGymById(gym as GymName, id);
+    const data = await db.getRecords({ gym: gym as GymName });
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -95,7 +76,7 @@ export const getGymRecordById = async (req: Request, res: Response) => {
 
 export const getAllMetadata = async (req: Request, res: Response) => {
   try {
-    const data = await getAllMetadataHelper();
+    const data = await Metadata.getAllMetadataHelper();
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -105,7 +86,7 @@ export const getAllMetadata = async (req: Request, res: Response) => {
 export const getMetadata = async (req: Request, res: Response) => {
   const { gym } = req.params;
   try {
-    const data = await getGymMetadataHelper(gym as GymName); // Temporary until validation
+    const data = await Metadata.getGymMetadataHelper(gym as GymName); // Temporary until validation
     res.status(HTTP_STATUS.OK).json(data);
   } catch (error) {
     res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
@@ -120,9 +101,9 @@ export const createRecord = async (req: Request, res: Response) => {
   // add to the database
   try {
     await db.insertOne({
-      gym: gym,
-      time: new Date(time),
-      occupancy: occupancy
+      gym: gym as GymName,
+      time: new Date(time as string),
+      occupancy: occupancy as number
     }, TENSE.PRESENT);
     res.status(HTTP_STATUS.OK).json({ success: `Inserted record into ${gym}` });
   } catch (error) {

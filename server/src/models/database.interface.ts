@@ -1,83 +1,36 @@
-import { OccupancyRecord, GymOccupancyRecord, GymHours, DBOptionType, GymName } from './database.types';
+import { TENSE } from '../utils/constants';
+import { OccupancyRecord, GymHours, DBOptionType } from './database.types';
 
 export default interface DB {
-  /**
-   * Checks if the specified collection exists.
-   */
-  collectionExists(collection: string): boolean
 
   /**
    * Inserts a OccupancyRecord into the specified gym's collection.
    */
-  insertOne(data: OccupancyRecord, tense: string): Promise<void>
+  insertOne(data: OccupancyRecord, tense: TENSE): Promise<void>
 
   /**
    * Inserts many into a OccupancyRecord into the specified gym's collection.
    */
-  insertMany(data: OccupancyRecord[], tense: string): Promise<void>
-
-  /**
-   * Returns array of gym collections
-   */
-  getGymCollections(): GymName[]
-
-  /**
-   * Retrieves all records from all gym collections.
-   */
-  getAllRecords(): Promise<GymOccupancyRecord[]>
-
-  /**
-   * Retrieves all records from all gym collections for a specific date
-   * @param date
-   */
-  getAllRecordsByDate(date: Date): Promise<GymOccupancyRecord[]>
-
-  /**
-   * Retrieves all records from all gym collections for a specific date
-   * @param date
-   */
-  deleteAllRecordsByDate(date: Date): Promise<void>
+  insertMany(data: OccupancyRecord[], tense: TENSE): Promise<void>
 
   /**
    * Retrieves all records from the specified gym's collection.
    */
-  getRecords(gym?: GymName, options?: DBOptionType): Promise<OccupancyRecord[]>
-
-  /**
-   * Retrieves all records from the specified gym's collection and date
-   * @param gym gym to filter records
-   * @param date date to filter records
-   */
-  getRecordsByDate(gym: GymName, date: Date): Promise<OccupancyRecord[]>
+  getRecords(options?: DBOptionType): Promise<OccupancyRecord[]>
 
   /**
    * Retrieves the most recent record from the specified gym's collection.
    */
-  getRecentRecord(gym: GymName, options?: DBOptionType): Promise<OccupancyRecord>
-
-  /**
-   Retrieves a specific record from the specified gym's collection by its ID.
-  */
-  getGymById(gym: GymName, id: string): Promise<OccupancyRecord>
-
-  /**
-   Retrieves a special gym schedule for a gym for a given date.
-  */
-  getGymHours(gym: GymName, startDate: Date, endDate: Date): Promise<GymHours[]>
-
-  /**
-   * Moves all records from gym collections to CSV files, then deletes all records.
-   */
-  moveAllRecords(): Promise<void>
+  getRecentRecords(options?: DBOptionType): Promise<OccupancyRecord[]>
 
   /**
    * Deletes all records from all gym collections.
    */
-  deleteRecords(gym?: GymName, options?: DBOptionType): Promise<void>
+  deleteRecords(options?: DBOptionType): Promise<void>
 
   /**
-   * Inserts aggregate data into aggregate database
-   * @param aggregateData
-   */
-  // insertAggregate(aggregateData: AggregateData): Promise<void>;
+   Retrieves a special gym schedule for a gym for a given date.
+  */
+   getGymHours(options?: DBOptionType): Promise<GymHours[]>
+
 }

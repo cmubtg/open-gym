@@ -1,9 +1,9 @@
 import { exec } from 'child_process';
 import util from 'util';
-import db from '../models/database';
 import { GymName } from '../models/database.types';
-import { getSpecialSchedule } from './gymMetadata';
-import { DAYS_OF_THE_WEEK, NO_ONE } from '../utils/constants';
+import { isClosed } from './gymHoursService';
+import { GYM_NAMES, NO_ONE } from '../utils/constants';
+import { isIn } from '../utils/helper';
 
 const isHoliday = (date: Date) => {
   return true;
@@ -18,33 +18,11 @@ const getTemperature = () => {
 };
 
 const isWeekend = (date: Date) => {
-  return date.getDay() % 6 === 0; // eslint-disable-line @typescript-eslint/no-magic-numbers
+  return date.getDay() % 6 === 0;
 };
 
 const execAsync = util.promisify(exec);
 
-const parseTime = (time: string): [number, number] => {
-  const [hour, minute] = time.split(':');
-  return [parseInt(hour, 10), parseInt(minute, 10)];
-};
-
-const getDateFromClock = (date: Date, time: string) => {
-  const [hour, minute] = parseTime(time);
-  const newDate = new Date(date);
-  newDate.setHours(hour);
-  newDate.setMinutes(minute);
-  return newDate;
-};
-
-const isClosed = async (gym: string, date: Date) => {
-  const hours = await getSpecialSchedule(date, gym as GymName);
-  const day = DAYS_OF_THE_WEEK[date.getDay()];
-  const openDate = getDateFromClock(date, hours[day].open);
-  const closeDate = getDateFromClock(date, hours[day].close);
-
-  return openDate.getTime() > date.getTime() ||
-          date.getTime() > closeDate.getTime();
-};
 // PUBLIC APIs
 export const predictOccupancy = async (gym: string, date: Date) => {
   if (await isClosed(gym, date)) {
@@ -70,8 +48,8 @@ export const validatePredictReq = (gym: GymName, timestamp: string) => {
   if (isNaN(Date.parse(timestamp))) {
     throw new Error('Invalid Timestamp');
   }
-  const names = db.getGymCollections();
-  if (!names.includes(gym)) {
+
+  if (!isIn(GYM_NAMES, gym)) {
     throw new Error(`Invalid Gym ${gym}`);
   }
 };
