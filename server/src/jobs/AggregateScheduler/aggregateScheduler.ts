@@ -1,7 +1,7 @@
 import { CronJob } from 'cron';
 import db from '../../models/database';
 import { GYM_NAMES, TENSE } from '../../utils/constants';
-import { endOfDay, getRelativeDate } from '../../utils/date';
+import { getRelativeDate } from '../../utils/date';
 import { aggregateOccupancyData } from './aggregateDataUtils';
 import { GymName } from '../../models/database.types';
 
@@ -25,12 +25,12 @@ export default function initAggregateScheduler() {
  */
 const aggregateOccupancyJob = async () => {
   const currentDate = new Date();
-  const yesterday = getRelativeDate(new Date(), -1);
+  const yesterday = getRelativeDate(currentDate, -1);
   for (const gymName of GYM_NAMES) {
     const yesterdaysData = await db.getRecords({
       gym: gymName as GymName,
       dateRange: {
-        start: getRelativeDate(currentDate, -1),
+        start: yesterday,
         end: getRelativeDate(currentDate, 0)
       },
       tense: TENSE.PRESENT,
@@ -42,7 +42,7 @@ const aggregateOccupancyJob = async () => {
   await db.deleteRecords({
     dateRange: {
       start: yesterday,
-      end: endOfDay(yesterday)
+      end: getRelativeDate(currentDate, 0)
     },
     tense: TENSE.PRESENT,
   });

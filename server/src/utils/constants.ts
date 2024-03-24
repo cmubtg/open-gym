@@ -1,5 +1,6 @@
 export const GYM_NAMES = ['tepperFC', 'fairfax', 'cohonFC', 'wiegand'] as const;
 
+// The name of the collections in MongoDB
 export enum TENSE {
   PAST = "past",
   PRESENT = "present",

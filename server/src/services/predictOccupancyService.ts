@@ -23,7 +23,13 @@ const isWeekend = (date: Date) => {
 
 const execAsync = util.promisify(exec);
 
-// PUBLIC APIs
+/**
+ * Calls the python script compiled from the model to predict the occupancy
+ * of a gym at a given date and time
+ * @param gym the gym to predict the occupancy for
+ * @param date the date and time to predict the occupancy for
+ * @returns the predicted occupancy
+ */
 export const predictOccupancy = async (gym: string, date: Date) => {
   if (await isClosed(gym, date)) {
     return NO_ONE;
@@ -44,7 +50,12 @@ export const predictOccupancy = async (gym: string, date: Date) => {
   return parseInt(stdout, 10);
 };
 
-export const validatePredictReq = (gym: GymName, timestamp: string) => {
+/**
+ * Validates the request to predict the occupancy of a gym
+ * @param gym the gym to predict the occupancy for
+ * @param timestamp the timestamp to predict the occupancy for
+ */
+export const validatePredictRequest = (gym: GymName, timestamp: string) => {
   if (isNaN(Date.parse(timestamp))) {
     throw new Error('Invalid Timestamp');
   }

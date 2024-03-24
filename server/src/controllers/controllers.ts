@@ -4,7 +4,7 @@ import { GymName } from '../models/database.types';
 import * as Metadata from '../services/gymMetadataService';
 import * as Predict from '../services/predictOccupancyService';
 import { HTTP_STATUS, TENSE } from '../utils/constants';
-import errorMessage from '../utils/helper';
+import { errorMessage } from '../utils/helper';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -54,7 +54,7 @@ export const predictOccupancy = async (req: Request, res: Response) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    Predict.validatePredictReq(gym as GymName, timestamp);
+    Predict.validatePredictRequest(gym as GymName, timestamp);
     const prediction = await Predict.predictOccupancy(gym, date);
     res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
   } catch (error) {

@@ -39,11 +39,9 @@ export const aggregateOccupancyData = (date: Date, { gym, data }: GymOccupancyRe
         occupancies.reduce((total, occ) => total + occ, 0) / occupancies.length
     );
 
-    return averagedByHour.map((occupancy, index) => {
-      return {
-        gym: gym as GymName,
-        time: getNthHour(date, index),
-        occupancy
-      };
-    });
+    return averagedByHour.map((occupancy, index) => ({
+      gym: gym as GymName,
+      time: getNthHour(date, index),
+      occupancy
+    }));
 };
