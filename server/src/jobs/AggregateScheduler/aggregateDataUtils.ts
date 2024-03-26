@@ -1,5 +1,10 @@
-import db from "../../models/database";
-import { OccupancyRecord, GymOccupancyRecord, AggregateData } from "../../models/database.types";
+import { GymName, OccupancyRecord } from "../../models/database.types";
+import { getNthHour } from "../../utils/date";
+
+interface GymOccupancyRecord {
+  gym: string;
+  data: OccupancyRecord[];
+}
 
 /**
  * Groups occupancy records by hour
@@ -25,8 +30,7 @@ const groupGymDataByHours = (data: OccupancyRecord[]) => {
  * @param dailyData  occupancy data
  * @returns aggregated data by the hour
  */
-export const aggregateOccucpancyData = (dailyData: GymOccupancyRecord[]) => {
-  return dailyData.map(({ gym, data}) => {
+export const aggregateOccupancyData = (date: Date, { gym, data }: GymOccupancyRecord) => {
     const groupedByHour = groupGymDataByHours(data);
 
     // Get average occupancy of for each hour
@@ -35,27 +39,9 @@ export const aggregateOccucpancyData = (dailyData: GymOccupancyRecord[]) => {
         occupancies.reduce((total, occ) => total + occ, 0) / occupancies.length
     );
 
-    return { gym, data: averagedByHour };
-  });
-};
-
-/**
- * Inserts aggregate data in the db
- * @param date date of aggregated data
- * @param allAggregateData data
- */
-export const insertAllAggregate = async (date: Date, allAggregateData: { gym: string; data: number[]; }[]) => {
-  const formattedDBData: AggregateData[] = allAggregateData.map(
-    ({ gym, data }) => {
-      const aggregateData: AggregateData = {
-        date: date,
-        occupancy: data,
-        collectionName: gym
-      };
-      return aggregateData;
-    });
-
-  for (const data of formattedDBData) {
-    await db.insertAggregate(data);
-  }
+    return averagedByHour.map((occupancy, index) => ({
+      gym: gym as GymName,
+      time: getNthHour(date, index),
+      occupancy
+    }));
 };
