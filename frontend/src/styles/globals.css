@@ -188,8 +188,7 @@
 
   .flag_icon {
     color: var(--btg-red);
-    font-size: 0.75em; 
-    cursor: pointer; 
+    font-size: 0.75em;  
   } 
 
   .modal-overlay {
@@ -198,7 +197,7 @@
     z-index: 100;
     transform: translateX(-2%);
     position: absolute;
-    margin-top: 6px;
+    margin-top: 28px;
     flex-direction: column;
     border-radius: 8px;
     padding: 15px; 
@@ -225,12 +224,12 @@
   }
   
   .triangle {
-    top: 15px;
-    left: 50%;
-    transform: translateX(-50%);
-    border-left: 9px solid transparent;
-    border-right: 9px solid transparent;
-    border-bottom: 15px solid var(--btg-red);
+    position: absolute;
+    top: -8px; 
+    left: 2%; 
+    border-left: 15px solid transparent; 
+    border-right: 15px solid transparent; 
+    border-bottom: 15px solid var(--btg-red);  
   }
 
 }
