@@ -1,18 +1,20 @@
-
-import React from 'react';
-import { FacilityCard, ThemeIcon } from '../components'; 
+import React, { useState } from 'react';
+import { FacilityCard, ThemeIcon, LoginPopup} from '../components'; 
 import { getFacilities } from '../data/facilities';
 
 const Home = () => {
+  const [showLogin, setShowLogin] = useState(true); 
+
   return (
     <div className="btg_page_container">
       <div className="w-full h-full pt-8">
-        <TitleBar/>
-        <FacilityCards/>
+        <TitleBar setShowLogin={setShowLogin} />
+        <FacilityCards />
+        {showLogin && <LoginPopup setShowLogin={setShowLogin} />}  
       </div>
     </div>
   );
-}
+};
 
 const TitleBar = () => {
   return (

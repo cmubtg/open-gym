@@ -223,3 +223,47 @@ code {
   /* background-color: var(--secondary); */
 }
 
+.login-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); 
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+}
+
+.login-popup-content {
+  @apply bg-btg-red;
+  padding: 20px;
+  border-radius: 10px; 
+  max-width: 500px;
+  width: 100%; 
+}
+
+.login-popup-content p{ 
+  @apply text-[0.7rem] md:text-xs font-normal
+  text-btg-primary; 
+  padding: 10px;
+}
+
+.login-popup-content h2{ 
+  @apply text-[20px] md:text-[28px] font-semibold
+  text-btg-primary; 
+  padding: 10px; 
+}
+ 
+.login-popup-content button {
+  background-color: white; 
+  color: black; 
+  padding: 5px 10px; 
+  border-radius: 10px;
+  cursor: pointer; 
+  display: inline-block; 
+  font-size: 0.7rem; 
+  margin-left: 10px;
+  width: 100px;
+} 
+ 
