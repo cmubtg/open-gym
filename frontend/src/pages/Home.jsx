@@ -2,6 +2,7 @@
 import React from 'react';
 import { FacilityCard, ThemeIcon } from '../components'; 
 import { getFacilities } from '../data/facilities';
+import Tabs from '../components/misc/Tabs';
 
 const Home = () => {
   return (

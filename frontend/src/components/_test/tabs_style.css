@@ -1,0 +1,33 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: #f1f1f1;
+}
+nav{
+    position: relative;
+    display: flex;
+}
+nav a{
+    position: relative;
+    margin: 0 20px;
+    font-size: 2em;
+    color: #000;
+    text-decoration: none;
+}
+nav #animation{
+    position: absolute;
+    height: 4px;
+    width: 0;
+    background: #000;
+    bottom: -8px;
+    transition: 0.3s;
+    border-radius: 4px;
+}

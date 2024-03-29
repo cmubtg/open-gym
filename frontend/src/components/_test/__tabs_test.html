@@ -1,0 +1,48 @@
+<!-- Original source: 
+https://www.youtube.com/watch?v=KwoSm0E8MOE -->
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Navbar Menu Hover Effect</title>
+    <link rel="stylesheet" href="tabs_style.css">
+  </head>
+
+  <body>
+    <nav>
+      <a href="#" id="default-item">Home</a>
+      <a href="#">About</a>
+      <a href="#">Blog</a>
+      <a href="#">Portfolio</a>
+      <a href="#">Contact</a>
+      <div id="animation"></div>
+    </nav>
+
+  </body>
+  <script type="text/javascript">
+    var marker = document.querySelector('#animation');
+    var defaultItem = document.querySelector('#default-item');
+    var item = document.querySelectorAll('nav a');
+  
+    // Set initial position and width for the default item
+    marker.style.left = defaultItem.offsetLeft + "px";
+    marker.style.width = defaultItem.offsetWidth + "px";
+  
+    function indicator(e) {
+        marker.style.left = e.offsetLeft + "px";
+        marker.style.width = '3px'
+      // Add transition to shrink the marker back to its original size
+      setTimeout(() => {
+        marker.style.width = e.offsetWidth + "px";
+      }, 100); // Adjust timing as needed
+    }
+  
+    item.forEach(link => {
+      link.addEventListener('click', (e) => {
+        indicator(e.target)
+      })
+    })
+  </script>
+
+
+</html>
