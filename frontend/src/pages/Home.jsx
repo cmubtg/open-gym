@@ -2,17 +2,21 @@ import React, { useState } from 'react';
 import { FacilityCard, ThemeIcon, LoginPopup} from '../components'; 
 import { getFacilities } from '../data/facilities';
 
+export const Context = React.createContext();
+
 const Home = () => {
   const [showLogin, setShowLogin] = useState(true); 
 
   return (
-    <div className="btg_page_container"> 
-      <div className="w-full h-full pt-8">
-        <TitleBar setShowLogin={setShowLogin} />
-        <FacilityCards />
-        {showLogin && <LoginPopup setShowLogin={setShowLogin} />}  
+    <Context.Provider value={[showLogin, setShowLogin]}>
+      <div className="btg_page_container"> 
+        <div className="w-full h-full pt-8">
+          <TitleBar setShowLogin={setShowLogin} />
+          <FacilityCards />
+          {showLogin && <LoginPopup setShowLogin={setShowLogin} />}  
+        </div>
       </div>
-    </div>
+    </Context.Provider>
   );
 };
 
