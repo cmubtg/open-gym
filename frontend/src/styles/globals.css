@@ -236,34 +236,44 @@ code {
 }
 
 .login-popup-content {
-  @apply bg-btg-red;
+  @apply bg-btg-primary;
   padding: 20px;
   border-radius: 10px; 
   max-width: 500px;
   width: 100%; 
 }
 
-.login-popup-content p{ 
+.login-popup-content #body{ 
   @apply text-[0.7rem] md:text-xs font-normal
-  text-btg-primary; 
-  padding: 10px;
+  text-btg-med-grey; 
+  margin-bottom:10px;
+  margin-left:10px;
+}
+
+.login-popup-content #loggedOut{ 
+  @apply text-[0.7rem] md:text-xs font-normal
+  text-btg-primary-dark; 
+  margin-top: 10px;
+  margin-bottom:10px;
+  margin-left:10px;
 }
 
 .login-popup-content h2{ 
   @apply text-[20px] md:text-[28px] font-semibold
-  text-btg-primary; 
-  padding: 10px; 
+  text-btg-primary-dark; 
+  padding:10px;
 }
  
 .login-popup-content button {
-  background-color: white; 
-  color: black; 
+  background-color: var(--btg-med-grey); 
+  color: white; 
   padding: 5px 10px; 
   border-radius: 10px;
   cursor: pointer; 
   display: inline-block; 
   font-size: 0.7rem; 
   margin-left: 10px;
+  margin-bottom:10px;
   width: 100px;
 } 
  
