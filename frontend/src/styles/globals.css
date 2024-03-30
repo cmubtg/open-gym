@@ -233,6 +233,7 @@ code {
   display: flex;
   justify-content: center;
   align-items: center; 
+  backdrop-filter: blur(3px);
 }
 
 .login-popup-content {
@@ -275,5 +276,4 @@ code {
   margin-left: 10px;
   margin-bottom:10px;
   width: 100px;
-} 
- 
+}  
