@@ -1,6 +1,9 @@
-import React, { useState, useEffect, useRef } from 'react';
+// Generic Tabs Template following design from figma
 
-const Tabs = ({ headers, components }) => {
+import { useState, useEffect, useRef } from 'react';
+
+const TabGroup = ({tabs}) => {
+    
     const [activeTab, setActiveTab] = useState(0);
     const markerRef = useRef(null);
 
@@ -13,7 +16,7 @@ const Tabs = ({ headers, components }) => {
       height: "4px",
       width: "0px",
       background: "var(--btg-red)",
-      bottom: "-8px",
+      bottom: "-5px",
       transition: "0.4s",
       borderRadius: "4px",
     }; 
@@ -51,9 +54,8 @@ const Tabs = ({ headers, components }) => {
     return (
         <div className="w-full h-full flex flex-col">
             <div className="w-full h-full flex relative mb-12">
-                {headers.map((header, index) => (
+                {tabs.map(({header}, index) => (
                   <div className="w-24 h-full">
-
                     <button
                         key={index}
                         className="tab-button"
@@ -65,9 +67,9 @@ const Tabs = ({ headers, components }) => {
                 ))}
                 <div ref={markerRef} style={markerStyle}></div>
             </div>
-            <div>{components[activeTab]}</div>
+            <div>{tabs[activeTab].content}</div>
         </div>
     );
 };
 
-export default Tabs;
+export default TabGroup;

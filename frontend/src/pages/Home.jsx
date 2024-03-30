@@ -2,14 +2,23 @@
 import React from 'react';
 import { FacilityCard, ThemeIcon } from '../components'; 
 import { getFacilities } from '../data/facilities';
-import Tabs from '../components/misc/Tabs';
+import TabGroup from '../components/misc/TabGroup';
 
 const Home = () => {
+  const tabvals = 
+    [
+      {header : "Tab 1", content : <div>This is the content for Tab 1</div>},
+      {header : "Tab 2", content : <div>This is the content for Tab 2</div>},
+      {header : "Tab 3", content : <div>This is the content for Tab 3</div>},
+      {header : "Tab 4", content : <div>This is the content for Tab 4</div>},
+    ]
+    
   return (
     <div className="btg_page_container">
       <div className="w-full h-full pt-8">
         <TitleBar/>
-        <FacilityCards/>
+        <TabGroup tabs={tabvals}/>
+        {/* <FacilityCards/> */}
       </div>
     </div>
   );
