@@ -6,7 +6,7 @@ const Home = () => {
   const [showLogin, setShowLogin] = useState(true); 
 
   return (
-    <div className="btg_page_container">
+    <div className="btg_page_container"> 
       <div className="w-full h-full pt-8">
         <TitleBar setShowLogin={setShowLogin} />
         <FacilityCards />
