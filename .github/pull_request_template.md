@@ -5,8 +5,8 @@
 ## Screenshot of frontend changes if applicable
 
 ## Testing checklist (check all that apply)
-- [ ] I have performed a self-review of my code
-- [ ] I have visually tested my changes
+- [ ] I have performed a self-review of my code.
+- [ ] I have visually tested my changes.
 - [ ] I have added tests. 
 
 ## Checklist before requesting a review
