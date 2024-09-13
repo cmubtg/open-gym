@@ -1,5 +1,4 @@
 {
-  "proxy": "https://opengym-7b35.onrender.com",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
