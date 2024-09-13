@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint .",
     "build": "npx tsc",
-    "start": "node build/server.js",
+    "start": "node ./build/server.js && ls -a",
     "dev": "nodemon"
   },
   "keywords": [],
@@ -29,6 +29,6 @@
     "@typescript-eslint/parser": "^6.18.1",
     "nodemon": "^3.0.2",
     "ts-node": "^10.9.2",
-    "typescript": "^5.3.3"
+    "typescript": "^5.6.2"
   }
 }
