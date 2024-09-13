@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import OpenGymRoutes from './routes/routes';
 import config from './config';
 import { initJobs } from './jobs';
-const cors = require('cors')
+const cors = require('cors');
 
 
 const app = express();
