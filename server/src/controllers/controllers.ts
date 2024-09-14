@@ -1,60 +1,59 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
-import { OccupancyRecord, CurrentGymOccupancy, GymName } from '../models/database.types';
-import { getAllMetadataHelper, getGymMetadataHelper } from '../services/gymMetadata';
-import * as predict from '../services/predict_occupancy';
-import { HTTP_STATUS } from '../utils/constants';
-import errorMessage from '../utils/errorMessage';
+import { GymName } from '../models/database.types';
+import * as Metadata from '../services/gymMetadataService';
+import * as Predict from '../services/predictOccupancyService';
+import { HttpStatus, Collection } from '../utils/constants';
+import { errorMessage } from '../utils/helper';
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
   try {
-    const records = await db.getAllRecords();
-    res.status(HTTP_STATUS.OK).json(records);
+    const records = await db.getRecords();
+    res.status(HttpStatus.OK).json(records);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
+  }
+};
+
+// Get records from a specific gym
+export const getRecords = async (req: Request, res: Response) => {
+  const { gym } = req.params;
+
+  try {
+    const data = await db.getRecords({ gym: gym as GymName });
+    res.status(HttpStatus.OK).json(data);
+  } catch (error) {
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
 };
 
 // Get every gym's occupancy
 export const getAllOccupancy = async (req: Request, res: Response) => {
   try {
-    const gyms = db.getGymCollections();
-
     // Call get most recent record for each gym
-    const result: CurrentGymOccupancy[] = await Promise.all(gyms.map(async (gym) => {
-      const { occupancy } = await db.getRecentRecord(gym);
-      return { gym: gym, occupancy: occupancy };
-    }));
+    const data = await db.getRecentRecords();
 
     // Return data in the form of [ {gym occupancy}, {gym occupancy}, ... }]
-    res.status(HTTP_STATUS.OK).json(result);
+    res.status(HttpStatus.OK).json(data);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
-
 };
 
 export const getOccupancy = async (req: Request, res: Response) => {
   try {
-    const {gym} = req.params;
-    const mostRecentRecord: OccupancyRecord = await db.getRecentRecord(gym as GymName);
-    // const finalOccupancy : BTG_Occupancy = {count: mostRecentRecord.occupancy};
+    const { gym } = req.params;
+    // const [record] = await db.getRecentRecords({ gym: gym as GymName});
+    // const { occupancy } = record;
 
-    // Use Random val
-    const MAX_OCCUPANCY = 100;
-    const occupancy = Math.floor(Math.random() * MAX_OCCUPANCY);
-
-    res.status(HTTP_STATUS.OK).json({ occupancy: occupancy });
+    // get random occupancy for now
+    const occupancy = Math.floor(Math.random() * 100);
+    
+    res.status(HttpStatus.OK).json({ occupancy: occupancy });
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
-
-};
-
-// TODO: Update to take specific gym into account
-export const getAnalytics = (req: Request, res: Response) => {
-    res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
 };
 
 // Runs ML model to predict occupancy based on timestamp
@@ -63,78 +62,52 @@ export const predictOccupancy = async (req: Request, res: Response) => {
   const { gym, timestamp } = req.params;
   const date = new Date(timestamp);
   try {
-    predict.validatePredictReq(gym as GymName, timestamp);
-    const prediction = await predict.predictOccupancy(gym, date);
-    res.status(HTTP_STATUS.OK).json({ occupancy: prediction });
+    Predict.validatePredictRequest(gym as GymName, timestamp);
+    const prediction = await Predict.predictOccupancy(gym, date);
+    res.status(HttpStatus.OK).json({ occupancy: prediction });
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
-  }
-};
-
-// TODO: Get all records from a specific gym
-export const getRecords = async (req: Request, res: Response) => {
-  const { gym } = req.params;
-
-  try {
-    const data = await db.getRecords(gym as GymName);
-    res.status(HTTP_STATUS.OK).json(data);
-  } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
-  }
-};
-
-export const getGymRecordById = async (req: Request, res: Response) => {
-  const { gym, id } = req.params;
-  try {
-    const data = await db.getGymById(gym as GymName, id);
-    res.status(HTTP_STATUS.OK).json(data);
-  } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
 };
 
 export const getAllMetadata = async (req: Request, res: Response) => {
   try {
-    const data = await getAllMetadataHelper();
-    res.status(HTTP_STATUS.OK).json(data);
+    const data = await Metadata.getAllMetadataHelper();
+    res.status(HttpStatus.OK).json(data);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
 };
 
 export const getMetadata = async (req: Request, res: Response) => {
   const { gym } = req.params;
   try {
-    const data = await getGymMetadataHelper(gym as GymName); // Temporary until validation
-    res.status(HTTP_STATUS.OK).json(data);
+    const data = await Metadata.getGymMetadataHelper(gym as GymName); // Temporary until validation
+    res.status(HttpStatus.OK).json(data);
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
 };
 
-// create a new session
+// TODO: Update to take specific gym into account
+export const getAnalytics = (req: Request, res: Response) => {
+  res.status(HttpStatus.NotFound).json({ message: 'Unimplemented' });
+};
+
+// create a new record
 export const createRecord = async (req: Request, res: Response) => {
   const { time, occupancy } = req.body; // TODO specify the type of time, occupancy
   const { gym } = req.params;
 
   // add to the database
   try {
-    await db.insert(gym as GymName, {
-      time: new Date(time),
-      occupancy: occupancy,
-    });
-    res.status(HTTP_STATUS.OK).json({ success: `Inserted record into ${gym}` });
+    await db.insertOne({
+      gym: gym as GymName,
+      time: new Date(time as string),
+      occupancy: occupancy as number
+    }, Collection.Current);
+    res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
   } catch (error) {
-    res.status(HTTP_STATUS.BAD_REQUEST).json({ error: errorMessage(error) });
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
-};
-
-// delete a session
-export const deleteRecord = (req: Request, res: Response) => {
-  res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
-};
-
-// update a session
-export const updateGymSession = (req: Request, res: Response) => {
-  res.status(HTTP_STATUS.NOT_FOUND).json({ message: 'Unimplemented' });
 };
