@@ -1,7 +1,9 @@
 import { CronJob } from 'cron';
 import db from '../../models/database';
+import { GYM_NAMES, Collection } from '../../utils/constants';
 import { getRelativeDate } from '../../utils/date';
-import { aggregateOccucpancyData, insertAllAggregate } from './aggregateDataUtils';
+import { aggregateOccupancyData } from './aggregateDataUtils';
+import { GymName } from '../../models/database.types';
 
 /**
  * Initialize aggregate scheduler
@@ -22,9 +24,18 @@ export default function initAggregateScheduler() {
  * and inserts new data into aggregate collection
  */
 const aggregateOccupancyJob = async () => {
-  const yesterday = getRelativeDate(new Date(), -1);
-  const yesterdaysData = await db.getAllRecordsByDate(yesterday);
-  const allAggregateData = aggregateOccucpancyData(yesterdaysData);
-  await insertAllAggregate(yesterday, allAggregateData);
-  await db.deleteAllRecordsByDate(yesterday);
+  const currentDate = new Date();
+  const yesterday = getRelativeDate(currentDate, -1);
+  for (const gymName of GYM_NAMES) {
+    const yesterdaysData = await db.getRecords({
+      gym: gymName as GymName,
+      dateRange: {
+        start: yesterday,
+        end: getRelativeDate(currentDate, 0)
+      },
+      collection: Collection.Current,
+    });
+    const data = aggregateOccupancyData(yesterday, { gym: gymName, data: yesterdaysData });
+    await db.insertMany(data, Collection.Aggregate);
+  }
 };
