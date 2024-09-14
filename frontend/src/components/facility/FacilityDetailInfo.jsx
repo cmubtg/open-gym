@@ -1,3 +1,5 @@
+
+
 const FacilityDetailInfo = ({facility}) => {
   return (
     <div className="btg_container flex justify-between 
@@ -5,7 +7,7 @@ const FacilityDetailInfo = ({facility}) => {
     flex-col md:flex-row">
       <div className="flex flex-col w-auto h-full">
         <h1>{facility.name}</h1>
-        <p className="text-gray-500 w-[90%]">{facility.description}</p>
+        <p className="">{facility.description}</p>
       </div>
       <FacilityDetailHours facility={facility}/>
     </div>
@@ -30,8 +32,8 @@ const FacilityDetailHours = ({facility}) => {
 
       <div className="flex flex-row mt-2 justify-between space-x-2">
         <div>
-          <p className="text-gray-500">Monday - Friday</p>
-          <p className="text-gray-500">Saturday - Sunday</p>
+          <p className="">Monday - Friday:</p>
+          <p className="">Saturday & Sunday:</p>
         </div>
         <div >
           <p className="font-light">{convHoursToStr(weekdayHours)}</p>
