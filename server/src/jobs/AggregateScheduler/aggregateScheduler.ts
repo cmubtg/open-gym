@@ -1,6 +1,6 @@
 import { CronJob } from 'cron';
 import db from '../../models/database';
-import { GYM_NAMES, TENSE } from '../../utils/constants';
+import { GYM_NAMES, Collection } from '../../utils/constants';
 import { getRelativeDate } from '../../utils/date';
 import { aggregateOccupancyData } from './aggregateDataUtils';
 import { GymName } from '../../models/database.types';
@@ -33,17 +33,9 @@ const aggregateOccupancyJob = async () => {
         start: yesterday,
         end: getRelativeDate(currentDate, 0)
       },
-      tense: TENSE.PRESENT,
+      collection: Collection.Current,
     });
     const data = aggregateOccupancyData(yesterday, { gym: gymName, data: yesterdaysData });
-    await db.insertMany(data, TENSE.PAST);
+    await db.insertMany(data, Collection.Aggregate);
   }
-
-  await db.deleteRecords({
-    dateRange: {
-      start: yesterday,
-      end: getRelativeDate(currentDate, 0)
-    },
-    tense: TENSE.PRESENT,
-  });
 };

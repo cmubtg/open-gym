@@ -1,40 +1,55 @@
-import { GymHours, GymHoursModel, GymName, ModelMap, OccupancyRecord } from './database.types';
+import { GymHours, GymHoursModel, GymName, Model, MODEL_MAP, OccupancyRecord } from './database.types';
 import DB from './database.interface';
 import { getRelativeDate } from '../utils/date';
-import { GYM_NAMES, TENSE } from '../utils/constants';
+import { GYM_NAMES, Collection } from '../utils/constants';
 import { isIn } from '../utils/helper';
 
+// Helper functions/constants
+const getModel = (collection: Collection) : Model => {
+  return MODEL_MAP[collection];
+};
+
+const defaultDateRange = { start: getRelativeDate(new Date(), 0), end: getRelativeDate(new Date(), 1) };
+
+const dummyRecord: OccupancyRecord = {
+  gym: "cohonFC",
+  time: getRelativeDate(new Date(), 0),
+  occupancy: 0
+};
+
+// Database object
 const db : DB = {
 
-  insertOne: async (record, tense=TENSE.PRESENT) => {
-    await db.insertMany([record], tense);
+  insertOne: async (record, collection=Collection.Current) => {
+    await db.insertMany([record], collection);
   },
 
-  insertMany: async (records, tense=TENSE.PRESENT) => {
-    const collection = getCollection(tense);
+  insertMany: async (records, collection=Collection.Current) => {
+    const model : Model = getModel(collection);
     for (const record of records) {
-      await collection.create(record);
+      await model.create(record);
     }
   },
 
   getRecords: async (options) => {
     const defaultOptions = {
       dateRange: defaultDateRange,
-      tense: TENSE.PRESENT,
+      collection: Collection.Current,
     };
-    const { gym, dateRange, tense } = { ...defaultOptions, ...options };
+    const { gym, dateRange, collection } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;
 
-    const collection = getCollection(tense);
+    const model = getModel(collection);
+
     if (isIn(GYM_NAMES, gym)) {
-      const records: OccupancyRecord[] = await collection.find(
+      const records: OccupancyRecord[] = await model.find(
         { gym: gym, date: { $gte: start, $lt: end } },
         { _id: 0 }
       ).sort({ time: -1 }).lean();
       return records;
     }
 
-    const records: OccupancyRecord[] = await collection.find(
+    const records: OccupancyRecord[] = await model.find(
       { date: { $gte: start, $lt: end } },
       { _id: 0 }
     ).sort({ time: -1 }).lean();
@@ -44,16 +59,16 @@ const db : DB = {
   getRecentRecords: async (options) => {
     const defaultOptions = {
       dateRange: defaultDateRange,
-      tense: TENSE.PRESENT,
+      collection: Collection.Current,
     };
-    const { gym, dateRange, tense } = { ...defaultOptions, ...options };
+    const { gym, dateRange, collection } = { ...defaultOptions, ...options };
 
     const recordsData = [];
     if (isIn(GYM_NAMES, gym)) {
       const records: OccupancyRecord[] = await db.getRecords({
         gym: gym,
         dateRange: dateRange,
-        tense: tense
+        collection: collection
       });
       if (records.length > 0) {
         return [records[0]];
@@ -65,37 +80,13 @@ const db : DB = {
       const records: OccupancyRecord[] = await db.getRecords({
         gym: gym as GymName,
         dateRange: dateRange,
-        tense: tense
+        collection: collection
       });
       if (records.length > 0) {
         recordsData.push(records[0]);
       }
     }
     return recordsData;
-  },
-
-  deleteRecords: async (options) => {
-    const defaultOptions = {
-      gym: "",
-      dateRange: defaultDateRange,
-      tense: TENSE.PRESENT,
-    };
-    const { gym, dateRange, tense } = { ...defaultOptions, ...options };
-    const { start, end } = dateRange;
-
-    const collection = getCollection(tense);
-    if (isIn(GYM_NAMES, gym)) {
-      await collection.deleteMany({
-        gym: gym,
-        time: { $gte: start, $lt: end },
-      });
-      return;
-    }
-
-    await collection.deleteMany({
-      time: { $gte: start, $lt: end },
-    });
-    return;
   },
 
   getGymHours: async (options) => {
@@ -125,15 +116,3 @@ const db : DB = {
 };
 
 export default db;
-
-const getCollection = (collection: TENSE) => {
-  return ModelMap[collection];
-};
-
-const defaultDateRange = { start: getRelativeDate(new Date(), 0), end: getRelativeDate(new Date(), 1) };
-
-const dummyRecord: OccupancyRecord = {
-  gym: "cohonFC",
-  time: getRelativeDate(new Date(), 0),
-  occupancy: 0
-};
