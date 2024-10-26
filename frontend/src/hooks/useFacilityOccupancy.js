@@ -14,7 +14,7 @@ const useFacilityOccupancy = (facility) => {
 
       const fetchData = async () => {
         try {
-          const res = await fetch(`/api/occupancy/${facility.id}`);
+          const res = await fetch(`${process.env.REACT_APP_API_URL}/occupancy/${facility.id}`);
           const data = await res.json();
           if (res.ok) {
             setOccupancy(data.occupancy);

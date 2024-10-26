@@ -13,14 +13,33 @@ export const getRelativeDate = (date: Date, dayDelta: number) => {
   return relDate;
 };
 
-export const startOfDay = (date: Date) => {
-  return new Date(date.setHours(0, 0, 0, 0));
+/**
+ * @param date date to be modified
+ * @param time time of the format HH:MM
+ * @returns the date with the time set to the given time
+ */
+export const getDateFromClock = (date: Date, time: string) => {
+  const [hour, minute] = time.split(':').map(x => parseInt(x, 10));
+  const newDate = new Date(date);
+  newDate.setHours(hour);
+  newDate.setMinutes(minute);
+  return newDate;
 };
 
-export const endOfDay = (date: Date) => {
-  return new Date(date.setUTCHours(23, 59, 59, 999));
+/**
+ * @param date date to be modified
+ * @param n nth hour of the day
+ * @returns the date with the time set to the nth hour
+ */
+export const getNthHour = (date: Date, n: number) => {
+  date.setHours(n, 0, 0, 0);
+  return date;
 };
 
+/**
+ * @param date date to be modified
+ * @returns the date at the start of the week
+ */
 export const startOfWeek = (date: Date) => {
-  return new Date(date.setDate(date.getDate() - date.getDay()));
+  return getRelativeDate(date, -date.getDay());
 };

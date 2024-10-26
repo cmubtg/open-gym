@@ -1,9 +1,17 @@
-export const AGGREGATE_DATA_COLLECTION = 'aggregate';
+// Define the array of gym names
+export const GYM_NAMES = ['tepperFC', 'fairfax', 'cohonFC', 'wiegand'] as const;
 
-export const GYM_HOURS = 'gymHours';
+// Enum for MongoDB collection names
+export enum Collection {
+  Aggregate = "aggregate",
+  Current = "current",
+  Forecast = "forecast",
+}
 
+// Constant for NO_ONE
 export const NO_ONE = 0;
 
+// Days of the week as an array
 export const DAYS_OF_THE_WEEK = [
   'sunday',
   'monday',
@@ -14,8 +22,9 @@ export const DAYS_OF_THE_WEEK = [
   'saturday',
 ] as const;
 
-export enum HTTP_STATUS {
+// Enum for HTTP status codes
+export enum HttpStatus {
   OK = 200,
-  BAD_REQUEST = 400,
-  NOT_FOUND = 404,
+  BadRequest = 400,
+  NotFound = 404,
 }
