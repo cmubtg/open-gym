@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import db from '../models/database';
+import { CreateRecordBody, CreateRecordParams } from './controllers.types';
 import { GymName } from '../models/database.types';
 import * as Metadata from '../services/gymMetadataService';
 import * as Predict from '../services/predictOccupancyService';
@@ -95,16 +96,19 @@ export const getAnalytics = (req: Request, res: Response) => {
 };
 
 // create a new record
-export const createRecord = async (req: Request, res: Response) => {
+export const createRecord = async (
+  req: Request<CreateRecordParams, unknown, CreateRecordBody>,
+  res: Response
+) => {
   const { time, occupancy } = req.body; // TODO specify the type of time, occupancy
   const { gym } = req.params;
 
   // add to the database
   try {
     await db.insertOne({
-      gym: gym as GymName,
-      time: new Date(time as string),
-      occupancy: occupancy as number
+      gym: gym,
+      time: new Date(time),
+      occupancy: occupancy
     }, Collection.Current);
     res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
   } catch (error) {
