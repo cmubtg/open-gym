@@ -30,6 +30,7 @@ module.exports = {
     "func-style": ["error", "expression"],
     "no-duplicate-imports": "error",
     "no-trailing-spaces": "error", // deprecated moved to stylistic
+    "@typescript-eslint/unbound-method": "warn",
     "@typescript-eslint/no-unused-vars": "warn",
     "@typescript-eslint/comma-spacing": "error", // deprecated moved to stylistic
     "@typescript-eslint/consistent-type-assertions": "error",
