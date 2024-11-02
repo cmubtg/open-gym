@@ -2,16 +2,22 @@
 import { getFacilities } from '../data/facilities';
 import { useParams } from 'react-router-dom';
 import { useMediaQuery } from 'react-responsive';
+import { useFacilityContext } from '../data/FacilityContext';
 
 import { FacilityDetailTopBar, FacilityDetailImage, FacilityDetailInfo, 
          FacilityDetailCards, BarChart, FacilityDetailGeneralAmenities } from '../components/facility';
+// import { useFacilityContext } from '../data/FacilityContext';
 
 
 const FacilityDetail = () => {
+
   const {id} = useParams();
-  const facilities = getFacilities();
-  
+  // const facilities = getFacilities();
+  const facilities = useFacilityContext();
+  console.log("FACILITIES: " + facilities);
+
   const facility = facilities.find((facility) => facility.id === id);
+  
   const isMobile = useMediaQuery({ query: '(max-width: 1024px)' });
   return (
 
