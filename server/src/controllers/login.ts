@@ -5,7 +5,11 @@ import { HttpStatus } from '../utils/constants';
 
 const client = new OAuth2Client(config.googleOauthClientID);
 
-export const login = async (req: Request, res: Response) => {
+interface LoginBody {
+  token: string;
+}
+
+export const login = async (req: Request<unknown, unknown, LoginBody>, res: Response) => {
   const { token } = req.body;
 
   try {
@@ -25,5 +29,13 @@ export const login = async (req: Request, res: Response) => {
     }
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ success: false, message: 'Invalid token' });
+  }
+};
+
+export const checkLogin = (req: Request, res: Response) => {
+  if (req.session.isAuthenticated) {
+    res.status(HttpStatus.OK).json({ isAuthenticated: true });
+  } else {
+    res.status(HttpStatus.OK).json({ isAuthenticated: false });
   }
 };
