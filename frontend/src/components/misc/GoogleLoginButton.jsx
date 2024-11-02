@@ -5,7 +5,6 @@ function GoogleLoginButton() {
   const handleLoginSuccess = async (credentialResponse) => {
     try {
       const { credential } = credentialResponse;
-      console.log(credential);
       // Use fetch to send the token to the backend for verification
       const response = await fetch(`http://localhost:4000/auth/google`, {
         method: 'POST',

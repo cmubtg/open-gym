@@ -1,24 +1,19 @@
 import express from 'express';
-import mongoose from 'mongoose';
+import cors from 'cors';
+import mongoose, { Mongoose } from 'mongoose';
+import session from 'express-session';
 import OpenGymRoutes from './routes/routes';
 import config from './config';
 import { initJobs } from './jobs';
-import { OAuth2Client } from 'google-auth-library';
-
-const cors = require('cors');
-
-const CLIENT_ID = '935523924383-h3j9osncso40dml2iiltmq9kuc1nteh5.apps.googleusercontent.com';
-const client = new OAuth2Client(CLIENT_ID);
+import { login } from './controllers/login';
 
 const app = express();
 
-app.use(cors({
-  origin: config.frontendURL,
-  credentials: true
-}));
-
 // middleware
 app.use(express.json());
+
+app.use(cors(config.corsPolicy));
+// Configs and uses express sessions
 
 app.use((req, res, next) => {
   console.log(req.path, req.method);
@@ -29,43 +24,16 @@ app.use((req, res, next) => {
 app.use('/api/', OpenGymRoutes);
 
 // attempt to login
-app.post('/auth/google', async (req, res) => {
-  const { token } = req.body;
-
-  try {
-    // Verify the token with Google
-    const ticket = await client.verifyIdToken({
-      idToken: token,
-      audience: CLIENT_ID,
-    });
-
-    // Get the user’s email
-
-    // @ts-ignore: Testing
-    const payload = ticket.getPayload();
-    // @ts-ignore: Testing
-    const email = payload.email;
-
-    // Check if the email domain matches the university domain
-    
-    // @ts-ignore: Testing
-    if (email.endsWith('@andrew.cmu.edu')) {
-      res.json({ success: true, message: 'Login successful' });
-    } else {
-      res.json({ success: false, message: 'Invalid email domain' });
-    }
-  } catch (error) {
-    console.error('Error verifying Google ID token:', error);
-    res.status(400).json({ success: false, message: 'Invalid token' });
-  }
-});
+app.post('/auth/google', login); // eslint-disable-line @typescript-eslint/no-misused-promises
 
 
 // connect to database
 mongoose.connect(config.databaseURL)
-    .then(() => {
+    .then((response: Mongoose) => {
       console.log('Connected to database');
       initJobs();
+
+      app.use(session(config.buildSessionConfig(response)));
 
       // listen on port
       app.listen(config.port, () => {

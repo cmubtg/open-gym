@@ -49,7 +49,7 @@ export const getOccupancy = async (req: Request, res: Response) => {
 
     // get random occupancy for now
     const occupancy = Math.floor(Math.random() * 100);
-    
+
     res.status(HttpStatus.OK).json({ occupancy: occupancy });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
