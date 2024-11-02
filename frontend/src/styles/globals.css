@@ -76,10 +76,12 @@
   }
 
   /* FACILITY CARD */
+  /* TODO: once we enable click to get to facility page, uncomment cursor-pointer  */
   .card_top{
     @apply w-full h-[240px] 
     flex flex-col items-center 
-    overflow-hidden rounded-lg cursor-pointer
+    overflow-hidden rounded-lg 
+    /* cursor-pointer */
     justify-center;
   }
   .card_link{
