@@ -17,7 +17,7 @@ const testHours = {
 const facilities = [
     {
         id: "cohonFC",
-        name : "Cohon Fitness Center",
+        name : "Cohon Fitness Center (Lower Level)",
         address : "5000 Forbes Ave, Pittsburgh, PA 15213",
         description : `Two floors dedicated to cardio and weight equipment in
         the Cohon Univeristy Center.`,
@@ -28,6 +28,20 @@ const facilities = [
        image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
        max_occupancy: 150
     }, 
+    {
+        id: "cohon2FC",
+        name : "Cohon Fitness Center (Upper Level)",
+        address : "5000 Forbes Ave, Pittsburgh, PA 15213",
+        description : `Two floors dedicated to cardio and weight equipment in
+        the Cohon Univeristy Center.`,
+      
+       hours : Array.from({ length: 7 }, () => alwaysOpen), // 7 days a week standard hours
+       image: process.env.PUBLIC_URL + "../images/uc.jpg",
+       image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
+       image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
+       max_occupancy: 150
+    }, 
+    
     {
     id : "tepperFC",
         name : "Tepper Fitness Center",
