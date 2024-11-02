@@ -41,7 +41,7 @@ const facilities = [
        image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
        max_occupancy: 150
     }, 
-    
+
     {
     id : "tepperFC",
         name : "Tepper Fitness Center",
@@ -72,6 +72,17 @@ const facilities = [
         image2: process.env.PUBLIC_URL + "../images/wiegand.jpg",
         max_occupancy: 300
     },
+
+    {
+        id : "highmark",
+        name : "Highmark Gym",
+        address : "",
+        description : ``,
+        hours : Array.from({ length: 7 }, () => standardHours), 
+        image: process.env.PUBLIC_URL + "./images/highmark.jpg",
+        image2: process.env.PUBLIC_URL + "../images/highmark.jpg",
+        max_occupancy: 1000
+    }
 ];
 
 export const getFacilities = () => {
