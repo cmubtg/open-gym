@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
 import { OAuth2Client } from 'google-auth-library';
 import config from '../config';
+import { HttpStatus } from '../utils/constants';
 
 const client = new OAuth2Client(config.googleOauthClientID);
 
@@ -14,23 +15,15 @@ export const login = async (req: Request, res: Response) => {
       audience: config.googleOauthClientID,
     });
 
-    // Get the user’s email
-
-    // @ts-ignore: Testing
-    const payload = ticket.getPayload();
-    // @ts-ignore: Testing
-    const email = payload.email;
-
-    // Check if the email domain matches the university domain
-
-    // @ts-ignore: Testing
-    if (email.endsWith('@andrew.cmu.edu')) {
-      res.json({ success: true, message: 'Login successful' });
+    const email = ticket.getPayload()?.email;
+    // TODO - Add list of accept andrew emails
+    if (email && email.endsWith('@andrew.cmu.edu')) {
+      req.session.isAuthenticated = true;
+      res.status(HttpStatus.OK).json({ success: true, message: 'Login successful' });
     } else {
-      res.json({ success: false, message: 'Invalid email domain' });
+      res.status(HttpStatus.Unauthorized).json({ success: false, message: 'Invalid email domain' });
     }
   } catch (error) {
-    console.error('Error verifying Google ID token:', error);
-    res.status(400).json({ success: false, message: 'Invalid token' });
+    res.status(HttpStatus.BadRequest).json({ success: false, message: 'Invalid token' });
   }
 };
