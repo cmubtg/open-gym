@@ -4,7 +4,7 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const GoogleAuthProviderWrapper = ({ children }) => {
   return (
-    <GoogleOAuthProvider clientId={process.env.GOOGLE_CLIENT_ID}>
+    <GoogleOAuthProvider clientId={process.env.GOOGLE_OAUTH_CLIENT_ID}>
       {children}
     </GoogleOAuthProvider>
   );
