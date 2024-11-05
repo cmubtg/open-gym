@@ -3,7 +3,7 @@ import * as Controller from '../../src/controllers/controllers';
 import db from '../../src/models/database';
 import * as Predict from '../../src/services/predictOccupancyService';
 import * as Metadata from '../../src/services/gymMetadataService';
-import { HttpStatus } from '../../src/utils/constants';
+import { Collection, HttpStatus } from '../../src/utils/constants';
 import 'jest';
 
 jest.mock('../../src/models/database');
@@ -101,7 +101,7 @@ describe('Controller Tests', () => {
     });
   });
 
-  describe('GetAllOccupanies', () => {
+  describe('GetAllOccupancies', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let mockStatus: jest.Mock;
@@ -142,52 +142,25 @@ describe('Controller Tests', () => {
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
       expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${error.message}` });
     });
-  })
-  
-  describe('GetOccupancy', () => {
-    let req: Partial<Request>;
-    let res: Partial<Response>;
-    let mockStatus: jest.Mock;
-    let mockJson: jest.Mock;
-
-    beforeEach(() => {
-      mockStatus = jest.fn().mockReturnThis();
-      mockJson = jest.fn();
-      req = { params: { gym: 'wiegand' } };
-      res = { status: mockStatus, json: mockJson };
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it('should return an occupancy with status 200 for a valid gym', async () => {
-      // It currently only generates a random number
-      await Controller.getOccupancy(req as Request, res as Response);
-
-      expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
-      expect(mockJson).toHaveBeenCalledWith(expect.objectContaining({occupancy: expect.any(Number)}));
-    });
   });
-
 
   describe('PredictOccupancy', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let mockStatus: jest.Mock;
     let mockJson: jest.Mock;
-  
+
     beforeEach(() => {
       mockStatus = jest.fn().mockReturnThis();
       mockJson = jest.fn();
       req = { params: { gym: 'tepperFC', timestamp: '2024-10-25T10:00:00.000Z' } };
       res = { status: mockStatus, json: mockJson };
     });
-  
+
     afterEach(() => {
       jest.clearAllMocks();
     });
-  
+
     it('should return predicted occupancy with status 200 for a valid request', async () => {
       const mockPrediction = 30;
       (Predict.validatePredictRequest as jest.Mock).mockImplementation(() => {});
@@ -200,31 +173,31 @@ describe('Controller Tests', () => {
       expect(Predict.predictOccupancy).toHaveBeenCalledWith('tepperFC', new Date('2024-10-25T10:00:00.000Z'));
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockJson).toHaveBeenCalledWith({ occupancy: mockPrediction });
-  
+
     });
 
     it('should return status 400 and an error message if validatePredictRequest throws an error', async () => {
       const validationError = new Error('Invalid Timestamp');
-  
+
       (Predict.validatePredictRequest as jest.Mock).mockImplementation(() => {
         throw validationError;
       });
-  
+
       await Controller.predictOccupancy(req as Request, res as Response);
-  
+
       expect(Predict.validatePredictRequest).toHaveBeenCalledWith('tepperFC', '2024-10-25T10:00:00.000Z');
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
       expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${validationError.message}` });
     });
-  
+
     it('should return status 400 and an error message if predictOccupancy throws an error', async () => {
       const predictionError = new Error('Prediction error');
-  
+
       (Predict.validatePredictRequest as jest.Mock).mockImplementation(() => {});
       (Predict.predictOccupancy as jest.Mock).mockRejectedValue(predictionError);
-  
+
       await Controller.predictOccupancy(req as Request, res as Response);
-  
+
       expect(Predict.validatePredictRequest).toHaveBeenCalledWith('tepperFC', '2024-10-25T10:00:00.000Z');
       expect(Predict.predictOccupancy).toHaveBeenCalledWith('tepperFC', new Date('2024-10-25T10:00:00.000Z'));
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
@@ -238,63 +211,63 @@ describe('Controller Tests', () => {
     let res: Partial<Response>;
     let mockStatus: jest.Mock;
     let mockJson: jest.Mock;
-  
+
     beforeEach(() => {
       mockStatus = jest.fn().mockReturnThis();
       mockJson = jest.fn();
       req = {};
       res = { status: mockStatus, json: mockJson };
     });
-  
+
     afterEach(() => {
       jest.clearAllMocks();
     });
-  
+
     it('should return metadata with status 200 when data is retrieved successfully', async () => {
       const mockData = [
         { name: 'tepperFC', location: 'Tepper' },
         { name: 'cohon', location: 'Cohon' },
       ];
-  
+
       (Metadata.getAllMetadataHelper as jest.Mock).mockResolvedValue(mockData);
-  
+
       await Controller.getAllMetadata(req as Request, res as Response);
-  
+
       expect(Metadata.getAllMetadataHelper).toHaveBeenCalled();
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockJson).toHaveBeenCalledWith(mockData);
     });
-  
+
     it('should return status 400 and an error message if getAllMetadataHelper throws an error', async () => {
       const error = new Error('Failed to retrieve metadata');
       (Metadata.getAllMetadataHelper as jest.Mock).mockRejectedValue(error);
-  
+
       await Controller.getAllMetadata(req as Request, res as Response);
-  
+
       expect(Metadata.getAllMetadataHelper).toHaveBeenCalled();
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
       expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${error.message}` });
     });
   });
-  
+
 
   describe('getMetadata', () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let mockStatus: jest.Mock;
     let mockJson: jest.Mock;
-  
+
     beforeEach(() => {
       mockStatus = jest.fn().mockReturnThis();
       mockJson = jest.fn();
       req = { params: { gym: 'wiegand' } };
       res = { status: mockStatus, json: mockJson };
     });
-  
+
     afterEach(() => {
       jest.clearAllMocks();
     });
-  
+
     it('should return metadata with status 200 for a valid gym', async () => {
       const mockData = {
         name: 'Wiegand Gym',
@@ -311,33 +284,69 @@ describe('Controller Tests', () => {
           saturday: { open: '8:00 AM', close: '10:00 PM', description: 'Open all day' },
         },
       };
-  
-  
+
+
       (Metadata.getGymMetadataHelper as jest.Mock).mockResolvedValue(mockData);
-  
+
       await Controller.getMetadata(req as Request, res as Response);
-  
+
       expect(Metadata.getGymMetadataHelper).toHaveBeenCalledWith('wiegand');
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockJson).toHaveBeenCalledWith(mockData);
     });
-  
+
     it('should return status 400 and an error message if getGymMetadataHelper throws an error', async () => {
       const error = new Error('Gym not found');
       jest.spyOn(Metadata, 'getGymMetadataHelper').mockRejectedValue(error);
-  
+
       await Controller.getMetadata(req as Request, res as Response);
-  
+
       expect(Metadata.getGymMetadataHelper).toHaveBeenCalledWith('wiegand');
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
       expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${error.message}` });
     });
   });
-  
 
+  describe('createRecord', () => {
+    let req: Partial<Request>;
+    let res: Partial<Response>;
+    let mockStatus: jest.Mock;
+    let mockJson: jest.Mock;
 
+    beforeEach(() => {
+      mockStatus = jest.fn().mockReturnThis();
+      mockJson = jest.fn();
+      req = { params: { gym: 'wiegand' }, body: { time: '2024-10-25T10:00:00.000Z', occupancy: 50 } };
+      res = { status: mockStatus, json: mockJson };
+    });
 
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
 
+    it('should insert a new record and return success message', async () => {
+      await Controller.createRecord(req as Request, res as Response);
 
+      expect(db.insertOne).toHaveBeenCalledWith(
+        { gym: 'wiegand', time: new Date('2024-10-25T10:00:00.000Z'), occupancy: 50 },
+        Collection.Current
+      );
+      expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
+      expect(mockJson).toHaveBeenCalledWith({ success: 'Inserted record into wiegand' });
+    });
 
+    it('should return a 400 status and error message if db.insertOne throws an error', async () => {
+      const error = new Error('Database error');
+      (db.insertOne as jest.Mock).mockRejectedValue(error);
+
+      await Controller.createRecord(req as Request, res as Response);
+
+      expect(db.insertOne).toHaveBeenCalledWith(
+        { gym: 'wiegand', time: new Date('2024-10-25T10:00:00.000Z'), occupancy: 50 },
+        Collection.Current
+      );
+      expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
+      expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${error.message}` });
+    });
+  });
 });
