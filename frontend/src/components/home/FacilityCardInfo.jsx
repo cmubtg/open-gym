@@ -27,15 +27,6 @@ const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
         <LiveDot msg={lastFetchMsg}/> :
         <p className="pt-1">Opens {getNextOpenReadable(facility, new Date(Date.now()))}</p>
       }
-
-      {/* Info button */}
-      <div className="info_button_wrapper absolute top-2 right-2">
-        <button className="info_button">info</button>
-          <div className="info_tooltip">
-            <p>Opening Hours: {facility.openingHours}</p>
-            <p>Closing Hours: {facility.closingHours}</p>
-          </div>
-      </div>
     </div>
   );
 }

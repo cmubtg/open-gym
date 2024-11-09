@@ -116,11 +116,11 @@
   }
 
   .info_button {
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    color: #fff; /* White icon color */
+    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+    color: #F8F8F8; /* White icon color */
     border: none;
-    border-radius: 50%;
-    padding: 4px 6px;
+    border-radius: 100%;
+    padding: 2px 2px;
     font-size: 14px;
     cursor: pointer;
   }
@@ -130,7 +130,7 @@
     display: none; /* Hidden by default */
     position: absolute;
     top: 30px;
-    right: 0;
+    left: 2;
     background-color: rgba(0, 0, 0, 0.8);
     color: #fff;
     padding: 8px;
@@ -144,7 +144,6 @@
   .info_button_wrapper:hover .info_tooltip {
     display: block;
   }
-  
 
   /* OCCUPANCY METER */
   .meter_container{
