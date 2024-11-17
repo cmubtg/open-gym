@@ -126,19 +126,10 @@
 
   /* Tooltip that appears on hover */
   .info_tooltip {
-    display: none; /* Hidden by default */
-    position: absolute;
-    top: 30px;
-    left: 2;
-    background-color: rgba(0, 0, 0, 0.8);
-    color: #fff;
-    padding: 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    width: max-content;
-    z-index: 10;
-  }
-
+    @apply hidden absolute top-[30px] left-[2px] bg-[rgba(255,244,244,0.8)] 
+    dark:bg-[rgba(0,0,0,0.8)] p-2 rounded text-[12px] w-max z-10;
+  } 
+  
   /* Show the tooltip on button hover */
   .info_button_wrapper:hover .info_tooltip {
     display: block;

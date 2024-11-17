@@ -5,6 +5,18 @@ import { isOpen } from '../../utils/utils';
 import { BiInfoCircle } from "react-icons/bi";
 
 const FacilityCardDisplay = ({facility, occupancy, closingStatus}) => {
+
+  const formatHours = (hours) =>
+    `${hours.open.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })} - ${hours.close.toLocaleTimeString("en-US", {
+      hour: "2-digit",
+      minute: "2-digit",
+    })}`; 
+  const weekdayHours = formatHours(facility.hours[0]);
+  const weekendHours = formatHours(facility.hours[6]);
+
   return (
       <div className="card_top relative">
          
@@ -28,9 +40,13 @@ const FacilityCardDisplay = ({facility, occupancy, closingStatus}) => {
         {/* Info button */}
       <div className="info_button_wrapper absolute top-2 left-2">
         <button className="info_button"><BiInfoCircle size="24px"/></button>
-          <div className="info_tooltip">
-            <p>Opening Hours: {facility.openingHours}</p>
-            <p>Closing Hours: {facility.closingHours}</p>
+          <div className="info_tooltip"> 
+            {/* <p>Opening Hours: {facility.open}</p>
+            <p>Closing Hours: {facility.close}</p> */}
+
+            <p>Monday - Friday: {weekdayHours}</p>
+            <p>Saturday & Sunday: {weekendHours}</p>
+
           </div>
       </div>
     </div>
