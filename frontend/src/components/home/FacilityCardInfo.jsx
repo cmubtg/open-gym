@@ -17,6 +17,9 @@ const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStat
   }
 
 const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
+
+  const isComingSoon = facility.status === "coming soon";
+
   return (
     <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
       
@@ -24,18 +27,23 @@ const FacilityCardTitle = ({facility, closingStatus, lastFetchMsg}) => {
       <h3>{facility.name}</h3>
 
       {/* Red dot + x minutes ago */}
-      { !isClosed(closingStatus) ?
-        <LiveDot msg={lastFetchMsg}/> :
-        <p className="pt-1">Opens {getNextOpenReadable(facility, new Date(Date.now()))}</p>
-      }
+      {!isClosed(closingStatus) && !isComingSoon ? (
+        <LiveDot msg={lastFetchMsg} />
+      ) : (
+        !isComingSoon && (
+          <p className="pt-1">
+            Opens {getNextOpenReadable(facility, new Date(Date.now()))}
+          </p>
+        )
+      )}
     </div>
   );
 }
 
-const FacilityCardMeter = ({facility, occupancy, closingStatus}) => {
+const FacilityCardMeter = ({facility, occupancy, closingStatus}) => { 
   return (
     <>
-      {!isClosed(closingStatus) && 
+      {!isClosed(closingStatus) && facility.status === "established" && 
         <div className="min-w-[150px] h-full mt-4">
           <OccMeter id={facility.id} occupancy={occupancy} max_occupancy={facility.max_occupancy}/>
         </div>

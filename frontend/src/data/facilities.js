@@ -26,7 +26,8 @@ const facilities = [
        image: process.env.PUBLIC_URL + "../images/uc.jpg",
        image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
        image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
-       max_occupancy: 150
+       max_occupancy: 150,
+       status: "established"
     }, 
     {
         id: "cohon2FC",
@@ -54,17 +55,17 @@ const facilities = [
         max_occupancy: 70,
         status: "coming soon"
     }, 
-    {
-        id : "fairfax",
-        name : "Fairfax Gym",
-        address : "",
-        description : ``,
-        hours : Array.from({ length: 7 }, () => testHours), 
-        image: process.env.PUBLIC_URL + "./images/uc.jpg",
-        image2: process.env.PUBLIC_URL + "../images/fairfax2.jpg",
-        max_occupancy: 30,
-        status: "coming soon"
-    },
+    // {
+    //     id : "fairfax",
+    //     name : "Fairfax Gym",
+    //     address : "",
+    //     description : ``,
+    //     hours : Array.from({ length: 7 }, () => testHours), 
+    //     image: process.env.PUBLIC_URL + "./images/uc.jpg",
+    //     image2: process.env.PUBLIC_URL + "../images/fairfax2.jpg",
+    //     max_occupancy: 30,
+    //     status: "coming soon"
+    // },
     {
         id : "wiegand",
         name : "Wiegand Gym",
