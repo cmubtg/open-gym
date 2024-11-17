@@ -39,7 +39,8 @@ const facilities = [
        image: process.env.PUBLIC_URL + "../images/uc.jpg",
        image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
        image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
-       max_occupancy: 150
+       max_occupancy: 150,
+       status: "coming soon"
     }, 
 
     {
@@ -50,7 +51,8 @@ const facilities = [
         hours : Array.from({ length: 7 }, () => alwaysOpen), 
         image: process.env.PUBLIC_URL + "./images/tepper.jpg",
         image2: process.env.PUBLIC_URL + "../images/tepper2.jpg",
-        max_occupancy: 70
+        max_occupancy: 70,
+        status: "coming soon"
     }, 
     {
         id : "fairfax",
@@ -60,7 +62,8 @@ const facilities = [
         hours : Array.from({ length: 7 }, () => testHours), 
         image: process.env.PUBLIC_URL + "./images/uc.jpg",
         image2: process.env.PUBLIC_URL + "../images/fairfax2.jpg",
-        max_occupancy: 30
+        max_occupancy: 30,
+        status: "coming soon"
     },
     {
         id : "wiegand",
@@ -70,7 +73,8 @@ const facilities = [
         hours : Array.from({ length: 7 }, () => standardHours), 
         image: process.env.PUBLIC_URL + "./images/wiegand.jpg",
         image2: process.env.PUBLIC_URL + "../images/wiegand.jpg",
-        max_occupancy: 300
+        max_occupancy: 300,
+        status: "coming soon"
     },
 
     {
@@ -81,7 +85,8 @@ const facilities = [
         hours : Array.from({ length: 7 }, () => standardHours), 
         image: process.env.PUBLIC_URL + "./images/highmark.jpg",
         image2: process.env.PUBLIC_URL + "../images/highmark.jpg",
-        max_occupancy: 1000
+        max_occupancy: 1000,
+        status: "coming soon"
     }
 ];
 

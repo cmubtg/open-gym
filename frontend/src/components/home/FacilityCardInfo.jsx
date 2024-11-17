@@ -6,6 +6,7 @@ import LiveDot from '../misc/LiveDot';
 import { isClosed, getNextOpenReadable} from '../../utils/utils';
 
 const FacilityCardInfo = ({facility, occupancy, currTime, lastFetch, closingStatus}) => {
+  
     const lastFetchMsg = (lastFetch === 1) ? `1 minute ago` : `${lastFetch} minutes ago`
     return (
       <div className={`card_btm ${isClosed(closingStatus) && "opacity-55"}`}>   
