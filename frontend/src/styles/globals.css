@@ -115,8 +115,7 @@
     right: 8px;
   }
 
-  .info_button {
-    background: rgba(0, 0, 0, 0.8); /* Semi-transparent background */
+  .info_button { 
     color: #F8F8F8; /* White icon color */
     border: none;
     border-radius: 100%;
