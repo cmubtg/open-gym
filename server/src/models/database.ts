@@ -42,6 +42,7 @@ const db : DB = {
     const model = getModel(collection);
 
     if (isIn(GYM_NAMES, gym)) {
+      // @ts-expect-error: TODO - Fix GymName type not being compatible with String
       const records: OccupancyRecord[] = await model.find(
         { gym: gym, date: { $gte: start, $lt: end } },
         { _id: 0 }
@@ -49,6 +50,7 @@ const db : DB = {
       return records;
     }
 
+    // @ts-expect-error: TODO - Fix GymName type not being compatible with String
     const records: OccupancyRecord[] = await model.find(
       { date: { $gte: start, $lt: end } },
       { _id: 0 }
