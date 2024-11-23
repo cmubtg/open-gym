@@ -2,12 +2,14 @@
 import React from 'react';
 import { FacilityCard, ThemeIcon } from '../components'; 
 import { getFacilities } from '../data/facilities';
+import GoogleLoginButton from '../components/misc/GoogleLoginButton';
 
 const Home = () => {
   return (
     <div className="btg_page_container">
       <div className="w-full h-full pt-8 mt-8">
         <TitleBar/>
+        <GoogleLoginButton />
         <FacilityCards/>
       </div>
     </div>
