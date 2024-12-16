@@ -1,5 +1,5 @@
 // Define the array of gym names
-export const GYM_NAMES = ['tepperFC', 'fairfax', 'cohonFC', 'wiegand'] as const;
+export const GYM_NAMES = ["tepperFC", "fairfax", "cohonFC", "wiegand"] as const;
 
 // Enum for MongoDB collection names
 export enum Collection {
@@ -13,13 +13,13 @@ export const NO_ONE = 0;
 
 // Days of the week as an array
 export const DAYS_OF_THE_WEEK = [
-  'sunday',
-  'monday',
-  'tuesday',
-  'wednesday',
-  'thursday',
-  'friday',
-  'saturday',
+  "sunday",
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+  "saturday",
 ] as const;
 
 // Enum for HTTP status codes
