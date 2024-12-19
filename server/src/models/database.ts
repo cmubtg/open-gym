@@ -1,33 +1,43 @@
-import { GymHours, GymHoursModel, GymName, Model, MODEL_MAP, OccupancyRecord } from './database.types';
-import DB from './database.interface';
-import { getRelativeDate } from '../utils/date';
-import { GYM_NAMES, Collection } from '../utils/constants';
-import { isIn } from '../utils/helper';
+import {
+  GymHours,
+  GymHoursModel,
+  GymName,
+  Model,
+  MODEL_MAP,
+  OccupancyRecord,
+} from "./database.types";
+import DB from "./database.interface";
+import { getRelativeDate } from "../utils/date";
+import { GYM_NAMES, Collection } from "../utils/constants";
+import { isIn } from "../utils/helper";
 
 // Helper functions/constants
-const getModel = (collection: Collection) : Model => {
+const getModel = (collection: Collection): Model => {
   return MODEL_MAP[collection];
 };
 
-const defaultDateRange = { start: getRelativeDate(new Date(), 0), end: getRelativeDate(new Date(), 1) };
+const defaultDateRange = {
+  start: getRelativeDate(new Date(), 0),
+  end: getRelativeDate(new Date(), 1),
+};
 
 const dummyRecord: OccupancyRecord = {
   gym: "cohonFC",
   time: getRelativeDate(new Date(), 0),
-  occupancy: 0
+  occupancy: 0,
 };
 
 // Database object
-const db : DB = {
-
-  insertOne: async (record, collection=Collection.Current) => {
-    await db.insertMany([record], collection);
+const db: DB = {
+  insertOne: async (record, collection = Collection.Current) => {
+    const model: Model = getModel(collection);
+    console.log("inserting into collection: ", collection);
+    await model.create(record);
   },
 
-  insertMany: async (records, collection=Collection.Current) => {
-    const model : Model = getModel(collection);
+  insertMany: async (records, collection = Collection.Current) => {
     for (const record of records) {
-      await model.create(record);
+      await db.insertOne(record, collection);
     }
   },
 
@@ -42,19 +52,17 @@ const db : DB = {
     const model = getModel(collection);
 
     if (isIn(GYM_NAMES, gym)) {
-      // @ts-expect-error: TODO - Fix GymName type not being compatible with String
-      const records: OccupancyRecord[] = await model.find(
-        { gym: gym, date: { $gte: start, $lt: end } },
-        { _id: 0 }
-      ).sort({ time: -1 }).lean();
+      const records: OccupancyRecord[] = await model
+        .find({ gym: gym, date: { $gte: start, $lt: end } }, { _id: 0 })
+        .sort({ time: -1 })
+        .lean();
       return records;
     }
 
-    // @ts-expect-error: TODO - Fix GymName type not being compatible with String
-    const records: OccupancyRecord[] = await model.find(
-      { date: { $gte: start, $lt: end } },
-      { _id: 0 }
-    ).sort({ time: -1 }).lean();
+    const records: OccupancyRecord[] = await model
+      .find({ date: { $gte: start, $lt: end } }, { _id: 0 })
+      .sort({ time: -1 })
+      .lean();
     return records;
   },
 
@@ -70,7 +78,7 @@ const db : DB = {
       const records: OccupancyRecord[] = await db.getRecords({
         gym: gym,
         dateRange: dateRange,
-        collection: collection
+        collection: collection,
       });
       if (records.length > 0) {
         return [records[0]];
@@ -82,7 +90,7 @@ const db : DB = {
       const records: OccupancyRecord[] = await db.getRecords({
         gym: gym as GymName,
         dateRange: dateRange,
-        collection: collection
+        collection: collection,
       });
       if (records.length > 0) {
         recordsData.push(records[0]);
@@ -114,7 +122,6 @@ const db : DB = {
     );
     return hours;
   },
-
 };
 
 export default db;
