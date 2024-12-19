@@ -6,8 +6,7 @@ function GoogleLoginButton() {
     try {
       const { credential } = credentialResponse;
       // Use fetch to send the token to the backend for verification
-      console.log("credential is", credential);
-      const response = await fetch(`http://localhost:4000/auth/login`, {
+      const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
