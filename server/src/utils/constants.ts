@@ -26,5 +26,6 @@ export const DAYS_OF_THE_WEEK = [
 export enum HttpStatus {
   OK = 200,
   BadRequest = 400,
+  Unauthorized = 401,
   NotFound = 404,
 }
