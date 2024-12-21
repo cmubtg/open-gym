@@ -13,7 +13,11 @@ export type GymName = (typeof GYM_NAMES)[number];
 }
 */
 export const occupancyRecordSchema = new Schema({
-  gym: { type: String, required: true },
+  gym: {
+    type: String,
+    required: true,
+    enum: GYM_NAMES,
+  },
   time: { type: Date, required: true },
   occupancy: { type: Number, required: true },
   // TODO Add model input (boolean flags etc)
