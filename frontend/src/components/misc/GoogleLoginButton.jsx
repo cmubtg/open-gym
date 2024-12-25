@@ -1,23 +1,17 @@
 import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
+import { useAuth } from "../../context/AuthContext";
 
-function GoogleLoginButton() {
+function GoogleLoginButton({ setShowLogin }) {
+  const { login } = useAuth();
+
   const handleLoginSuccess = async (credentialResponse) => {
     try {
       const { credential } = credentialResponse;
-      // Use fetch to send the token to the backend for verification
-      const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        credentials: "include",
-        body: JSON.stringify({ token: credential }),
-      });
+      const success = await login(credential);
 
-      const data = await response.json();
-
-      if (data.success) {
+      if (success) {
+        setShowLogin(false);
         alert("Login successful!");
       } else {
         alert("Invalid email domain.");

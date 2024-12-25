@@ -6,9 +6,10 @@ import Footer from './footer/Footer';
 
 import LiveDot from './misc/LiveDot';
 import OccMeter from './home/OccMeter';
-import ThemeIcon from './misc/ThemeIcon';
+import ThemeIcon from './misc/ThemeIcon'; 
+import LoginPopup from './home/LoginPopup'; 
 
 export { FacilityCard, FacilityCardDisplay, FacilityCardInfo, 
         Footer, LiveDot, 
-        OccMeter, ThemeIcon
+        OccMeter, ThemeIcon, LoginPopup
         };
