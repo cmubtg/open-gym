@@ -17,8 +17,19 @@ const FacilityCardInfo = () => {
 
 const FacilityCardTitle = () => {
   const { facility, closingStatus, lastFetch } = useFacility();
+  const { isAuthenticated, isGuestMode } = useAuth();
+
   const lastFetchMsg =
     lastFetch === 1 ? `1 minute ago` : `${lastFetch} minutes ago`;
+
+  if (isGuestMode || !isAuthenticated) {
+    return (
+      <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
+        <h3>{facility.name}</h3>
+        <div className="flex flex-row items-center mt-[-5px]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">

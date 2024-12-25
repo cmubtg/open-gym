@@ -33,17 +33,17 @@ const AuthButton = () => {
   return (
     <button
       onClick={handleAuth}
-      className="flex items-center gap-1 px-4 py-2 text-sm transition-colors mt-3 sm:mt-5 "
+      className="flex items-center justify-center w-32 px-4 py-2 text-sm transition-colors mt-3 sm:mt-5"
     >
       {isAuthenticated ? (
-        <div className="flex items-center gap-3 nav_icon">
+        <div className="flex items-center justify-center w-full nav_icon">
           <MdLogout size="24" />
-          <span>Sign Out</span>
+          <span className="w-16 text-center">Sign Out</span>
         </div>
       ) : (
-        <div className="flex items-center gap-3 nav_icon">
+        <div className="flex items-center justify-center w-full nav_icon">
           <MdLogin size="24" />
-          <span>Sign In</span>
+          <span className="w-16 text-center">Sign In</span>
         </div>
       )}
     </button>
