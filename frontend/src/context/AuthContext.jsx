@@ -60,7 +60,6 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsAuthenticated(false);
-    // You can add a logout API call here if needed
   };
 
   const value = {
