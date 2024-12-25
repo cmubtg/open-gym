@@ -3,6 +3,7 @@ import OccMeter from "./OccMeter";
 import LiveDot from "../misc/LiveDot";
 import { isClosed, getNextOpenReadable } from "../../utils/utils";
 import { useFacility } from "../../context/FacilityContext";
+import { useAuth } from "../../context/AuthContext";
 
 const FacilityCardInfo = () => {
   const { closingStatus } = useFacility();
@@ -21,10 +22,7 @@ const FacilityCardTitle = () => {
 
   return (
     <div className="w-[75%] h-full mt-2.5 min-[340px]:mt-4 flex flex-col">
-      {/* Gym Name */}
       <h3>{facility.name}</h3>
-
-      {/* Red dot + x minutes ago */}
       {!isClosed(closingStatus) ? (
         <LiveDot msg={lastFetchMsg} />
       ) : (
@@ -38,6 +36,13 @@ const FacilityCardTitle = () => {
 
 const FacilityCardMeter = () => {
   const { facility, occupancy, closingStatus } = useFacility();
+  const { isAuthenticated, isGuestMode } = useAuth();
+
+  if (isGuestMode || !isAuthenticated) {
+    // TODO:BPS-223 n/ - Better guest mode handling
+    return <></>;
+  }
+
   return (
     <>
       {!isClosed(closingStatus) && (

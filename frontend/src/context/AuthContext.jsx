@@ -7,10 +7,14 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
+  const [isGuestMode, setIsGuestMode] = useState(false);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
       try {
+        // Check if user has seen the initial login prompt
+        const hasSeenPrompt = localStorage.getItem("hasSeenLoginPrompt");
+
         const response = await fetch(
           `${process.env.REACT_APP_AUTH_URL}/verify`,
           {
@@ -20,11 +24,12 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
 
         setIsAuthenticated(data.isAuthenticated);
-        setShowLogin(!data.isAuthenticated);
+        // Only show login if user hasn't seen prompt and isn't authenticated
+        setShowLogin(!data.isAuthenticated && !hasSeenPrompt);
       } catch (error) {
         console.error("Auth check failed:", error);
         setIsAuthenticated(false);
-        setShowLogin(true);
+        setShowLogin(!localStorage.getItem("hasSeenLoginPrompt"));
       } finally {
         setIsLoading(false);
       }
@@ -48,6 +53,7 @@ export const AuthProvider = ({ children }) => {
 
       if (data.success) {
         setIsAuthenticated(true);
+        setIsGuestMode(false);
         setShowLogin(false);
         return true;
       }
@@ -60,6 +66,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsAuthenticated(false);
+    setIsGuestMode(false);
+  };
+
+  const continueAsGuest = () => {
+    setIsGuestMode(true);
+    setShowLogin(false);
+    localStorage.setItem("hasSeenLoginPrompt", "true");
   };
 
   const value = {
@@ -67,8 +80,11 @@ export const AuthProvider = ({ children }) => {
     isLoading,
     showLogin,
     setShowLogin,
+    isGuestMode,
+    setIsGuestMode,
     login,
     logout,
+    continueAsGuest,
   };
 
   if (isLoading) {

@@ -36,12 +36,12 @@ const AuthButton = () => {
       className="flex items-center gap-1 px-4 py-2 text-sm transition-colors mt-3 sm:mt-5 "
     >
       {isAuthenticated ? (
-        <div className="flex items-center gap-1 nav_icon">
+        <div className="flex items-center gap-3 nav_icon">
           <MdLogout size="24" />
           <span>Sign Out</span>
         </div>
       ) : (
-        <div className="flex items-center gap-1 nav_icon">
+        <div className="flex items-center gap-3 nav_icon">
           <MdLogin size="24" />
           <span>Sign In</span>
         </div>

@@ -21,9 +21,11 @@ const TitleBar = () => {
     <div className="w-full flex flex-row justify-between items-center">
       <div>
         <h1>Facility Occupancy</h1>
-        <p className="">Click on a gym for more occupancy information!</p>
+        {/* TODO: n/BPS-222 - Add facility details description. */}
+        {/* <p className="">Click on a gym for more occupancy information!</p> */}
+        <p>Real-time gym occupancy information</p>
       </div>
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2">
         <ThemeIcon />
         <AuthButton />
       </div>
