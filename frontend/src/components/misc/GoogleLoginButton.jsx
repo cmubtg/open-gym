@@ -2,8 +2,8 @@ import React from "react";
 import { GoogleLogin } from "@react-oauth/google";
 import { useAuth } from "../../context/AuthContext";
 
-function GoogleLoginButton({ setShowLogin }) {
-  const { login } = useAuth();
+function GoogleLoginButton() {
+  const { login, setShowLogin } = useAuth();
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {

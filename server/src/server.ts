@@ -12,14 +12,7 @@ const app = express();
 
 // middleware
 app.use(express.json());
-
 app.use(cors(config.corsPolicy));
-// Configs and uses express sessions
-
-app.use((req, res, next) => {
-  console.log(req.path, req.method);
-  next();
-});
 
 // connect to database
 mongoose
@@ -30,13 +23,18 @@ mongoose
 
     app.use(session(config.buildSessionConfig(response)));
 
-    // routes
-    app.use("/api/", loginAuth, OpenGymRoutes);
+    app.use((req, res, next) => {
+      console.log("request made to", req.path, req.method);
+      next();
+    });
 
-    // attempt to login
+    // Auth Routes
     app.post("/auth/login", login); // eslint-disable-line @typescript-eslint/no-misused-promises
     app.post("/auth/logout", logout); // eslint-disable-line @typescript-eslint/no-misused-promises
     app.get("/auth/verify", checkLogin);
+
+    // Protected Data Routes
+    app.use("/api/", loginAuth, OpenGymRoutes);
 
     // listen on port
     app.listen(config.port, () => {

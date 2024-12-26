@@ -13,6 +13,7 @@ const useFacilityOccupancy = (facility) => {
   useEffect(() => {
     const fetchData = async () => {
       if (!isAuthenticated) {
+        console.log("User is not authenticated, skipping fetch");
         return;
       }
 

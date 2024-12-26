@@ -8,6 +8,8 @@ const client = new OAuth2Client(config.googleOauthClientID);
 interface LoginBody {
   token: string;
 }
+
+// Backend verifies Google token from frontend and sets session.
 export const login = async (
   req: Request<unknown, unknown, LoginBody>,
   res: Response
@@ -37,19 +39,9 @@ export const login = async (
       console.log("Session ID:", req.sessionID);
 
       // Explicitly save the session and wait for it to complete
-      await new Promise<void>((resolve, reject) => {
-        req.session.save((err) => {
-          if (err) {
-            console.error("Session save error:", err);
-            reject(err);
-          } else {
-            resolve();
-          }
-        });
-      });
+      await req.session.save();
 
       console.log("Session saved:", req.session);
-      console.log("Cookies being set:", res.getHeader("set-cookie"));
 
       res.status(HttpStatus.OK).json({
         success: true,

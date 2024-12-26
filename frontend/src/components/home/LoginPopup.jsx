@@ -19,7 +19,7 @@ const LoginPopup = ({ setShowLogin }) => {
         </p> */}
         <div className="flex justify-between items-center mt-6">
           <div className="w-[45%]">
-            <GoogleLoginButton setShowLogin={setShowLogin} />
+            <GoogleLoginButton />
           </div>
           <div className="w-[45%]">
             <p
