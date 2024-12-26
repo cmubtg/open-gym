@@ -40,6 +40,11 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (credential) => {
     try {
+      console.log(
+        "Sending login request to:",
+        `${process.env.REACT_APP_AUTH_URL}/login`
+      );
+
       const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/login`, {
         method: "POST",
         headers: {
@@ -49,7 +54,9 @@ export const AuthProvider = ({ children }) => {
         body: JSON.stringify({ token: credential }),
       });
 
+      console.log("Login response status:", response.status);
       const data = await response.json();
+      console.log("Login response data:", data);
 
       if (data.success) {
         setIsAuthenticated(true);

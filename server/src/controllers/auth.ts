@@ -8,7 +8,6 @@ const client = new OAuth2Client(config.googleOauthClientID);
 interface LoginBody {
   token: string;
 }
-
 export const login = async (
   req: Request<unknown, unknown, LoginBody>,
   res: Response
@@ -16,29 +15,40 @@ export const login = async (
   const { token } = req.body;
   req.session.isAuthenticated = false;
 
+  console.log("Login attempt received");
+
   try {
-    // Verify the token with Google
+    console.log("Verifying Google token...");
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: config.googleOauthClientID,
     });
 
-    const email = ticket.getPayload()?.email;
-    // TODO - Add list of accept andrew emails
+    const payload = ticket.getPayload();
+    const email = payload?.email;
+    console.log("Email from token:", email);
+
     if (email && email.endsWith("@andrew.cmu.edu")) {
+      console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
-      res
-        .status(HttpStatus.OK)
-        .json({ success: true, message: "Login successful" });
+
+      res.status(HttpStatus.OK).json({
+        success: true,
+        message: "Login successful",
+      });
     } else {
-      res
-        .status(HttpStatus.Unauthorized)
-        .json({ success: false, message: "Invalid email domain" });
+      console.log("Invalid email domain");
+      res.status(HttpStatus.Unauthorized).json({
+        success: false,
+        message: "Invalid email domain",
+      });
     }
   } catch (error) {
-    res
-      .status(HttpStatus.BadRequest)
-      .json({ success: false, message: "Invalid token" });
+    console.error("Login error:", error);
+    res.status(HttpStatus.BadRequest).json({
+      success: false,
+      message: "Invalid token",
+    });
   }
 };
 
