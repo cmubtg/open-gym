@@ -36,9 +36,7 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: true,
-        ...(!isProduction && {
-          domain: "localhost",
-        }),
+        domain: isProduction ? ".netlify.app" : "localhost",
       },
       name: "sessionID",
     };
