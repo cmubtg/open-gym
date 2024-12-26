@@ -21,14 +21,12 @@ export default {
   buildSessionConfig(mongoose: Mongoose) {
     return {
       secret: process.env.MONGODB_SESSION_SECRET ?? "",
-      saveUninitialized: false, // don't create session until something stored
+      saveUninitialized: false,
       resave: false,
       store: MongoStore.create({
         client: mongoose.connection.getClient(),
         collectionName: "sessions",
-        ttl: 60 * 60, // 1 hour in seconds
-        autoRemove: "native",
-        touchAfter: 24 * 3600, // Only update session once per day
+        ttl: 60 * 60,
       }),
       cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
@@ -36,9 +34,8 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: true,
-        domain: isProduction ? ".netlify.app" : "localhost",
       },
-      name: "sessionID",
+      name: "connect.sid",
     };
   },
 };
