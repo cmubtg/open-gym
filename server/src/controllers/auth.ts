@@ -39,14 +39,17 @@ export const login = async (
       console.log("Session ID:", req.sessionID);
 
       // Explicitly save the session and wait for it to complete
-      await req.session.save();
+      await new Promise<void>((resolve, reject) => {
+        req.session.save((err) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve();
+          }
+        });
+      });
 
       console.log("Session saved:", req.session);
-
-      res.setHeader(
-        "Set-Cookie",
-        `connect.sid=${req.sessionID}; Path=/; Domain=${process.env.BACKEND_URL}; SameSite=None; Secure; HttpOnly`
-      );
 
       res.status(HttpStatus.OK).json({
         success: true,

@@ -11,8 +11,8 @@ import { loginAuth } from "./middleware/auth";
 const app = express();
 
 // middleware
-app.use(express.json());
 app.use(cors(config.corsPolicy));
+app.use(express.json());
 
 // connect to database
 mongoose
