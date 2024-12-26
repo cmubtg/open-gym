@@ -7,13 +7,13 @@ function GoogleLoginButton({ setShowLogin }) {
 
   const handleLoginSuccess = async (credentialResponse) => {
     try {
+      setShowLogin(false);
       const { credential } = credentialResponse;
       const success = await login(credential);
 
       if (success) {
-        setShowLogin(false);
-        alert("Login successful!");
       } else {
+        setShowLogin(true);
         alert("Invalid email domain.");
       }
     } catch (error) {

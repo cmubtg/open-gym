@@ -25,7 +25,7 @@ const TitleBar = () => {
         {/* <p className="">Click on a gym for more occupancy information!</p> */}
         <p>Real-time gym occupancy information</p>
       </div>
-      <div className="flex items-center gap-2">
+      <div className="flex items-center gap-1 mt-14">
         <ThemeIcon />
         <AuthButton />
       </div>

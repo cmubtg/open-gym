@@ -6,11 +6,11 @@ const ThemeIcon = () => {
   const [darkTheme, setDarkTheme] = useDarkMode();
   const handleMode = () => setDarkTheme(!darkTheme);
   return (
-    <div onClick={handleMode} className="mt-3 sm:mt-5">
+    <div onClick={handleMode} className="">
       {darkTheme ? (
-        <BiSun size="24" className="nav_icon" />
+        <BiSun size="20" className="nav_icon" />
       ) : (
-        <BiMoon size="24" className="nav_icon " />
+        <BiMoon size="20" className="nav_icon " />
       )}
     </div>
   );
