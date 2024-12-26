@@ -30,7 +30,7 @@ export default {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
-        sameSite: isProduction ? "none" : "lax",
+        sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
         path: "/",
         secure: isProduction,
         httpOnly: true,
