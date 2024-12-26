@@ -15,7 +15,7 @@ export default {
     origin: process.env.FRONTEND_URL ?? "",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   },
 
   buildSessionConfig(mongoose: Mongoose) {
@@ -33,7 +33,7 @@ export default {
         sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
         path: "/",
         secure: isProduction,
-        httpOnly: true,
+        httpOnly: false,
         domain: isProduction ? process.env.BACKEND_URL : undefined,
       },
       name: "connect.sid",
