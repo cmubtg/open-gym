@@ -12,6 +12,10 @@ const useFacilityOccupancy = (facility) => {
 
   useEffect(() => {
     const fetchData = async () => {
+      if (!isAuthenticated) {
+        return;
+      }
+
       try {
         const res = await fetch(
           `${process.env.REACT_APP_API_URL}/occupancy/${facility.id}`,
