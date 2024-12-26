@@ -12,11 +12,11 @@ const LoginPopup = ({ setShowLogin }) => {
         <p id="body">
           Open Gym is built and maintained by{" "}
           <a href="https://cmubtg.com/">CMU BTG</a>. To view real-time occupancy
-          data, please sign in with your Andrew ID.
+          data, please sign in with a CMU email
         </p>
-        <p id="loggedOut">
-          <strong>You are currently in guest mode.</strong>
-        </p>
+        {/* <p id="loggedOut">
+          
+        </p> */}
         <div className="flex justify-between items-center mt-6">
           <div className="w-[45%]">
             <GoogleLoginButton setShowLogin={setShowLogin} />
