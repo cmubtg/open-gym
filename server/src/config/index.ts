@@ -14,7 +14,10 @@ export default {
   corsPolicy: {
     origin: process.env.FRONTEND_URL ?? "",
     credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
   },
+
   buildSessionConfig(mongoose: Mongoose) {
     return {
       secret: process.env.MONGODB_SESSION_SECRET ?? "",
@@ -27,7 +30,7 @@ export default {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
-        sameSite: true,
+        sameSite: isProduction ? "none" : "lax",
         path: "/",
         secure: isProduction,
         httpOnly: true,
