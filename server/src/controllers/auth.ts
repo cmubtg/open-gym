@@ -32,6 +32,14 @@ export const login = async (
       console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
 
+      // Log session and cookies
+      console.log("Session:", req.session);
+      console.log("Session ID:", req.sessionID);
+
+      await new Promise((resolve) => req.session.save(resolve));
+
+      console.log("Cookies being set:", res.getHeader("set-cookie"));
+
       res.status(HttpStatus.OK).json({
         success: true,
         message: "Login successful",

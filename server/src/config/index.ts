@@ -34,6 +34,7 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: true,
+        domain: isProduction ? ".onrender.com" : "localhost",
       },
     };
   },
