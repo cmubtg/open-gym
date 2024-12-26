@@ -43,10 +43,10 @@ export const login = async (
 
       console.log("Session saved:", req.session);
 
-      // res.setHeader(
-      //   "Set-Cookie",
-      //   `connect.sid=${req.sessionID}; Path=/; Domain=${process.env.BACKEND_URL}; SameSite=None; Secure; HttpOnly`
-      // );
+      res.setHeader(
+        "Set-Cookie",
+        `connect.sid=${req.sessionID}; Path=/; Domain=${process.env.BACKEND_URL}; SameSite=None; Secure; HttpOnly`
+      );
 
       res.status(HttpStatus.OK).json({
         success: true,
