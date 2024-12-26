@@ -16,6 +16,7 @@ export default {
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+    exposedHeaders: ["set-cookie"],
   },
 
   buildSessionConfig(mongoose: Mongoose) {
@@ -34,7 +35,6 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: false,
-        domain: isProduction ? process.env.BACKEND_URL : undefined,
       },
       name: "connect.sid",
     };

@@ -15,8 +15,6 @@ export const login = async (
   res: Response
 ) => {
   const { token } = req.body;
-  req.session.isAuthenticated = false;
-
   console.log("Login attempt received");
 
   try {
