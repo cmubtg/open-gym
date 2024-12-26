@@ -49,3 +49,23 @@ export const checkLogin = (req: Request, res: Response) => {
     res.status(HttpStatus.OK).json({ isAuthenticated: false });
   }
 };
+
+export const logout = (req: Request, res: Response) => {
+  if (req.session) {
+    req.session.destroy((error) => {
+      if (error) {
+        res
+          .status(HttpStatus.InternalServerError)
+          .json({ success: false, message: "Logout failed" });
+      } else {
+        res
+          .status(HttpStatus.OK)
+          .json({ success: true, message: "Logged out successfully" });
+      }
+    });
+  } else {
+    res
+      .status(HttpStatus.OK)
+      .json({ success: true, message: "Already logged out" });
+  }
+};

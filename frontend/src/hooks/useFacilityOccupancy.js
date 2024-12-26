@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { getClosingStatus, isClosed } from "../utils/utils";
 import { MINUTE_MS } from "../utils/constants";
+import { useAuth } from "../context/AuthContext";
 
 const useFacilityOccupancy = (facility) => {
   const [occupancy, setOccupancy] = useState(0);
   const [closingStatus, setClosingStatus] = useState("closed");
-
+  const { isAuthenticated } = useAuth();
   // TODO Keep track of time since last fetch
   const lastFetch = Math.floor(Math.random() * 10) + 1;
 
@@ -42,7 +43,7 @@ const useFacilityOccupancy = (facility) => {
     // Check every minute to see if closing status has changed
     const intervalId = setInterval(updateClosingStatus, MINUTE_MS);
     return () => clearInterval(intervalId);
-  }, [closingStatus, facility]);
+  }, [closingStatus, facility, isAuthenticated]);
 
   return { occupancy, closingStatus, lastFetch };
 };

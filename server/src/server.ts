@@ -5,7 +5,7 @@ import session from "express-session";
 import OpenGymRoutes from "./routes/routes";
 import config from "./config";
 import { initJobs } from "./jobs";
-import { login, checkLogin } from "./controllers/login";
+import { login, checkLogin, logout } from "./controllers/auth";
 import { loginAuth } from "./middleware/auth";
 
 const app = express();
@@ -35,6 +35,7 @@ mongoose
 
     // attempt to login
     app.post("/auth/login", login); // eslint-disable-line @typescript-eslint/no-misused-promises
+    app.post("/auth/logout", logout); // eslint-disable-line @typescript-eslint/no-misused-promises
     app.get("/auth/verify", checkLogin);
 
     // listen on port

@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { FacilityCard, ThemeIcon, LoginPopup } from "../components";
+import { FacilityCard, ThemeIcon, LoginPopup, AuthButton } from "../components";
 import { getFacilities } from "../data/facilities";
 import { useAuth } from "../context/AuthContext";
 
@@ -19,12 +18,17 @@ const Home = () => {
 
 const TitleBar = () => {
   return (
-    <div className="w-full flex flex-row justify-between">
+    <div className="w-full flex flex-row justify-between items-center">
       <div>
         <h1>Facility Occupancy</h1>
-        <p className="">Click on a gym for more occupancy information!</p>
+        {/* TODO: n/BPS-222 - Add facility details description. */}
+        {/* <p className="">Click on a gym for more occupancy information!</p> */}
+        <p>Real-time gym occupancy information</p>
       </div>
-      <ThemeIcon />
+      <div className="flex items-center gap-1 mt-14">
+        <ThemeIcon />
+        <AuthButton />
+      </div>
     </div>
   );
 };
