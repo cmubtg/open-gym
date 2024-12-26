@@ -34,6 +34,7 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: true,
+        domain: isProduction ? process.env.BACKEND_URL : undefined,
       },
       name: "connect.sid",
     };
