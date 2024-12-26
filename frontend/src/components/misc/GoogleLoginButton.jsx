@@ -18,6 +18,7 @@ function GoogleLoginButton() {
 
       if (success) {
         console.log("Login successful");
+        console.log("Cookies after login", document.cookie);
       } else {
         console.log("Login failed - invalid email domain");
         setShowLogin(true);

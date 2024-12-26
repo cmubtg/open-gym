@@ -18,6 +18,7 @@ const useFacilityOccupancy = (facility) => {
       }
 
       try {
+        console.log("Cookies before API request:", document.cookie);
         const res = await fetch(
           `${process.env.REACT_APP_API_URL}/occupancy/${facility.id}`,
           {
