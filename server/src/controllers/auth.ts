@@ -42,12 +42,26 @@ export const login = async (
           if (err) {
             reject(err);
           } else {
+            console.log("Session saved!");
             resolve();
           }
         });
       });
 
-      console.log("Session saved:", req.session);
+      // Manually set the session cookie
+      const cookieOptions = {
+      maxAge: 3600000,
+      httpOnly: false,
+      secure: true,
+      sameSite: 'none' as const,
+      domain: '.cmugym.com',
+      path: '/'
+      };
+
+      res.cookie('connect.sid', req.sessionID, cookieOptions);
+      console.log("Response headers after setting cookie:", res.getHeaders());
+
+      
       console.log("Response headers before sending:", res.getHeaders());
 
       res.status(HttpStatus.OK).json({
