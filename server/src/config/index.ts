@@ -16,7 +16,6 @@ export default {
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
-    // exposedHeaders: ["set-cookie"],
   },
 
   buildSessionConfig(mongoose: Mongoose) {
@@ -34,7 +33,7 @@ export default {
         sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
         path: "/",
         secure: isProduction,
-        httpOnly: false,
+        httpOnly: true,
         domain: process.env.BACKEND_DOMAIN
       },
     };

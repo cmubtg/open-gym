@@ -15,7 +15,7 @@ export const login = async (
   res: Response
 ) => {
   const { token } = req.body;
-  console.log("Login attempt received", token);
+  console.log("Login attempt received");
 
   try {
     console.log("Verifying Google token...");

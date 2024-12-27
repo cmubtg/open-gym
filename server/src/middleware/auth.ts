@@ -26,13 +26,12 @@ export const loginAuth = async (req: Request, res: Response, next: NextFunction)
     console.log("Session from store:", session);
 }
 
-
-  // if (!config.isProduction) {
-  //   // Allow unrestricted access in development mode only
-  //   console.log("Development mode - bypassing auth");
-  //   next();
-  //   return;
-  // }
+  if (!config.isProduction) {
+    // Allow unrestricted access in development mode only
+    console.log("Development mode - bypassing auth");
+    next();
+    return;
+  }
 
   // Check for an active session indicating the user is logged in
   if (req.session.isAuthenticated) {
