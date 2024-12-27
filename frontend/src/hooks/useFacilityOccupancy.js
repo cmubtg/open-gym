@@ -23,6 +23,11 @@ const useFacilityOccupancy = (facility) => {
           `${process.env.REACT_APP_API_URL}/occupancy/${facility.id}`,
           {
             credentials: "include",
+            headers: {
+              // Include any existing cookies manually
+              Cookie: document.cookie,
+              'Content-Type': 'application/json'
+            }
           }
         );
         const data = await res.json();
