@@ -9,6 +9,7 @@ import { login, checkLogin, logout } from "./controllers/auth";
 import { loginAuth } from "./middleware/auth";
 
 const app = express();
+app.set('trust proxy', 1); // Trust first proxy
 
 // middleware
 app.use(cors(config.corsPolicy));
