@@ -48,6 +48,7 @@ export const login = async (
       });
 
       console.log("Session saved:", req.session);
+      console.log("Response headers before sending:", res.getHeaders());
 
       res.status(HttpStatus.OK).json({
         success: true,
