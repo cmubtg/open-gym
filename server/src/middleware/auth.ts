@@ -13,7 +13,6 @@ export const loginAuth = async (req: Request, res: Response, next: NextFunction)
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("Is authenticated:", req.session.isAuthenticated);
-  console.log("Cookies:", req.cookies);
   console.log("Headers:", req.headers);
   console.log("=========================");
   

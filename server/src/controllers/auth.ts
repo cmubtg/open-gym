@@ -48,21 +48,28 @@ export const login = async (
         });
       });
 
+      // Verify session was saved
+      const verifySession = await new Promise((resolve) => {
+      req.sessionStore.get(req.sessionID, (err, session) => {
+          if (err) console.error("Error verifying session:", err);
+          resolve(session);
+      });
+      });
+
+      console.log("Session ID after save:", req.sessionID);
+      console.log("Verified session in store:", verifySession);
+
       // Manually set the session cookie
-      const cookieOptions = {
-      maxAge: 3600000,
-      httpOnly: false,
-      secure: true,
-      sameSite: 'none' as const,
-      domain: '.cmugym.com',
-      path: '/'
-      };
-
-      res.cookie('connect.sid', req.sessionID, cookieOptions);
-      console.log("Response headers after setting cookie:", res.getHeaders());
-
-      
-      console.log("Response headers before sending:", res.getHeaders());
+      // const cookieOptions = {
+      // maxAge: 3600000,
+      // httpOnly: false,
+      // secure: true,
+      // sameSite: 'none' as const,
+      // domain: '.cmugym.com',
+      // path: '/'
+      // };
+      // res.cookie('connect.sid', req.sessionID, cookieOptions);
+      // console.log("Response headers after setting cookie:", res.getHeaders());
 
       res.status(HttpStatus.OK).json({
         success: true,

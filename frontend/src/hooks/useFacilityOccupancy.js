@@ -24,8 +24,6 @@ const useFacilityOccupancy = (facility) => {
           {
             credentials: "include",
             headers: {
-              // Include any existing cookies manually
-              Cookie: document.cookie,
               'Content-Type': 'application/json'
             }
           }
