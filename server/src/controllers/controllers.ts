@@ -1,10 +1,10 @@
-import { Request, Response } from 'express';
-import db from '../models/database';
-import { GymName } from '../models/database.types';
-import * as Metadata from '../services/gymMetadataService';
-import * as Predict from '../services/predictOccupancyService';
-import { HttpStatus, Collection } from '../utils/constants';
-import { errorMessage } from '../utils/helper';
+import { Request, Response } from "express";
+import db from "../models/database";
+import { GymName } from "../models/database.types";
+import * as Metadata from "../services/gymMetadataService";
+import * as Predict from "../services/predictOccupancyService";
+import { HttpStatus, Collection } from "../utils/constants";
+import { errorMessage } from "../utils/helper";
 
 // Get every Record from every gym
 export const getAllRecords = async (req: Request, res: Response) => {
@@ -49,7 +49,7 @@ export const getOccupancy = async (req: Request, res: Response) => {
 
     // get random occupancy for now
     const occupancy = Math.floor(Math.random() * 100);
-    
+
     res.status(HttpStatus.OK).json({ occupancy: occupancy });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
@@ -91,21 +91,29 @@ export const getMetadata = async (req: Request, res: Response) => {
 
 // TODO: Update to take specific gym into account
 export const getAnalytics = (req: Request, res: Response) => {
-  res.status(HttpStatus.NotFound).json({ message: 'Unimplemented' });
+  res.status(HttpStatus.NotFound).json({ message: "Unimplemented" });
 };
 
 // create a new record
 export const createRecord = async (req: Request, res: Response) => {
-  const { time, occupancy } = req.body; // TODO specify the type of time, occupancy
+  const { occupancy } = req.body;
+  console.log(req.body);
+  console.log("received action: ", occupancy);
   const { gym } = req.params;
+
+  // get the current time
+  const time = new Date();
 
   // add to the database
   try {
-    await db.insertOne({
-      gym: gym as GymName,
-      time: new Date(time as string),
-      occupancy: occupancy as number
-    }, Collection.Current);
+    await db.insertOne(
+      {
+        gym: gym as GymName,
+        time: time,
+        occupancy: occupancy as number,
+      },
+      Collection.Current
+    );
     res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });

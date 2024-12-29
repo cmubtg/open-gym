@@ -1,18 +1,15 @@
 import React from "react";
-import useFacilityOccupancy from "../../hooks/useFacilityOccupancy";
+import { FacilityProvider } from "../../context/FacilityContext";
 import { FacilityCardDisplay, FacilityCardInfo } from "../index";
-import { useFacilityMetadata } from "../../hooks/useFacilityMetadata";
 
-const FacilityCard = () => {
-  const facility = useFacilityMetadata();
-  const { occupancy, closingStatus, lastFetch } =
-    useFacilityOccupancy(facility);
-
+const FacilityCard = ({ facility }) => {
   return (
-    <div className="w-full h-full">
-      <FacilityCardDisplay {...{ occupancy, closingStatus }} />
-      <FacilityCardInfo {...{ occupancy, lastFetch, closingStatus }} />
-    </div>
+    <FacilityProvider facility={facility}>
+      <div className="w-full h-full">
+        <FacilityCardDisplay />
+        <FacilityCardInfo />
+      </div>
+    </FacilityProvider>
   );
 };
 
