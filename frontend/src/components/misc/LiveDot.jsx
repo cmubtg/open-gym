@@ -1,17 +1,20 @@
 import React from 'react';
+import { useFacility } from "../../context/FacilityContext";
 
-const LiveDot = ({msg}) => {
+const LiveDot = () => {
+    const { lastFetch } = useFacility();
+    const lastFetchMsg = lastFetch === 1 ? '1 minute ago' : `${lastFetch} minutes ago`;
+
     return (
-        <div className="flex flex-row items-center mt-[-5px]">
-            <div className="w-5 h-8 relative">
-                <div className={`w-[10px] h-[10px] bg-btg-red rounded-full absolute
-                                top-[11px] left-[0px]`}>
-                </div>
-                <div className={`w-[18px] h-[18px] border-btg-red border-2 rounded-full 
-                                absolute top-[7px] left-[-4px] animate-pulsate`}>
-                </div>
+        <div className="flex items-center gap-2 mt-1">
+            <div className="relative grid place-items-center w-4 h-4 ml-[-0.2em]">
+                {/* Base dot */}
+                <div className="w-2.5 h-2.5 bg-btg-red rounded-full" />
+                
+                {/* Animated pulse ring */}
+                <div className="absolute w-4 h-4 border-2 border-btg-red rounded-full animate-pulsate" />
             </div>
-            <p>{msg}</p>
+            <p>{lastFetchMsg}</p>
         </div>
     );
 };

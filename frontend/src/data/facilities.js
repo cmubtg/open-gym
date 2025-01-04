@@ -17,7 +17,7 @@ const testHours = {
 const facilities = [
     {
       id: "cohonFC",
-      name : "Cohon Fitness Center (Lower)",
+      name : "UC Fitness Center Lower",
       address : "5000 Forbes Ave, Pittsburgh, PA 15213",
       description : `Two floors dedicated to cardio and weight equipment in
       the Cohon Univeristy Center.`,
@@ -31,7 +31,7 @@ const facilities = [
     }, 
     {
       id: "cohon2FC",
-      name : "Cohon Fitness Center (Upper)",
+      name : "UC Fitness Center Upper",
       address : "5000 Forbes Ave, Pittsburgh, PA 15213",
       description : `Two floors dedicated to cardio and weight equipment in
       the Cohon Univeristy Center.`,
