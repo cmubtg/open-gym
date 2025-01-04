@@ -1,18 +1,16 @@
+import React from "react";
+import { FacilityProvider } from "../../context/FacilityContext";
+import { FacilityCardDisplay, FacilityCardInfo } from "../index";
 
-import React from 'react';
-import useFacilityOccupancy from '../../hooks/useFacilityOccupancy';
-import {FacilityCardDisplay, FacilityCardInfo} from '../index';
-
-const FacilityCard = ({facility}) => {
-
-  const {occupancy, closingStatus, lastFetch} = useFacilityOccupancy(facility);
-
+const FacilityCard = ({ facility }) => {
   return (
-    <div className="w-full h-full">
-      <FacilityCardDisplay {...{facility, occupancy, closingStatus }} />
-      <FacilityCardInfo {...{facility, occupancy, lastFetch, closingStatus }} />
-    </div>
+    <FacilityProvider facility={facility}>
+      <div className="w-full h-full">
+        <FacilityCardDisplay />
+        <FacilityCardInfo />
+      </div>
+    </FacilityProvider>
   );
-}
+};
 
 export default FacilityCard;
