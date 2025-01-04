@@ -7,7 +7,6 @@ export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
-  const [isGuestMode, setIsGuestMode] = useState(false);
 
   useEffect(() => {
     const checkAuthStatus = async () => {
@@ -60,7 +59,6 @@ export const AuthProvider = ({ children }) => {
 
       if (data.success) {
         setIsAuthenticated(true);
-        setIsGuestMode(false);
         setShowLogin(false);
         return true;
       }
@@ -73,11 +71,9 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsAuthenticated(false);
-    setIsGuestMode(false);
   };
 
   const continueAsGuest = () => {
-    setIsGuestMode(true);
     setShowLogin(false);
     localStorage.setItem("hasSeenLoginPrompt", "true");
   };
@@ -87,8 +83,6 @@ export const AuthProvider = ({ children }) => {
     isLoading,
     showLogin,
     setShowLogin,
-    isGuestMode,
-    setIsGuestMode,
     login,
     logout,
     continueAsGuest,
