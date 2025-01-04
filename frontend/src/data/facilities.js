@@ -60,6 +60,7 @@ const facilities = [
 
 export const getFacilitiesMetadata = () => {
   return facilities;
+  // TODO n/BPS-226 - Fetch facility metadata from API
   //   const fetchFacilitiesMetadata = async () => {
   //     try {
   //       const response = await fetch(`${process.env.REACT_APP_API_URL}/metadata`);
