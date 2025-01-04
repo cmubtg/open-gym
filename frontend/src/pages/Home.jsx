@@ -1,5 +1,5 @@
 import { FacilityCard, ThemeIcon, LoginPopup, AuthButton } from "../components";
-import { getFacilities } from "../data/facilities";
+import { getFacilitiesMetadata } from "../data/facilities";
 import { useAuth } from "../context/AuthContext";
 
 const Home = () => {
@@ -34,7 +34,7 @@ const TitleBar = () => {
 };
 
 const FacilityCards = () => {
-  const facilities = getFacilities();
+  const facilities = getFacilitiesMetadata();
   return (
     <div className="btg_grid_container">
       {facilities.map((facility) => (
