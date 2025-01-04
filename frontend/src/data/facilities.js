@@ -91,6 +91,6 @@ const facilities = [
     }
 ];
 
-export const getFacilities = () => {
+export const getFacilitiesMetadata = () => {
     return facilities;
 };
