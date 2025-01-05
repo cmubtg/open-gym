@@ -1,6 +1,6 @@
 import React from "react";
-import GoogleLoginButton from "../misc/GoogleLoginButton";
-import { useAuth } from "../../context/AuthContext";
+import GoogleLoginButton from "./GoogleLoginButton";
+import { useAuth } from "context/AuthContext";
 
 const LoginPopup = ({ setShowLogin }) => {
   const { continueAsGuest } = useAuth();

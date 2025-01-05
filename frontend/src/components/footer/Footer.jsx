@@ -1,4 +1,3 @@
-import React from 'react';
 import BTGLogo from './BTGLogo';
 
 import {  FiGithub } from "react-icons/fi";

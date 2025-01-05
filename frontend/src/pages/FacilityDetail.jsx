@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { useMediaQuery } from "react-responsive";
-import { useFacilityMetadata } from "../hooks/useFacilityMetadata";
+import { useFacilityMetadata } from "hooks/useFacilityMetadata";
 
 import {
   FacilityDetailTopBar,
@@ -9,7 +9,7 @@ import {
   FacilityDetailCards,
   BarChart,
   FacilityDetailGeneralAmenities,
-} from "../components/facility";
+} from "components/facilitydetail";
 
 const FacilityDetail = () => {
   const { id } = useParams();

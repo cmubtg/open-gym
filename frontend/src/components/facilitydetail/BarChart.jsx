@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Bar } from 'react-chartjs-2';
-import themeColors from '../../styles/colors.js';
 
 import {
     Chart as ChartJS,

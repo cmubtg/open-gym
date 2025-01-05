@@ -1,8 +1,7 @@
-import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, FacilityDetail } from "./pages";
-import Footer from "./components/footer/Footer";
-import { AuthProvider } from "./context/AuthContext";
+import { Home, FacilityDetail } from "pages";
+import Footer from "components/footer/Footer";
+import { AuthProvider } from "context/AuthContext";
 
 function App() {
   return (
