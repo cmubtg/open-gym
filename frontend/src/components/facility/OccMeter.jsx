@@ -1,6 +1,5 @@
-import React, { useEffect, useState, useContext } from "react";
-import { getOccClass } from "../../utils/utils";
-import { useFacility } from "../../context/FacilityContext";
+import { getOccClass } from "utils/utils";
+import { useFacility } from "context/FacilityContext";
 
 const OccMeter = () => {
   // TODO Fetch occupancy data from API

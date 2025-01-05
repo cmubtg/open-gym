@@ -1,5 +1,4 @@
-import React from 'react';
-import { useFacility } from "../../context/FacilityContext";
+import { useFacility } from "context/FacilityContext";
 
 const LiveDot = () => {
     const { lastFetch } = useFacility();

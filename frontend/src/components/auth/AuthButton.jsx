@@ -1,5 +1,4 @@
-import React from "react";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "context/AuthContext";
 import { MdLogin, MdLogout } from "react-icons/md";
 
 const AuthButton = () => {

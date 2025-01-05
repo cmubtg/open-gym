@@ -1,6 +1,5 @@
-import React from "react";
-import { FacilityProvider } from "../../context/FacilityContext";
-import { FacilityCardDisplay, FacilityCardInfo } from "../index";
+import { FacilityProvider } from "context/FacilityContext";
+import { FacilityCardDisplay, FacilityCardInfo } from "components";
 
 const FacilityCard = ({ facility }) => {
   return (

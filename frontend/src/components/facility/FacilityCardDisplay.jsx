@@ -1,6 +1,5 @@
-import React from "react";
-import { isOpen } from "../../utils/utils";
-import { useFacility } from "../../context/FacilityContext";
+import { isOpen } from "utils/utils";
+import { useFacility } from "context/FacilityContext";
 
 const FacilityCardDisplay = () => {
   const { facility, closingStatus } = useFacility();

@@ -1,6 +1,6 @@
-import { FacilityCard, ThemeIcon, LoginPopup, AuthButton } from "../components";
-import { getFacilitiesMetadata } from "../data/facilities";
-import { useAuth } from "../context/AuthContext";
+import { FacilityCard, ThemeIcon, LoginPopup, AuthButton } from "components";
+import { getFacilitiesMetadata } from "data/facilities";
+import { useAuth } from "context/AuthContext";
 
 const Home = () => {
   const { showLogin, setShowLogin } = useAuth();

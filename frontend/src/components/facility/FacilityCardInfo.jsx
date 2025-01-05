@@ -1,9 +1,8 @@
-import React from "react";
-import OccMeter from "./OccMeter";
-import LiveDot from "../misc/LiveDot";
-import { isClosed, getNextOpenReadable } from "../../utils/utils";
-import { useFacility } from "../../context/FacilityContext";
-import { useAuth } from "../../context/AuthContext";
+import OccMeter from "components/facility/OccMeter";
+import LiveDot from "components/facility/LiveDot";
+import { isClosed } from "utils/utils";
+import { useFacility } from "context/FacilityContext";
+import { useAuth } from "context/AuthContext";
 
 const FacilityCardInfo = () => {
   const { facility, closingStatus } = useFacility();
