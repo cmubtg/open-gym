@@ -11,12 +11,9 @@ const LoginPopup = ({ setShowLogin }) => {
         <h2>OpenGym</h2>
         <p id="body">
           Open Gym is built and maintained by{" "}
-          <a href="https://cmubtg.com/">CMU BTG</a>. To view real-time occupancy
-          data, please sign in with a CMU email
+          <a href="https://cmubtg.com/">CMU BTG</a>.<strong className="text-btg-red">To view real-time occupancy
+          data, please sign in with a CMU email </strong>
         </p>
-        {/* <p id="loggedOut">
-          
-        </p> */}
         <div className="flex justify-between items-center mt-6">
           <div className="w-[45%]">
             <GoogleLoginButton />
