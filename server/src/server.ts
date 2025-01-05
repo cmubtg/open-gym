@@ -7,6 +7,7 @@ import config from "./config";
 import { initJobs } from "./jobs";
 import { login, checkLogin, logout } from "./controllers/auth";
 import { loginAuth } from "./middleware/auth";
+import { getHealthStatus } from "./controllers/health";
 
 const app = express();
 app.set('trust proxy', 1); // Trust first proxy
@@ -27,6 +28,12 @@ mongoose
     app.use((req, res, next) => {
       console.log("request made to", req.path, req.method);
       next();
+    });
+
+    // Health Route
+    app.get('/health', async (req, res) => {
+      const [healthCheck, statusCode] = await getHealthStatus();
+      res.status(statusCode).json(healthCheck);
     });
 
     // Auth Routes
