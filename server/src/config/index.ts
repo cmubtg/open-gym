@@ -1,6 +1,7 @@
 import MongoStore from "connect-mongo";
 import dotenv from "dotenv";
 import { Mongoose } from "mongoose";
+
 dotenv.config(); // load env variables
 
 const isProduction = (process.env.IS_PRODUCTION ?? "") === "true";
@@ -10,6 +11,10 @@ export default {
   databaseURL: process.env.MONGO_URI ?? "",
   frontendURL: process.env.FRONTEND_URL ?? "",
   googleOauthClientID: process.env.GOOGLE_OAUTH_CLIENT_ID ?? "",
+  hmacSecret: process.env.HMAC_SECRET,
+  requestExpiryMs: 5 * 60 * 1000, // 5 minutes
+  encryptionKey: process.env.ENCRYPTION_KEY,
+  ivLength: 16,
   isProduction: isProduction,
   corsPolicy: {
     origin: process.env.FRONTEND_URL ?? "",
@@ -17,7 +22,6 @@ export default {
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   },
-
   buildSessionConfig(mongoose: Mongoose) {
     return {
       secret: process.env.MONGODB_SESSION_SECRET ?? "",
@@ -34,7 +38,7 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: true,
-        domain: process.env.BACKEND_DOMAIN
+        domain: process.env.BACKEND_DOMAIN,
       },
     };
   },

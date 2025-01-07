@@ -15,7 +15,7 @@ export const loginAuth = async (req: Request, res: Response, next: NextFunction)
   console.log("Is authenticated:", req.session.isAuthenticated);
   console.log("Headers:", req.headers);
   console.log("=========================");
-  
+
   if (req.sessionID) {
     const session = await new Promise((resolve) => {
         req.sessionStore.get(req.sessionID, (err, session) => {
@@ -43,3 +43,4 @@ export const loginAuth = async (req: Request, res: Response, next: NextFunction)
   // If no session exists, deny access
   res.status(HttpStatus.Unauthorized).json({ error: "Unauthorized access" });
 };
+

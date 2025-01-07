@@ -2,15 +2,18 @@ import express from "express";
 import cors from "cors";
 import mongoose, { Mongoose } from "mongoose";
 import session from "express-session";
-import OpenGymRoutes from "./routes/routes";
+
 import config from "./config";
 import { initJobs } from "./jobs";
-import { login, checkLogin, logout } from "./controllers/auth";
-import { loginAuth } from "./middleware/auth";
 import { getHealthStatus } from "./controllers/health";
 
+import OpenGymRoutes from "./routes/routes";
+import { login, checkLogin, logout } from "./controllers/auth";
+import { loginAuth, hmacAuth } from "./middleware";
+import { createRecord } from "./controllers/controllers";
+
 const app = express();
-app.set('trust proxy', 1); // Trust first proxy
+app.set("trust proxy", 1); // Trust first proxy
 
 // middleware
 app.use(cors(config.corsPolicy));
@@ -31,7 +34,7 @@ mongoose
     });
 
     // Health Route
-    app.get('/health', async (req, res) => {
+    app.get("/health", async (req, res) => {
       const [healthCheck, statusCode] = await getHealthStatus();
       res.status(statusCode).json(healthCheck);
     });
@@ -40,6 +43,11 @@ mongoose
     app.post("/auth/login", login); // eslint-disable-line @typescript-eslint/no-misused-promises
     app.post("/auth/logout", logout); // eslint-disable-line @typescript-eslint/no-misused-promises
     app.get("/auth/verify", checkLogin);
+
+    // Sensor Data Route
+    // hmac Auth to verify the request is coming from the sensor and
+    // decrypt the data
+    app.post("/:gym", hmacAuth, createRecord);
 
     // Protected Data Routes
     app.use("/api/", loginAuth, OpenGymRoutes);
