@@ -6,7 +6,10 @@ export enum Collection {
   Aggregate = "aggregate",
   Current = "current",
   Forecast = "forecast",
+  Log = "log",
 }
+
+export const Direction = [1, -1] as const;
 
 // Constant for NO_ONE
 export const NO_ONE = 0;

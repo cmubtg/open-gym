@@ -1,77 +1,71 @@
 import mongoose, { InferSchemaType, Schema } from "mongoose";
-import { Collection, GYM_NAMES } from "../utils/constants";
+import { Collection, GYM_NAMES, Direction } from "../utils/constants";
 
-// Infer the GymName type from the array values
+// Define GymName type from constant array
 export type GymName = (typeof GYM_NAMES)[number];
 
-// Define Occupancy Record Schema and type.
-/* OccupancyRecord is equivalent to the following TypeScript type:
+// Define Occupancy Record Schema
+/* RecordType is equivalent to the following TypeScript type:
 {
     gym: GymName;
     time: Date;
     occupancy: number;
 }
 */
-export const occupancyRecordSchema = new Schema({
+export const recordSchema = new Schema({
   gym: {
     type: String,
     required: true,
     enum: GYM_NAMES,
   },
   time: { type: Date, required: true },
-  occupancy: { type: Number, required: true },
-  // TODO Add model input (boolean flags etc)
+  log: { type: Number, required: true, min: -1 },
 });
-type baseOccupancyRecord = InferSchemaType<typeof occupancyRecordSchema>;
-// Enforce gym field to be of type GymName
-export interface OccupancyRecord extends Omit<baseOccupancyRecord, "gym"> {
-  gym: GymName;
-}
 
-// Create Gym Hours.
-/* GymHours is equivalent to the following TypeScript type:
-{
-    gym: GymName;
-    date: Date;
-    close: string;
-    open: string;
-    description?: string | undefined;
-}
-*/
+// Gym Hours Schema
 export const gymHoursSchema = new Schema({
-  gym: { type: String, required: true },
+  gym: { type: String, required: true, enum: GYM_NAMES },
   date: { type: Date, required: true },
   open: { type: String, required: true },
   close: { type: String, required: true },
   description: { type: String },
 });
-type baseGymHours = InferSchemaType<typeof gymHoursSchema>;
-export interface GymHours extends Omit<baseGymHours, "gym"> {
+
+// Infer base types from schemas
+type BaseRecordType = InferSchemaType<typeof recordSchema>;
+type BaseGymHoursType = InferSchemaType<typeof gymHoursSchema>;
+
+// Define interfaces with GymName type enforcement
+export interface RecordType extends Omit<BaseRecordType, "gym"> {
   gym: GymName;
 }
-// Options for querying the database.
-export interface DBOptionType {
-  gym?: GymName;
-  dateRange?: { start: Date; end: Date };
-  collection?: Collection;
+export interface GymHoursType extends Omit<BaseGymHoursType, "gym"> {
+  gym: GymName;
 }
 
-export type Model = mongoose.Model<baseOccupancyRecord>;
+// Type definitions for models
+export type RecordModelType = mongoose.Model<BaseRecordType>;
 
-// Create corresponding models.
-const AggregateModel = mongoose.model(
-  Collection.Aggregate,
-  occupancyRecordSchema
-);
-const CurrentModel = mongoose.model(Collection.Current, occupancyRecordSchema);
-const ForecastModel = mongoose.model(
-  Collection.Forecast,
-  occupancyRecordSchema
-);
-export const GymHoursModel = mongoose.model("gymHours", gymHoursSchema);
-// Key-value pair of Collection to Model.
-export const MODEL_MAP: Record<Collection, Model> = {
-  [Collection.Aggregate]: AggregateModel,
-  [Collection.Current]: CurrentModel,
-  [Collection.Forecast]: ForecastModel,
-};
+// Create model instances
+const models = {
+  [Collection.Aggregate]: mongoose.model(Collection.Aggregate, recordSchema),
+  [Collection.Current]: mongoose.model(Collection.Current, recordSchema),
+  [Collection.Forecast]: mongoose.model(Collection.Forecast, recordSchema),
+  [Collection.Log]: mongoose.model(Collection.Log, recordSchema),
+} as const;
+
+// Export the model map
+export const MODEL_MAP: Record<Collection, RecordModelType> = models;
+
+// Export the gym hours model
+export const gymHoursModel = mongoose.model("gymHours", gymHoursSchema);
+
+// Database query options interface
+export interface DBOptionType {
+  gym?: GymName;
+  dateRange?: {
+    start: Date;
+    end: Date;
+  };
+  collection?: Collection;
+}

@@ -110,9 +110,9 @@ export const createRecord = async (req: Request, res: Response) => {
       {
         gym: gym as GymName,
         time: time,
-        occupancy: occupancy as number,
+        log: -1,
       },
-      Collection.Current
+      Collection.Log
     );
     res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
   } catch (error) {

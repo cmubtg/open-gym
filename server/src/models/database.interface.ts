@@ -1,22 +1,22 @@
-import { Collection } from '../utils/constants';
-import { OccupancyRecord, GymHours, DBOptionType } from './database.types';
+import { Collection } from "../utils/constants";
+import { RecordType, GymHoursType, DBOptionType } from "./database.types";
 
 export default interface DB {
   // For all functions with options, the date range must match the collection.
 
   /**
-   * Inserts a OccupancyRecord into the specified gym's collection.
+   * Inserts a Record into the specified gym's collection.
    * @param data the record to insert
    * @param collection the collection to insert the record into
    */
-  insertOne(data: OccupancyRecord, collection: Collection): Promise<void>
+  insertOne(data: RecordType, collection: Collection): Promise<void>;
 
   /**
-   * Inserts many into a OccupancyRecord into the specified gym's collection.
+   * Inserts many into a Record into the specified gym's collection.
    * @param data the records to insert
    * @param collection the collection to insert the records into
    */
-  insertMany(data: OccupancyRecord[], collection: Collection): Promise<void>
+  insertMany(data: RecordType[], collection: Collection): Promise<void>;
 
   /**
    * Retrieves all records from the specified gym's collection from the PAST,
@@ -33,7 +33,7 @@ export default interface DB {
    *
    * @returns a list of records
    */
-  getRecords(options?: DBOptionType): Promise<OccupancyRecord[]>
+  getRecords(options?: DBOptionType): Promise<RecordType[]>;
 
   /**
    * Retrieves the most recent record from the specified gym's collection.
@@ -50,7 +50,7 @@ export default interface DB {
    * Warning: This function is not guaranteed to return a record if no records exist.
    * @returns a list of the most recent record
    */
-  getRecentRecords(options?: DBOptionType): Promise<OccupancyRecord[]>
+  getRecentRecords(options?: DBOptionType): Promise<RecordType[]>;
 
   /**
    * Retrieves a special gym schedule for a gym for a given date.
@@ -64,6 +64,5 @@ export default interface DB {
    *
    * @returns a list of gym hours
    */
-   getGymHours(options?: DBOptionType): Promise<GymHours[]>
-
+  getGymHours(options?: DBOptionType): Promise<GymHoursType[]>;
 }
