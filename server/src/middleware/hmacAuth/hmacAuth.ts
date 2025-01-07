@@ -9,7 +9,7 @@ export const hmacAuth = (req: Request, res: Response, next: NextFunction) => {
   try {
     const timestamp = req.headers["x-timestamp"] as string;
     const receivedSignature = req.headers["x-signature"] as string;
-    const encryptedData = req.body.data as string;
+    const encryptedData = req.body.direction as string;
 
     const { isValid, error } = validateRequest(
       timestamp,

@@ -96,9 +96,9 @@ export const getAnalytics = (req: Request, res: Response) => {
 
 // create a new record
 export const createRecord = async (req: Request, res: Response) => {
-  const { occupancy } = req.body;
+  const { direction } = req.body;
   console.log(req.body);
-  console.log("received action: ", occupancy);
+  console.log("received action: ", direction);
   const { gym } = req.params;
 
   // get the current time
@@ -106,11 +106,13 @@ export const createRecord = async (req: Request, res: Response) => {
 
   // add to the database
   try {
+    // TODO: update to calculate running account and insert into specialized
+    // sensor data db.
     await db.insertOne(
       {
         gym: gym as GymName,
         time: time,
-        occupancy: occupancy as number,
+        occupancy: direction as number,
       },
       Collection.Current
     );
