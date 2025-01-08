@@ -1,9 +1,9 @@
 import { Request, Response } from "express";
 import db from "../models/database";
-import { GymName } from "../models/database.types";
+import { GymName, Direction } from "../models/database.types";
 import * as Metadata from "../services/gymMetadataService";
 import * as Predict from "../services/predictOccupancyService";
-import { HttpStatus, Collection } from "../utils/constants";
+import { HttpStatus, Collection, DIRECTIONS } from "../utils/constants";
 import { errorMessage } from "../utils/helper";
 
 // Get every Record from every gym
@@ -94,23 +94,26 @@ export const getAnalytics = (req: Request, res: Response) => {
   res.status(HttpStatus.NotFound).json({ message: "Unimplemented" });
 };
 
-// create a new record
+// Insert a sensor log into the database
 export const createRecord = async (req: Request, res: Response) => {
-  const { occupancy } = req.body;
-  console.log(req.body);
-  console.log("received action: ", occupancy);
+  const { log } = req.body;
   const { gym } = req.params;
+  console.log(`Log ${log} for Gym ${gym}`);
 
-  // get the current time
-  const time = new Date();
+  // Enforce valid log value (must be 1 or -1 when inserting in Collection.Log)
+  if (!DIRECTIONS.includes(log)) {
+    return res.status(HttpStatus.BadRequest).json({
+      error: `Invalid log value. Must be one of: ${DIRECTIONS.join(", ")}`,
+    });
+  }
 
-  // add to the database
+  // Insert into database
   try {
     await db.insertOne(
       {
         gym: gym as GymName,
-        time: time,
-        log: -1,
+        time: new Date(),
+        log: log as Direction,
       },
       Collection.Log
     );

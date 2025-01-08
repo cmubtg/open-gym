@@ -1,8 +1,11 @@
 import mongoose, { InferSchemaType, Schema } from "mongoose";
-import { Collection, GYM_NAMES, Direction } from "../utils/constants";
+import { Collection, GYM_NAMES, DIRECTIONS } from "../utils/constants";
 
 // Define GymName type from constant array
 export type GymName = (typeof GYM_NAMES)[number];
+
+// Define Direction type from constant array
+export type Direction = (typeof DIRECTIONS)[number];
 
 // Define Occupancy Record Schema
 /* RecordType is equivalent to the following TypeScript type:
