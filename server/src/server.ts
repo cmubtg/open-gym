@@ -8,10 +8,9 @@ import { initJobs } from "./jobs";
 import { login, checkLogin, logout } from "./controllers/auth";
 import { loginAuth } from "./middleware/auth";
 import { getHealthStatus } from "./controllers/health";
-import * as controller from "./controllers/controllers";
 
 const app = express();
-app.set("trust proxy", 1); // Trust first proxy
+app.set('trust proxy', 1); // Trust first proxy
 
 // middleware
 app.use(cors(config.corsPolicy));
@@ -31,11 +30,8 @@ mongoose
       next();
     });
 
-    // Bluetooth scan hits here
-    app.post("/:gym", controller.createRecord);
-
     // Health Route
-    app.get("/health", async (req, res) => {
+    app.get('/health', async (req, res) => {
       const [healthCheck, statusCode] = await getHealthStatus();
       res.status(statusCode).json(healthCheck);
     });
