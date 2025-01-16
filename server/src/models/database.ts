@@ -31,7 +31,6 @@ const dummyRecord: OccupancyRecord = {
 const db: DB = {
   insertOne: async (record, collection = Collection.Current) => {
     const model: Model = getModel(collection);
-    console.log("inserting into collection: ", collection);
     await model.create(record);
   },
 
@@ -53,14 +52,14 @@ const db: DB = {
 
     if (isIn(GYM_NAMES, gym)) {
       const records: OccupancyRecord[] = await model
-        .find({ gym: gym, date: { $gte: start, $lt: end } }, { _id: 0 })
+        .find({ gym: gym, time: { $gte: start, $lt: end } }, { _id: 0 })
         .sort({ time: -1 })
         .lean();
       return records;
     }
 
     const records: OccupancyRecord[] = await model
-      .find({ date: { $gte: start, $lt: end } }, { _id: 0 })
+      .find({ time: { $gte: start, $lt: end } }, { _id: 0 })
       .sort({ time: -1 })
       .lean();
     return records;
@@ -110,14 +109,14 @@ const db: DB = {
     const endDate = getRelativeDate(end, 1);
     if (isIn(GYM_NAMES, gym)) {
       const hours: GymHours[] = await GymHoursModel.find(
-        { gym: gym, date: { $gte: startDate, $lt: endDate } },
+        { gym: gym, time: { $gte: startDate, $lt: endDate } },
         { _id: 0 }
       );
       return hours;
     }
 
     const hours: GymHours[] = await GymHoursModel.find(
-      { date: { $gte: startDate, $lt: endDate } },
+      { time: { $gte: startDate, $lt: endDate } },
       { _id: 0 }
     );
     return hours;
