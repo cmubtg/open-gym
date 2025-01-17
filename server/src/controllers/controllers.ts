@@ -44,10 +44,8 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
 export const getOccupancy = async (req: Request, res: Response) => {
   try {
     const { gym } = req.params;
-    const [records] = await db.getRecentRecords({ gym: gym as GymName});
-    const { occupancy } = records;
-
-
+    const [record] = await db.getRecentRecords({ gym: gym as GymName});
+    const { occupancy } = record;
     res.status(HttpStatus.OK).json({ occupancy: occupancy });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
