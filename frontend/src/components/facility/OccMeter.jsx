@@ -30,7 +30,7 @@ const OccMeter = () => {
       </svg>
       <div className="meter_info">
         <p className="font-bold text-base text-black dark:text-white">
-          {occupancy}
+          {occupancy * 10}
           <span className="text-xs">%</span>
         </p>
         <p className="font-light text-[7px] mt-[-5px]">of max occupancy</p>
