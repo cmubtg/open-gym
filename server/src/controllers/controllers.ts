@@ -44,8 +44,12 @@ export const getAllOccupancy = async (req: Request, res: Response) => {
 export const getOccupancy = async (req: Request, res: Response) => {
   try {
     const { gym } = req.params;
-    const [record] = await db.getRecentRecords({ gym: gym as GymName});
-    const { occupancy } = record;
+    // const [record] = await db.getRecentRecords({ gym: gym as GymName});
+    // const { occupancy } = record;
+
+    // get random occupancy for now
+    const occupancy = Math.floor(Math.random() * 100);
+
     res.status(HttpStatus.OK).json({ occupancy: occupancy });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
