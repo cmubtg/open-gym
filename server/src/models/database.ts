@@ -79,7 +79,6 @@ const db: DB = {
         dateRange: dateRange,
         collection: collection,
       });
-      console.log("records", records);
       if (records.length > 0) {
         return [records[0]];
       }
