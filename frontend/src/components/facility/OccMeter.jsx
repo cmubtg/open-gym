@@ -12,8 +12,8 @@ const OccMeter = () => {
     return startOffset + (endOffset - startOffset) * (boundedPerc / 100);
   };
 
-  const offset = calculateOffset(occupancy);
-  const occ_class = getOccClass(occupancy);
+  const offset = calculateOffset(occupancy * 10);
+  const occ_class = getOccClass(occupancy * 10);
 
   return (
     <div className="meter_container">
