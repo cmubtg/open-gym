@@ -8,8 +8,8 @@
 
 export const getRelativeDate = (date: Date, dayDelta: number) => {
   const relDate = new Date(date);
-  relDate.setDate(date.getDate()+dayDelta);
-  relDate.setHours(0, 0, 0, 0);
+  relDate.setUTCDate(date.getUTCDate() + dayDelta);
+  relDate.setUTCHours(0, 0, 0, 0); // Use UTC hours
   return relDate;
 };
 
@@ -19,10 +19,10 @@ export const getRelativeDate = (date: Date, dayDelta: number) => {
  * @returns the date with the time set to the given time
  */
 export const getDateFromClock = (date: Date, time: string) => {
-  const [hour, minute] = time.split(':').map(x => parseInt(x, 10));
+  const [hour, minute] = time.split(":").map((x) => parseInt(x, 10));
   const newDate = new Date(date);
-  newDate.setHours(hour);
-  newDate.setMinutes(minute);
+  newDate.setUTCHours(hour);
+  newDate.setUTCMinutes(minute);
   return newDate;
 };
 
@@ -32,7 +32,7 @@ export const getDateFromClock = (date: Date, time: string) => {
  * @returns the date with the time set to the nth hour
  */
 export const getNthHour = (date: Date, n: number) => {
-  date.setHours(n, 0, 0, 0);
+  date.setUTCHours(n, 0, 0, 0);
   return date;
 };
 
@@ -41,5 +41,5 @@ export const getNthHour = (date: Date, n: number) => {
  * @returns the date at the start of the week
  */
 export const startOfWeek = (date: Date) => {
-  return getRelativeDate(date, -date.getDay());
+  return getRelativeDate(date, -date.getUTCDay());
 };
