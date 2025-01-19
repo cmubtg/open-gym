@@ -12,8 +12,8 @@ const OccMeter = () => {
     return startOffset + (endOffset - startOffset) * (boundedPerc / 100);
   };
 
-  const offset = calculateOffset(occupancy * 10);
-  const occ_class = getOccClass(occupancy * 10);
+  const offset = calculateOffset(occupancy);
+  const occ_class = getOccClass(occupancy);
 
   return (
     <div className="meter_container">
@@ -30,7 +30,7 @@ const OccMeter = () => {
       </svg>
       <div className="meter_info">
         <p className="font-bold text-base text-black dark:text-white">
-          {occupancy * 10}
+          {occupancy}
           <span className="text-xs">%</span>
         </p>
         <p className="font-light text-[7px] mt-[-5px]">of max occupancy</p>
