@@ -50,14 +50,14 @@ const db: DB = {
 
     if (isIn(GYM_NAMES, gym)) {
       const records: OccupancyRecordType[] = await model
-        .find({ gym: gym, date: { $gte: start, $lt: end } }, { _id: 0 })
+        .find({ gym: gym, time: { $gte: start, $lt: end } }, { _id: 0 })
         .sort({ time: -1 })
         .lean();
       return records;
     }
 
     const records: OccupancyRecordType[] = await model
-      .find({ date: { $gte: start, $lt: end } }, { _id: 0 })
+      .find({ time: { $gte: start, $lt: end } }, { _id: 0 })
       .sort({ time: -1 })
       .lean();
     return records;
@@ -79,14 +79,14 @@ const db: DB = {
 
     if (isIn(GYM_NAMES, gym)) {
       const records: LogRecordType[] = await logModel
-        .find({ gym: gym, date: { $gte: start, $lt: end } }, { _id: 0 })
+        .find({ gym: gym, time: { $gte: start, $lt: end } }, { _id: 0 })
         .sort({ time: -1 })
         .lean();
       return records;
     }
 
     const records: LogRecordType[] = await logModel
-      .find({ date: { $gte: start, $lt: end } }, { _id: 0 })
+      .find({ time: { $gte: start, $lt: end } }, { _id: 0 })
       .sort({ time: -1 })
       .lean();
     return records;
@@ -103,14 +103,14 @@ const db: DB = {
     const endDate = getRelativeDate(end, 1);
     if (isIn(GYM_NAMES, gym)) {
       const hours: GymHoursType[] = await gymHoursModel.find(
-        { gym: gym, date: { $gte: startDate, $lt: endDate } },
+        { gym: gym, time: { $gte: startDate, $lt: endDate } },
         { _id: 0 }
       );
       return hours;
     }
 
     const hours: GymHoursType[] = await gymHoursModel.find(
-      { date: { $gte: startDate, $lt: endDate } },
+      { time: { $gte: startDate, $lt: endDate } },
       { _id: 0 }
     );
     return hours;
