@@ -1,22 +1,23 @@
 import { Collection } from "../utils/constants";
-import { RecordType, GymHoursType, DBOptionType } from "./database.types";
+import {
+  OccupancyRecordType,
+  LogRecordType,
+  GymHoursType,
+  DBOptionType,
+} from "./database.types";
 
 export default interface DB {
   // For all functions with options, the date range must match the collection.
 
   /**
-   * Inserts a Record into the specified gym's collection.
-   * @param data the record to insert
-   * @param collection the collection to insert the record into
-   */
-  insertOne(data: RecordType, collection: Collection): Promise<void>;
-
-  /**
-   * Inserts many into a Record into the specified gym's collection.
+   * Inserts records into specified gym's collection.
    * @param data the records to insert
    * @param collection the collection to insert the records into
    */
-  insertMany(data: RecordType[], collection: Collection): Promise<void>;
+  insertOccupancyRecords(
+    data: OccupancyRecordType[],
+    collection: Collection
+  ): Promise<void>;
 
   /**
    * Retrieves all records from the specified gym's collection from the PAST,
@@ -31,26 +32,30 @@ export default interface DB {
    * If dateRange is not specified, retrieves all records from the current day
    * If collection is not specified, retrieves all records from the PRESENT collection
    *
-   * @returns a list of records
+   * @returns a list of records in descending order of time
    */
-  getRecords(options?: DBOptionType): Promise<RecordType[]>;
+  getOccupancyRecords(options?: DBOptionType): Promise<OccupancyRecordType[]>;
 
   /**
-   * Retrieves the most recent record from the specified gym's collection.
+   * Inserts log records into Log collection
+   * @param data the records to insert
+   */
+  insertLogRecords(data: LogRecordType[]): Promise<void>;
+
+  /**
+   * Retrieves all records from the specified gym's collection from Log collection.
+   *
    * @param options the options to filter the records
    * @param options.gym the gym to retrieve records from
    * @param options.dateRange the date range to retrieve records from
-   * @param options.collection the collection to retrieve records from
    *
-   * If gym is not specified, retrieves the most recent record from all gyms
-   * If dateRange is not specified, retrieves the most recent record from the current day
-   * If collection is not specified, retrieves the most recent record from the CURRENT collection
+   * If gym is not specified, retrieves all records from all gyms
+   * If dateRange is not specified, retrieves all records from the current day
+   * ignores collection specification from DBOptionType
    *
-   * Warning: This function should only be used to for the CURRENT collection.
-   * Warning: This function is not guaranteed to return a record if no records exist.
-   * @returns a list of the most recent record
+   * @returns a list of log records in descending order of time
    */
-  getRecentRecords(options?: DBOptionType): Promise<RecordType[]>;
+  getLogRecords(options?: DBOptionType): Promise<LogRecordType[]>;
 
   /**
    * Retrieves a special gym schedule for a gym for a given date.

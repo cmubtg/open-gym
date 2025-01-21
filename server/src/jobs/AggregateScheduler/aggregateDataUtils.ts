@@ -1,28 +1,28 @@
-import { GymName, RecordType } from "../../models/database.types";
+import { GymName, OccupancyRecordType } from "../../models/database.types";
 import { getNthHour } from "../../utils/date";
 
 interface GymRecordType {
   gym: string;
-  data: RecordType[];
+  data: OccupancyRecordType[];
 }
 
 /**
  * Groups occupancy records by hour
  * @param data array of occupancy records
  * @returns array of occupancy records grouped by hour
- * (A[i] = RecordType[] from i:00-i+1:00)
+ * (A[i] = OccupancyRecordType[] from i:00-i+1:00)
  */
-const groupGymDataByHours = (data: RecordType[]) => {
+const groupGymDataByHours = (data: OccupancyRecordType[]) => {
   const occupancyAtEachHour = Array.from<null, number[]>(
     { length: 24 },
     () => []
   );
 
   return data.reduce((group, record) => {
-    const { time, log } = record;
+    const { time, occupancy } = record;
     const hour = time.getHours();
     const prevData: number[] = group[hour];
-    prevData.push(log);
+    prevData.push(occupancy);
     group[hour] = prevData;
     return group;
   }, occupancyAtEachHour);
@@ -46,9 +46,9 @@ export const aggregateOccupancyData = (
       : occupancies.reduce((total, occ) => total + occ, 0) / occupancies.length
   );
 
-  return averagedByHour.map((log, index) => ({
+  return averagedByHour.map((occupancy, index) => ({
     gym: gym as GymName,
     time: getNthHour(date, index),
-    log,
+    occupancy,
   }));
 };

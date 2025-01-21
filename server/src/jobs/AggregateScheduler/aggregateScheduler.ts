@@ -1,9 +1,9 @@
-import { CronJob } from 'cron';
-import db from '../../models/database';
-import { GYM_NAMES, Collection } from '../../utils/constants';
-import { getRelativeDate } from '../../utils/date';
-import { aggregateOccupancyData } from './aggregateDataUtils';
-import { GymName } from '../../models/database.types';
+import { CronJob } from "cron";
+import db from "../../models/database";
+import { GYM_NAMES, Collection } from "../../utils/constants";
+import { getRelativeDate } from "../../utils/date";
+import { aggregateOccupancyData } from "./aggregateDataUtils";
+import { GymName, OccupancyRecordType } from "../../models/database.types";
 
 /**
  * Initialize aggregate scheduler
@@ -11,11 +11,11 @@ import { GymName } from '../../models/database.types';
 export default function initAggregateScheduler() {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
   new CronJob(
-    '0 0 * * *', // Daily (@ 12:00 am)
+    "0 0 * * *", // Daily (@ 12:00 am)
     aggregateOccupancyJob,
     null, // onComplete
     true, // start
-    'America/New_York' // timeZone
+    "America/New_York" // timeZone
   );
 }
 
@@ -27,15 +27,18 @@ const aggregateOccupancyJob = async () => {
   const currentDate = new Date();
   const yesterday = getRelativeDate(currentDate, -1);
   for (const gymName of GYM_NAMES) {
-    const yesterdaysData = await db.getRecords({
+    const yesterdaysData: OccupancyRecordType[] = await db.getOccupancyRecords({
       gym: gymName as GymName,
       dateRange: {
         start: yesterday,
-        end: getRelativeDate(currentDate, 0)
+        end: getRelativeDate(currentDate, 0),
       },
       collection: Collection.Current,
     });
-    const data = aggregateOccupancyData(yesterday, { gym: gymName, data: yesterdaysData });
-    await db.insertMany(data, Collection.Aggregate);
+    const data: OccupancyRecordType[] = aggregateOccupancyData(yesterday, {
+      gym: gymName,
+      data: yesterdaysData,
+    });
+    await db.insertOccupancyRecords(data, Collection.Aggregate);
   }
 };

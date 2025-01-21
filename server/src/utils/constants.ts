@@ -1,13 +1,11 @@
 // Define the array of gym names
 export const GYM_NAMES = ["tepperFC", "fairfax", "cohonFC", "wiegand"] as const;
-export const DIRECTIONS = [1, -1] as const;
 
 // Enum for MongoDB collection names
 export enum Collection {
   Aggregate = "aggregate",
   Current = "current",
   Forecast = "forecast",
-  Log = "log",
 }
 
 // Constant for NO_ONE

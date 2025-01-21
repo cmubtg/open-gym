@@ -1,10 +1,11 @@
 import {
   GymHoursType,
   gymHoursModel,
-  GymName,
-  RecordModelType,
+  OccupancyRecordType,
+  LogRecordType,
+  logModel,
+  OccupancyRecordModelType,
   MODEL_MAP,
-  RecordType,
 } from "./database.types";
 import DB from "./database.interface";
 import { getRelativeDate } from "../utils/date";
@@ -12,7 +13,7 @@ import { GYM_NAMES, Collection } from "../utils/constants";
 import { isIn } from "../utils/helper";
 
 // Helper functions/constants
-const getModel = (collection: Collection): RecordModelType => {
+const getModel = (collection: Collection): OccupancyRecordModelType => {
   return MODEL_MAP[collection];
 };
 
@@ -21,27 +22,23 @@ const defaultDateRange = {
   end: getRelativeDate(new Date(), 1),
 };
 
-const dummyRecord: RecordType = {
+const dummyRecord: OccupancyRecordType = {
   gym: "cohonFC",
   time: getRelativeDate(new Date(), 0),
-  log: 0,
+  occupancy: 0,
 };
 
 // Database object
 const db: DB = {
-  insertOne: async (record, collection = Collection.Current) => {
-    const model: RecordModelType = getModel(collection);
-    console.log("inserting into collection: ", collection);
-    await model.create(record);
-  },
-
-  insertMany: async (records, collection = Collection.Current) => {
+  insertOccupancyRecords: async (records, collection = Collection.Current) => {
+    const model: OccupancyRecordModelType = getModel(collection);
     for (const record of records) {
-      await db.insertOne(record, collection);
+      console.log("inserting into collection: ", collection);
+      await model.create(record);
     }
   },
 
-  getRecords: async (options) => {
+  getOccupancyRecords: async (options) => {
     const defaultOptions = {
       dateRange: defaultDateRange,
       collection: Collection.Current,
@@ -52,52 +49,47 @@ const db: DB = {
     const model = getModel(collection);
 
     if (isIn(GYM_NAMES, gym)) {
-      const records: RecordType[] = await model
+      const records: OccupancyRecordType[] = await model
         .find({ gym: gym, date: { $gte: start, $lt: end } }, { _id: 0 })
         .sort({ time: -1 })
         .lean();
       return records;
     }
 
-    const records: RecordType[] = await model
+    const records: OccupancyRecordType[] = await model
       .find({ date: { $gte: start, $lt: end } }, { _id: 0 })
       .sort({ time: -1 })
       .lean();
     return records;
   },
 
-  getRecentRecords: async (options) => {
+  insertLogRecords: async (records) => {
+    for (const record of records) {
+      console.log("inserting into log collection");
+      await logModel.create(record);
+    }
+  },
+
+  getLogRecords: async (options) => {
     const defaultOptions = {
       dateRange: defaultDateRange,
-      collection: Collection.Current,
     };
-    const { gym, dateRange, collection } = { ...defaultOptions, ...options };
+    const { gym, dateRange } = { ...defaultOptions, ...options };
+    const { start, end } = dateRange;
 
-    const recordsData = [];
     if (isIn(GYM_NAMES, gym)) {
-      const records: RecordType[] = await db.getRecords({
-        gym: gym,
-        dateRange: dateRange,
-        collection: collection,
-      });
-      console.log("records", records);
-      if (records.length > 0) {
-        return [records[0]];
-      }
-      return [dummyRecord];
+      const records: LogRecordType[] = await logModel
+        .find({ gym: gym, date: { $gte: start, $lt: end } }, { _id: 0 })
+        .sort({ time: -1 })
+        .lean();
+      return records;
     }
 
-    for (const gym of GYM_NAMES) {
-      const records: RecordType[] = await db.getRecords({
-        gym: gym as GymName,
-        dateRange: dateRange,
-        collection: collection,
-      });
-      if (records.length > 0) {
-        recordsData.push(records[0]);
-      }
-    }
-    return recordsData;
+    const records: LogRecordType[] = await logModel
+      .find({ date: { $gte: start, $lt: end } }, { _id: 0 })
+      .sort({ time: -1 })
+      .lean();
+    return records;
   },
 
   getGymHours: async (options) => {
