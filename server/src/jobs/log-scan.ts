@@ -26,11 +26,17 @@ export const logScanJob = async () => {
   const currentTime = timeRoundedToNearestMinute(new Date());
   const occupancyRecords: OccupancyRecordType[] = [];
   for (const gymName of GYM_NAMES) {
-    const record = await db.getMostRecentLogRecord({
-      gym: gymName as GymName,
+    const records = await db.getLogRecords({
+      gym: gymName,
     });
 
-    let occupancy = record.entries - record.exits;
+    const totalEntries = records.map((record) => record.entries)
+      .reduce((a, b) => a + b, 0);
+
+    const totalExits = records.map((record) => record.exits)
+      .reduce((a, b) => a + b, 0);
+
+    const occupancy = totalEntries - totalExits;
     occupancyRecords.push({
       gym: gymName,
       time: currentTime,

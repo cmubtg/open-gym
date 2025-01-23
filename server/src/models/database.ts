@@ -28,13 +28,6 @@ const dummyRecord: OccupancyRecordType = {
   occupancy: 0,
 };
 
-const dummyLogRecord: LogRecordType = {
-  gym: "cohonFC",
-  time: getRelativeDate(new Date(), 0),
-  entries: 0,
-  exits: 0,
-};
-
 // Database object
 const db: DB = {
   insertOccupancyRecords: async (records, collection = Collection.Current) => {
@@ -98,24 +91,6 @@ const db: DB = {
       .sort({ time: -1 })
       .lean();
     return records;
-  },
-
-  getMostRecentLogRecord: async (options) => {
-    const defaultOptions = {
-      dateRange: defaultDateRange,
-    };
-    const { gym, dateRange } = { ...defaultOptions, ...options };
-    const { start, end } = dateRange;
-
-    if (isIn(GYM_NAMES, gym)) {
-      const records: LogRecordType = await logModel
-        .findOne({ gym: gym, time: { $gte: start, $lt: end } }, { _id: 0, __v: 0 })
-        .sort({ time: -1 })
-        .lean() ?? dummyLogRecord;
-      return records;
-    } else {
-      throw new Error("Must specify the gym in DBOptions.")
-    }
   },
 
   getGymHours: async (options) => {
