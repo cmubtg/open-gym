@@ -32,22 +32,22 @@ describe('Controller Tests', () => {
         { time: '2024-10-25T10:00:00.000Z', occupancy: 20 },
         { time: '2024-10-25T11:00:00.000Z', occupancy: 25 },
       ];
-      (db.getRecords as jest.Mock).mockResolvedValue(mockData);
+      (db.getOccupancyRecords as jest.Mock).mockResolvedValue(mockData);
 
       await Controller.getRecords(req as Request, res as Response);
 
-      expect(db.getRecords).toHaveBeenCalledWith({ gym: 'tepperFC' });
+      expect(db.getOccupancyRecords).toHaveBeenCalledWith({ gym: 'tepperFC' });
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
       expect(mockJson).toHaveBeenCalledWith(mockData);
     });
 
     it('should return status 400 and an error message if db.getRecords throws an error', async () => {
       const error = new Error('Database error');
-      (db.getRecords as jest.Mock).mockRejectedValue(error);
+      (db.getOccupancyRecords as jest.Mock).mockRejectedValue(error);
 
       await Controller.getRecords(req as Request, res as Response);
 
-      expect(db.getRecords).toHaveBeenCalledWith({ gym: 'tepperFC' });
+      expect(db.getOccupancyRecords).toHaveBeenCalledWith({ gym: 'tepperFC' });
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
       expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${error.message}` });
     });

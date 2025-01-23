@@ -43,3 +43,15 @@ export const getNthHour = (date: Date, n: number) => {
 export const startOfWeek = (date: Date) => {
   return getRelativeDate(date, -date.getUTCDay());
 };
+
+/**
+ * @param date date to be modified
+ * @returns the date rounded to the nearest minute
+ */
+export const timeRoundedToNearestMinute = (date: Date) => {
+  // Round to the nearest minute
+  const roundedMinutes = Math.round(date.getSeconds() / 60) * 60;
+  date.setSeconds(roundedMinutes);
+
+  return date;
+};

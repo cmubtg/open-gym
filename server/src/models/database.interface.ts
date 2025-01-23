@@ -58,6 +58,21 @@ export default interface DB {
   getLogRecords(options?: DBOptionType): Promise<LogRecordType[]>;
 
   /**
+   * Retrieves the most recent record from Log collection from the current day,
+   * if there is no record for the current day returns dummy record.
+   *
+   * @param options the options to filter the records
+   * @param options.gym the gym to retrieve records from
+   * @param options.dateRange the date range to retrieve records from
+   *
+   * If gym is not specified, throws error
+   * If dateRange is not specified, retrieves the most recent record in the current day
+   *
+   * @returns a the most recent log record
+   */
+  getMostRecentLogRecord(options?: DBOptionType): Promise<LogRecordType>;
+
+  /**
    * Retrieves a special gym schedule for a gym for a given date.
    * @param options the options to filter the records
    * @param options.gym the gym to retrieve records from
