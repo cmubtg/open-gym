@@ -15,6 +15,6 @@ router.get('/metadata/:gym', controller.getMetadata);
 router.get('/analytics', controller.getAnalytics);
 
 // Bluetooth scan hits here
-// router.post('/:gym', controller.createRecord);
+router.post('/:gym', controller.createRecord);
 
 export default router;
