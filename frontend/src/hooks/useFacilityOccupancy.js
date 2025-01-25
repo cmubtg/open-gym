@@ -19,17 +19,17 @@ const useFacilityOccupancy = (facility) => {
 
       try {
         const res = await fetch(
-          `${process.env.REACT_APP_API_URL}/occupancy/${facility.id}`,
+          `${process.env.REACT_APP_API_URL}/occupancy-record/${facility.id}`,
           {
             credentials: "include",
             headers: {
-              'Content-Type': 'application/json'
-            }
+              "Content-Type": "application/json",
+            },
           }
         );
-        const data = await res.json();
+        const occupancyRecords = await res.json();
         if (res.ok) {
-          setOccupancy(data.occupancy);
+          setOccupancy(occupancyRecords[0].occupancy);
         }
       } catch (error) {
         console.error("Error fetching data:", error);

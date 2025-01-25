@@ -4,7 +4,7 @@ import * as controller from "@/controllers";
 import { loginAuth } from "@/middleware/auth";
 import OpenGymRoutes from "./routes";
 
-const setupRoutes = (app: Application): void => {
+const mountRoutes = (app: Application): void => {
   // Health check route.
   app.get("/health", async (req, res) => {
     const [healthCheck, statusCode] = await controller.getHealthStatus();
@@ -17,10 +17,10 @@ const setupRoutes = (app: Application): void => {
   app.get("/auth/verify", controller.checkLogin);
 
   // Exposed for Demo Purposes.
-  app.post("/:gym", controller.createLogRecord);
+  app.post("/occupancy-record/:gym/new", controller.createOccupancyRecord);
 
   // Protected routes
-  app.use("/api", loginAuth, OpenGymRoutes);
+  app.use("/api", OpenGymRoutes);
 };
 
-export default setupRoutes;
+export default mountRoutes;

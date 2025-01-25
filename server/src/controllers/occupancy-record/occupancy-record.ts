@@ -24,3 +24,32 @@ export const gymOccupancyRecords = async (req: Request, res: Response) => {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
 };
+
+// Insert new occupancy record.
+export const createOccupancyRecord = async (req: Request, res: Response) => {
+  const { occupancy } = req.body;
+  const { gym } = req.params;
+
+  // Validate input
+  if (!occupancy) {
+    res.status(HttpStatus.BadRequest).json({ error: "No occupancy provided" });
+    return;
+  }
+  if (occupancy < 0) {
+    res.status(HttpStatus.BadRequest).json({ error: "Invalid occupancy" });
+    return;
+  }
+
+  // Insert into database
+  try {
+    const occupancyRecord = {
+      gym: gym as GymName,
+      occupancy: occupancy as number,
+      time: new Date(),
+    };
+    await db.insertOccupancyRecords([occupancyRecord]);
+    res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
+  } catch (error) {
+    res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
+  }
+};

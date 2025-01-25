@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import session from "express-session";
 import config from "@/config";
 import startCronJobs from "@/jobs";
-import setupRoutes from "@/routes";
+import mountRoutes from "@/routes";
 import mountMiddleware, { errorHandler } from "@/middleware";
 
 export class Server {
@@ -13,6 +13,8 @@ export class Server {
   constructor() {
     this.app = express();
     this.app.set("trust proxy", 1);
+    this.app.use(cors(config.corsPolicy));
+    this.app.use(express.json());
   }
 
   private async connectToDatabase(): Promise<mongoose.Mongoose> {
@@ -31,9 +33,11 @@ export class Server {
   }
 
   private setupMiddleware(): void {
-    this.app.use(cors(config.corsPolicy));
-    this.app.use(express.json());
     mountMiddleware(this.app);
+  }
+
+  private setupRoutes(): void {
+    mountRoutes(this.app);
   }
 
   private setupErrorHandling(): void {
@@ -45,15 +49,16 @@ export class Server {
       // Connect to database
       const connection = await this.connectToDatabase();
 
-      // Initialize middleware
-      this.setupMiddleware();
       this.setupSession(connection);
 
       // Start background jobs
       startCronJobs();
 
+      // Initialize middleware
+      this.setupMiddleware();
+
       // Setup routes
-      setupRoutes(this.app);
+      this.setupRoutes();
 
       // Setup error handling
       this.setupErrorHandling();

@@ -14,7 +14,10 @@ export default interface DB {
    * @param data the records to insert
    * @param collection the collection to insert the records into
    */
-  insertOccupancyRecords(data: OccupancyRecordType[], collection: OccupancyCollection): Promise<void>;
+  insertOccupancyRecords(
+    data: OccupancyRecordType[],
+    collection?: OccupancyCollection
+  ): Promise<void>;
 
   /**
    * Retrieves all records from the specified gym's collection from the PAST,
