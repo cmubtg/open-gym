@@ -4,8 +4,7 @@ import * as controller from "@/controllers";
 import { loginAuth } from "@/middleware/auth";
 import OpenGymRoutes from "./routes";
 
-export const setupRoutes = (app: Application): void => {
-  
+const setupRoutes = (app: Application): void => {
   // Health check route.
   app.get("/health", async (req, res) => {
     const [healthCheck, statusCode] = await controller.getHealthStatus();
@@ -22,4 +21,6 @@ export const setupRoutes = (app: Application): void => {
 
   // Protected routes
   app.use("/api", loginAuth, OpenGymRoutes);
-}
+};
+
+export default setupRoutes;

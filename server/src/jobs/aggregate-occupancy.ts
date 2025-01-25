@@ -1,13 +1,13 @@
 import { CronJob } from "cron";
-import db from "../models/database";
-import { OccupancyRecordType } from "../models/types";
+import db from "@/models/database";
+import { OccupancyRecordType } from "@/models/types";
 import {
-  GYM_NAMES, 
+  GYM_NAMES,
   OccupancyCollection,
   GymName,
   nthHour,
-  relativeDate
-} from "../utils";
+  relativeDate,
+} from "@/utils";
 
 /**
  * Initialize aggregate occupancy scheduler
@@ -78,7 +78,7 @@ const groupGymDataByHours = (data: OccupancyRecordType[]) => {
  */
 const aggregateOccupancyData = (
   date: Date,
-  { gym, data }: { gym: GymName, data: OccupancyRecordType[] }
+  { gym, data }: { gym: GymName; data: OccupancyRecordType[] }
 ) => {
   const groupedByHour = groupGymDataByHours(data);
 

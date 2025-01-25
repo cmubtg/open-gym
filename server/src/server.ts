@@ -2,13 +2,10 @@ import express, { Application } from "express";
 import cors from "cors";
 import mongoose from "mongoose";
 import session from "express-session";
-import OpenGymRoutes from "@/routes/routes";
-import config from "@/config"
+import config from "@/config";
 import startCronJobs from "@/jobs";
-import { loginAuth } from "@/middleware/auth";
-import { setupRoutes } from "@/routes";
-import { setupMiddleware } from "@/middleware";
-import { errorHandler } from "@/middleware/error";
+import setupRoutes from "@/routes";
+import mountMiddleware, { errorHandler } from "@/middleware";
 
 export class Server {
   private app: Application;
@@ -21,7 +18,7 @@ export class Server {
   private async connectToDatabase(): Promise<mongoose.Mongoose> {
     try {
       const connection = await mongoose.connect(config.databaseURL);
-      console.log('Connected to database:', connection.connection.name);
+      console.log("Connected to database:", connection.connection.name);
       return connection;
     } catch (error) {
       console.error("Database connection failed:", error);
@@ -36,7 +33,7 @@ export class Server {
   private setupMiddleware(): void {
     this.app.use(cors(config.corsPolicy));
     this.app.use(express.json());
-    setupMiddleware(this.app);
+    mountMiddleware(this.app);
   }
 
   private setupErrorHandling(): void {
@@ -53,7 +50,7 @@ export class Server {
       this.setupSession(connection);
 
       // Start background jobs
-      await startCronJobs();
+      startCronJobs();
 
       // Setup routes
       setupRoutes(this.app);

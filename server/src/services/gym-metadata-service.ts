@@ -1,4 +1,4 @@
-import * as metadata from "@/../data/metadata.json";
+import * as metadata from "../../data/metadata.json";
 import { GYM_NAMES, GymName } from "@/utils";
 import { getSpecialSchedule } from "./gym-hours-service";
 
@@ -11,7 +11,6 @@ export const getAllMetadataHelper = async () => {
     metadata[gymName].hours = await getSpecialSchedule(new Date(), gymName);
   }
   return metadata;
-
 };
 
 /**

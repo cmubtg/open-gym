@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import config from "../config";
-import { HttpStatus } from "../utils/constants";
+import config from "@/config";
+import { HttpStatus } from "@/utils";
 
 declare module "express-session" {
   export interface SessionData {

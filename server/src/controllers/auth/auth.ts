@@ -64,11 +64,11 @@ export const login = async (
       // maxAge: 3600000,
       // httpOnly: false,
       // secure: true,
-      // sameSite: 'none' as const,
-      // domain: '.cmugym.com',
-      // path: '/'
+      // sameSite: "none" as const,
+      // domain: ".cmugym.com",
+      // path: "/"
       // };
-      // res.cookie('connect.sid', req.sessionID, cookieOptions);
+      // res.cookie("connect.sid", req.sessionID, cookieOptions);
       // console.log("Response headers after setting cookie:", res.getHeaders());
 
       res.status(HttpStatus.OK).json({

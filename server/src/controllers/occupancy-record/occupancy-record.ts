@@ -1,8 +1,7 @@
 // Controller actions that interact with Occupancy Records.
 import { Request, Response } from "express";
 import db from "@/models/database";
-import { HttpStatus, GymName } from "@/utils/constants";
-import { errorMessage } from "@/utils/helper";
+import { HttpStatus, GymName, errorMessage } from "@/utils";
 
 // Get every Occupancy Record from every gym
 export const allOccupancyRecords = async (req: Request, res: Response) => {

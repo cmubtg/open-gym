@@ -1,20 +1,20 @@
-import db from '@/models/database';
-import { logScanJob } from '@/jobs/log-scan'; // Adjust path as needed
-import { 
+import db from "@/models/database";
+import { logScanJob } from "@/jobs/log-scan"; // Adjust path as needed
+import {
   GYM_NAMES,
   OccupancyCollection,
   relativeDate,
-  timeRoundedToNearestMinute
+  timeRoundedToNearestMinute,
 } from "@/utils";
 
-jest.mock('@/models/database');
-jest.mock('@/utils/date', () => ({
+jest.mock("@/models/database");
+jest.mock("@/utils/date", () => ({
   timeRoundedToNearestMinute: jest.fn(),
   relativeDate: jest.fn(),
 }));
 
-describe('Log Scan Scheduler', () => {
-  describe('logScanJob', () => {
+describe("Log Scan Scheduler", () => {
+  describe("logScanJob", () => {
     let mockInsertOccupancyRecords: jest.Mock;
     let mockGetLogRecords: jest.Mock;
 
@@ -25,10 +25,12 @@ describe('Log Scan Scheduler', () => {
       jest.clearAllMocks();
     });
 
-    it('should calculate occupancy using all log records and insert records into the database', async () => {
+    it("should calculate occupancy using all log records and insert records into the database", async () => {
       // Mock the current time
-      const mockCurrentTime = new Date('2025-01-23T10:05:00Z');
-      (timeRoundedToNearestMinute as jest.Mock).mockReturnValue(mockCurrentTime);
+      const mockCurrentTime = new Date("2025-01-23T10:05:00Z");
+      (timeRoundedToNearestMinute as jest.Mock).mockReturnValue(
+        mockCurrentTime
+      );
 
       // Mock database responses for log records
       mockGetLogRecords.mockImplementation(async ({ gym }) => [
@@ -53,17 +55,20 @@ describe('Log Scan Scheduler', () => {
       const expectedRecords = GYM_NAMES.map((gym) => ({
         gym,
         time: mockCurrentTime,
-        occupancy: (10 + 15) - (5 + 10), // sum of entries - sum of exits
+        occupancy: 10 + 15 - (5 + 10), // sum of entries - sum of exits
       }));
 
-      expect(mockInsertOccupancyRecords).toHaveBeenCalledWith(expectedRecords, OccupancyCollection.Current);
+      expect(mockInsertOccupancyRecords).toHaveBeenCalledWith(
+        expectedRecords,
+        OccupancyCollection.Current
+      );
     });
 
-    it('should handle errors thrown by the database methods gracefully', async () => {
-      const error = new Error('Database error');
+    it("should handle errors thrown by the database methods gracefully", async () => {
+      const error = new Error("Database error");
       mockGetLogRecords.mockRejectedValue(error);
 
-      await expect(logScanJob()).rejects.toThrow('Database error');
+      await expect(logScanJob()).rejects.toThrow("Database error");
     });
   });
 });
