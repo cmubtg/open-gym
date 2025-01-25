@@ -4,7 +4,7 @@ MongoDB is the document-oriented database program that OpenGym used to store tim
 
 ### Data Access Layer
 
-The database is OpenGym's data access layer. All interactions with database must be done through functions in the database interface in ```server/src/models/database.interface.ts```. Why? Accessing the database through this API will prevent the database implementation from being exposed to the rest of the application. 
+The database is OpenGym's data access layer. All interactions with database must be done through functions in the database interface in ```server/src/models/database-interface.ts```. Why? Accessing the database through this API will prevent the database implementation from being exposed to the rest of the application. 
 
 Append to the database API by adding the function to the database interface and implementing the function in the ```db``` object.
 
@@ -12,68 +12,53 @@ Append to the database API by adding the function to the database interface and 
 
 MongoDB stores data as **documents** and documents are grouped into **collections**. A document can be though of as a JavaScript object and there ```key: value``` pairs in that object are called **columns**. A collection can have a defined document schema which defines expected data format of the documents.
 
-Current defined collections ```metadata```, ```cohonFC```, ```tepperFC```, ```wiegand```, and ```fairfax```. ```metadata``` contains static information about the gyms we are tracking. All the other collections contain information about the occupancy about it's corresponding gym.
+Current defined collections ```current```, ```aggregate```, ```forecast```, ```gymHours```, ```logRecords``` and ```sessions```. ```current```, ```aggregate``` and ```forecast``` are collections that store occupancies.
 
-#### Metadata Schema
+```logRecords``` contains the entries and exists ours data collection mechanism detected within the mechanism defined time interval.
+```current``` contains records of gym occupancy stored every 5 minutes for the current day.
+```aggregate``` contains past records of gym occupancy, aggregated over an hour, (not data of the current day).
+```forecast``` contains records of predicted gym occupancies.
+```gymHours``` contains manually adjusted special hours for each facility.
+```sessions``` contains users cookie sessions, TTL of 1 day.
+
+#### Occupancy Schema
 ```JavaScript
 {
-  collectionName: String,
-  name: String,
-  description: String,
-  maxOccupancy: Number, 
-  hours: {
-    sunday: {
-      open: String,
-      close: String,
-    },
-    monday: {
-      open: String,
-      close: String,
-    },
-    tuesday: {
-      open: String,
-      close: String,
-    },
-    wednesday: {
-      open: String,
-      close: String,
-    },
-    thursday: {
-      open: String,
-      close: String,
-    },
-    friday: {
-      open: String,
-      close: String,
-    },
-    saturday: {
-      open: String,
-      close: String,
-    }
-  }
-}
-```
-
-Although metadata static in sense the server won't dynamically update the data. Metadata will be updated through to Mongodb UI to reflect any changes the gym information such the week's gym schedule.
-
-#### Gym Schema
-```JavaScript
-{
+  gym: String,
   time: Date,
   occupancy: Number,
-  // TODO Add model input (boolean flags etc)
 }
 ```
 
-The gym schema is likely to be updated to hold addition information about the day such as weather or if it is a holiday to be provided to the ML model.
+```current```, ```aggregate``` and ```forecast``` follow the occupancy schema.
+
+#### Gym Hour Schema
+
+**TODO**
+
+#### Log Records Schema
+```JavaScript
+{
+  gym: String,
+  time: Date,
+  entries: Number,
+  exits: Number,
+}
+```
+
+#### Sessions Schema
+```JavaScript
+{
+  expires: Date,
+  session: String,
+}
+```
+
+Note: This schema is not defined by code.
 
 ### Size Limit
 
 idk
-
-### Adding Locations
-
-Additional locations must be stored in their own collections. The collection must be manually created from the Mongodb UI.
 
 ### Future Planning
 

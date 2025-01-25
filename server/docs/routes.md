@@ -3,10 +3,10 @@
 In a web application, routing is the mechanism that determines how the application responds to a client request to a particular endpoint (URL). Routes map specific URLs to controller actions.
 
 ### API URL
-```http://localhost/api/``` hits the server's API
+```https://backend-url/api``` hits the server's API
 
 ### Metadata
-Get ```http://localhost/api/metadata```
+Get ```https://backend-url/api/metadata```
 ```JavaScript
 [
   {
@@ -19,7 +19,7 @@ Get ```http://localhost/api/metadata```
   }...
 ]
 ```
-Get ```http://localhost/api/metadata/:gym```
+Get ```https://backend-url/api/metadata/:gym```
 ```JavaScript
 {
   name: String,
@@ -30,57 +30,50 @@ Get ```http://localhost/api/metadata/:gym```
   }
 }
 ```
-Get ```http://localhost/api/hours/:gym/:date```
-
-```JavaScript
-{
-  sunday: {
-    open: String
-    close: String
-  },
-  ...
-  saturday: {
-    open: String
-    close: String
-  }
-}
-```
 ### Occupancy Data
-Get ```http://localhost/api/occupancy```
-```JavaScript
-{
-  gym: String
-  data: [
-    {
-      time: Date,
-      occupancy: Number
-    }...
-  ]
-}
-```
-Get ```http://localhost/api/occupancy/:gym```
-```JavaScript
-{
-  time: Date,
-  occupancy: Number
-}
-```
-Get ```http://localhost/api/occupancy/:gym/:timestamp```
-```JavaScript
-{
-  occupancy: Number
-}
-```
-Get ```http://localhost/api/:gym```
+Get ```https://backend-url/api```
 ```JavaScript
 [
   {
+    gym: String,
     time: Date,
-    occupancy: Number
+    occupancy: Number,
   }...
 ]
 ```
-Post ```http://localhost/api/:gym```
+Get ```https://backend-url/api/:gym```
+```JavaScript
+[
+  {
+    gym: String,
+    time: Date,
+    occupancy: Number,
+  }...
+]
+```
+Get ```https://backend-url/api/occupancy```
+```JavaScript
+[
+  {
+    gym: String,
+    time: Date,
+    occupancy: Number,
+  }
+]
+```
+Get ```https://backend-url/api/occupancy/:gym```
+```JavaScript
+{
+  occupancy: Number
+}
+```
+Get ```https://backend-url/api/occupancy/:gym/:timestamp```
+```JavaScript
+{
+  occupancy: Number
+}
+```
+Post ```https://backend-url/api/:gym```
 ```JavaScript
 {
   time: Date,
