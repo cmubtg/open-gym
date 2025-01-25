@@ -1,6 +1,5 @@
 import { getOccClass } from "utils/utils";
 import { useFacility } from "context/FacilityContext";
-import { getFacilitiesMetadata } from "data/facilities";
 
 const OccMeter = () => {
   const { occupancy, facility } = useFacility();
