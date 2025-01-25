@@ -11,7 +11,6 @@ router.get("/occupancy-record/:gym", controller.gymOccupancyRecords);
 // Log Record Routes.
 router.get("/log-record", controller.allLogRecords);
 router.get("/log-record/:gym", controller.gymLogRecords);
-router.post("/log-record/:gym/new", controller.createLogRecord); // Scanner hits this route
 
 // Other Routes.
 router.get("/metadata-record", controller.getAllMetadata);
