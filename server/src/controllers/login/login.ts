@@ -91,6 +91,7 @@ export const login = async (
   }
 };
 
+// Deprecated - Moved to loginAuth in @/middleware/login/login-check-controller
 export const checkLogin = (req: Request, res: Response) => {
   if (req.session.isAuthenticated) {
     res.status(HttpStatus.OK).json({ isAuthenticated: true });

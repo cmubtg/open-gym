@@ -1,7 +1,6 @@
 // routes/index.ts
 import { Application } from "express";
 import * as controller from "@/controllers";
-import { loginAuth } from "@/middleware/auth";
 import OpenGymRoutes from "./routes";
 
 const mountRoutes = (app: Application): void => {

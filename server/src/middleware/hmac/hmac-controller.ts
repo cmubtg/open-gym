@@ -16,22 +16,23 @@ export const hmacAuth = (req: Request, res: Response, next: NextFunction) => {
       receivedSignature,
       encryptedData
     );
+  
     if (!isValid) {
-      return res.status(HttpStatus.BadRequest).json({ error: error });
+      res.status(HttpStatus.BadRequest).json({ error: error });
+      return;
     }
 
     // Decrypt
     try {
       req.body.direction = decrypt(encryptedData);
       next();
+      return;
     } catch (error) {
-      return res.status(HttpStatus.BadRequest).json({
-        error: "Invalid encrypted data",
-      });
+      res.status(HttpStatus.BadRequest).json({ error: "Invalid encrypted data" });
+      return;
     }
   } catch (error) {
-    return res.status(HttpStatus.InternalServerError).json({
-      error: "Authentication failed",
-    });
+    res.status(HttpStatus.InternalServerError).json({ error: "Authentication failed" });
+    return;
   }
 };
