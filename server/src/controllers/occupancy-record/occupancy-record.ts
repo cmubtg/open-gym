@@ -31,12 +31,14 @@ export const createOccupancyRecord = async (req: Request, res: Response) => {
   const { gym } = req.params;
 
   // Validate input
-  if (!occupancy) {
+  if (occupancy === undefined) {
     res.status(HttpStatus.BadRequest).json({ error: "No occupancy provided" });
     return;
   }
   if (occupancy < 0) {
-    res.status(HttpStatus.BadRequest).json({ error: "Invalid occupancy" });
+    res
+      .status(HttpStatus.BadRequest)
+      .json({ error: "Invalid occupancy (cannot be < 0)" });
     return;
   }
 
