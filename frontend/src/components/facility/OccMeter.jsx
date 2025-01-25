@@ -1,8 +1,11 @@
 import { getOccClass } from "utils/utils";
 import { useFacility } from "context/FacilityContext";
+import { getFacilitiesMetadata } from "data/facilities";
 
 const OccMeter = () => {
-  const { occupancy } = useFacility();
+  const { occupancy, facility } = useFacility();
+  const metadata = getFacilitiesMetadata()
+  // want to filter metadata list by id that matches facility name
 
   // Calculate the strokeDashoffset value for the meter_level circle
   const calculateOffset = (percentage) => {
