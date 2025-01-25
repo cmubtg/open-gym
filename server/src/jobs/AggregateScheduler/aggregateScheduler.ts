@@ -15,7 +15,7 @@ export default function initAggregateScheduler() {
     aggregateOccupancyJob,
     null, // onComplete
     true, // start
-    "America/New_York" // timeZone
+    "UTC" // timeZone
   );
 }
 
