@@ -1,5 +1,5 @@
 import { CronJob } from "cron";
-import db from '../models/database';
+import db from "../models/database";
 import { GYM_NAMES, Collection } from "../utils/constants";
 import { GymName, OccupancyRecordType } from "../models/database.types";
 import { timeRoundedToNearestMinute } from "../utils/date";
@@ -9,11 +9,11 @@ import { timeRoundedToNearestMinute } from "../utils/date";
  */
 export default function initLogScanScheduler() {
   new CronJob(
-    '*/5 * * * *', // Every 5 minutes
+    "*/5 * * * *", // Every 5 minutes
     logScanJob,
     null, // onComplete
     true, // start
-    'America/New_York' // timeZone
+    "UTC" // timeZone
   );
 }
 
@@ -25,23 +25,23 @@ export default function initLogScanScheduler() {
 export const logScanJob = async () => {
   const currentTime = timeRoundedToNearestMinute(new Date());
   const occupancyRecords: OccupancyRecordType[] = [];
+
   for (const gymName of GYM_NAMES) {
     const records = await db.getLogRecords({
       gym: gymName,
     });
 
-    const totalEntries = records.map((record) => record.entries)
-      .reduce((a, b) => a + b, 0);
+    const occupancy = records.reduce(
+      (acc, record) => acc + (record.entries - record.exits),
+      0
+    );
 
-    const totalExits = records.map((record) => record.exits)
-      .reduce((a, b) => a + b, 0);
-
-    const occupancy = totalEntries - totalExits;
     occupancyRecords.push({
       gym: gymName,
       time: currentTime,
       occupancy: occupancy,
     });
   }
+
   await db.insertOccupancyRecords(occupancyRecords, Collection.Current);
 };
