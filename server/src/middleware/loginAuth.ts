@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
-import config from "../config";
-import { HttpStatus } from "../utils/constants";
+import config from "@/config";
+import { HttpStatus } from "@/utils";
 
 declare module "express-session" {
   export interface SessionData {
@@ -8,8 +8,12 @@ declare module "express-session" {
   }
 }
 
-export const loginAuth = async (req: Request, res: Response, next: NextFunction) => {
-  console.log("=== Auth Middleware Debug ===");
+export const loginAuth = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("=== LOGIN Auth Middleware Debug ===");
   console.log("Session ID:", req.sessionID);
   console.log("Session:", req.session);
   console.log("Is authenticated:", req.session.isAuthenticated);
@@ -18,13 +22,13 @@ export const loginAuth = async (req: Request, res: Response, next: NextFunction)
 
   if (req.sessionID) {
     const session = await new Promise((resolve) => {
-        req.sessionStore.get(req.sessionID, (err, session) => {
-            if (err) console.error("Error fetching session:", err);
-            resolve(session);
-        });
+      req.sessionStore.get(req.sessionID, (err, session) => {
+        if (err) console.error("Error fetching session:", err);
+        resolve(session);
+      });
     });
     console.log("Session from store:", session);
-}
+  }
 
   if (!config.isProduction) {
     // Allow unrestricted access in development mode only

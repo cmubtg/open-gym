@@ -6,10 +6,10 @@
  * @returns relative date
  */
 
-export const getRelativeDate = (date: Date, dayDelta: number) => {
+export const relativeDate = (date: Date, dayDelta: number) => {
   const relDate = new Date(date);
-  relDate.setDate(date.getDate()+dayDelta);
-  relDate.setHours(0, 0, 0, 0);
+  relDate.setUTCDate(date.getUTCDate() + dayDelta);
+  relDate.setUTCHours(0, 0, 0, 0); // Use UTC hours
   return relDate;
 };
 
@@ -18,11 +18,11 @@ export const getRelativeDate = (date: Date, dayDelta: number) => {
  * @param time time of the format HH:MM
  * @returns the date with the time set to the given time
  */
-export const getDateFromClock = (date: Date, time: string) => {
-  const [hour, minute] = time.split(':').map(x => parseInt(x, 10));
+export const dateFromClock = (date: Date, time: string) => {
+  const [hour, minute] = time.split(":").map((x) => parseInt(x, 10));
   const newDate = new Date(date);
-  newDate.setHours(hour);
-  newDate.setMinutes(minute);
+  newDate.setUTCHours(hour);
+  newDate.setUTCMinutes(minute);
   return newDate;
 };
 
@@ -31,8 +31,8 @@ export const getDateFromClock = (date: Date, time: string) => {
  * @param n nth hour of the day
  * @returns the date with the time set to the nth hour
  */
-export const getNthHour = (date: Date, n: number) => {
-  date.setHours(n, 0, 0, 0);
+export const nthHour = (date: Date, n: number) => {
+  date.setUTCHours(n, 0, 0, 0);
   return date;
 };
 
@@ -41,5 +41,17 @@ export const getNthHour = (date: Date, n: number) => {
  * @returns the date at the start of the week
  */
 export const startOfWeek = (date: Date) => {
-  return getRelativeDate(date, -date.getDay());
+  return relativeDate(date, -date.getUTCDay());
+};
+
+/**
+ * @param date date to be modified
+ * @returns the date rounded to the nearest minute
+ */
+export const timeRoundedToNearestMinute = (date: Date) => {
+  // Round to the nearest minute
+  const roundedMinutes = Math.round(date.getSeconds() / 60) * 60;
+  date.setSeconds(roundedMinutes);
+
+  return date;
 };

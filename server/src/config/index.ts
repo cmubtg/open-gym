@@ -8,8 +8,13 @@ const isProduction = (process.env.IS_PRODUCTION ?? "") === "true";
 
 export default {
   port: parseInt(process.env.PORT ?? "", 10),
-  databaseURL: process.env.MONGO_URI ?? "",
-  frontendURL: process.env.FRONTEND_URL ?? "",
+  databaseURL:
+    (isProduction ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV) ??
+    "",
+  frontendURL:
+    (isProduction
+      ? process.env.FRONTEND_URL_PROD
+      : process.env.FRONTEND_URL_DEV) ?? "",
   googleOauthClientID: process.env.GOOGLE_OAUTH_CLIENT_ID ?? "",
   hmacSecret: process.env.HMAC_SECRET,
   requestExpiryMs: 5 * 60 * 1000, // 5 minutes
@@ -17,7 +22,10 @@ export default {
   ivLength: 16,
   isProduction: isProduction,
   corsPolicy: {
-    origin: process.env.FRONTEND_URL ?? "",
+    origin:
+      (isProduction
+        ? process.env.FRONTEND_URL_PROD
+        : process.env.FRONTEND_URL_DEV) ?? "",
     credentials: true,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
@@ -38,7 +46,10 @@ export default {
         path: "/",
         secure: isProduction,
         httpOnly: true,
-        domain: process.env.BACKEND_DOMAIN,
+        domain:
+          (isProduction
+            ? process.env.BACKEND_DOMAIN_PROD
+            : process.env.BACKEND_DOMAIN_DEV) ?? "",
       },
     };
   },

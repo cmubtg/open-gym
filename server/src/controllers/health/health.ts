@@ -1,3 +1,6 @@
+// Checks current health of server.
+// Hit every 10 minutes by cron-job to ensure backend stays active.
+
 import mongoose from "mongoose";
 
 interface HealthCheck {
@@ -22,7 +25,7 @@ const measureDBLatency = async (): Promise<number> => {
     try {
       const db = mongoose.connection.db;
       if (!db) {
-        throw new Error('Database connection not established');
+        throw new Error("Database connection not established");
       }
       await db.admin().ping();
       return Date.now() - start;
@@ -36,38 +39,38 @@ export const getHealthStatus = async (): Promise<[HealthCheck, number]> => {
     const dbState = mongoose.connection.readyState === 1;
     
     const healthCheck: HealthCheck = {
-      status: 'ok',
+      status: "ok",
       timestamp: new Date().toISOString(),
-      service: 'CMU OpenGym API',
+      service: "CMU OpenGym API",
       uptime: Math.floor(process.uptime()),
       checks: {
         database: {
-          status: dbState ? 'ok' : 'error',
+          status: dbState ? "ok" : "error",
           latency: await measureDBLatency()
         },
         memory: {
-          status: 'ok',
-          usage: Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100 + 'MB'
+          status: "ok",
+          usage: Math.round((process.memoryUsage().heapUsed / 1024 / 1024) * 100) / 100 + "MB"
         }
       }
     };
 
-    const statusCode = healthCheck.checks.database.status === 'ok' ? 200 : 503;
+    const statusCode = healthCheck.checks.database.status === "ok" ? 200 : 503;
     return [healthCheck, statusCode];
   } catch (error) {
     return [{
-      status: 'error',
+      status: "error",
       timestamp: new Date().toISOString(),
-      service: 'CMU OpenGym API',
+      service: "CMU OpenGym API",
       uptime: Math.floor(process.uptime()),
       checks: {
         database: {
-          status: 'error',
+          status: "error",
           latency: -1
         },
         memory: {
-          status: 'error',
-          usage: 'unknown'
+          status: "error",
+          usage: "unknown"
         }
       }
     }, 503];

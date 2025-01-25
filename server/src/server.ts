@@ -1,62 +1,75 @@
-import express from "express";
+import express, { Application } from "express";
 import cors from "cors";
-import mongoose, { Mongoose } from "mongoose";
+import mongoose from "mongoose";
 import session from "express-session";
+import config from "@/config";
+import startCronJobs from "@/jobs";
+import mountRoutes from "@/routes";
+import mountMiddleware, { errorHandler } from "@/middleware";
 
-import config from "./config";
-import { initJobs } from "./jobs";
-import { getHealthStatus } from "./controllers/health";
+export class Server {
+  private app: Application;
 
-import OpenGymRoutes from "./routes/routes";
-import { login, checkLogin, logout } from "./controllers/auth";
-import { loginAuth, hmacAuth } from "./middleware";
-import { createRecord } from "./controllers/controllers";
+  constructor() {
+    this.app = express();
+    this.app.set("trust proxy", 1);
+    this.app.use(cors(config.corsPolicy));
+    this.app.use(express.json());
+  }
 
-const app = express();
-app.set("trust proxy", 1); // Trust first proxy
+  private async connectToDatabase(): Promise<mongoose.Mongoose> {
+    try {
+      const connection = await mongoose.connect(config.databaseURL);
+      console.log("Connected to database:", connection.connection.name);
+      return connection;
+    } catch (error) {
+      console.error("Database connection failed:", error);
+      throw error;
+    }
+  }
 
-// middleware
-app.use(cors(config.corsPolicy));
-app.use(express.json());
+  private setupSession(mongooseConnection: mongoose.Mongoose): void {
+    this.app.use(session(config.buildSessionConfig(mongooseConnection)));
+  }
 
-// connect to database
-mongoose
-  .connect(config.databaseURL)
-  .then((response: Mongoose) => {
-    console.log("Connected to database");
-    initJobs();
+  private setupMiddleware(): void {
+    mountMiddleware(this.app);
+  }
 
-    app.use(session(config.buildSessionConfig(response)));
+  private setupRoutes(): void {
+    mountRoutes(this.app);
+  }
 
-    app.use((req, res, next) => {
-      console.log("request made to", req.path, req.method);
-      next();
-    });
+  private setupErrorHandling(): void {
+    this.app.use(errorHandler);
+  }
 
-    // Health Route
-    app.get("/health", async (req, res) => {
-      const [healthCheck, statusCode] = await getHealthStatus();
-      res.status(statusCode).json(healthCheck);
-    });
+  public async start(): Promise<void> {
+    try {
+      // Connect to database
+      const connection = await this.connectToDatabase();
 
-    // Auth Routes
-    app.post("/auth/login", login); // eslint-disable-line @typescript-eslint/no-misused-promises
-    app.post("/auth/logout", logout); // eslint-disable-line @typescript-eslint/no-misused-promises
-    app.get("/auth/verify", checkLogin);
+      this.setupSession(connection);
 
-    // Sensor Data Route
-    // hmac Auth to verify the request is coming from the sensor and
-    // decrypt the data
-    app.post("/:gym", hmacAuth, createRecord);
+      // Start background jobs
+      startCronJobs();
 
-    // Protected Data Routes
-    app.use("/api/", loginAuth, OpenGymRoutes);
+      // Initialize middleware
+      this.setupMiddleware();
 
-    // listen on port
-    app.listen(config.port, () => {
-      console.log("Listening on port", config.port);
-    });
-  })
-  .catch((err) => {
-    console.log(err);
-  });
+      // Setup routes
+      this.setupRoutes();
+
+      // Setup error handling
+      this.setupErrorHandling();
+
+      // Start server
+      this.app.listen(config.port, () => {
+        console.log(`Server running on port ${config.port}`);
+      });
+    } catch (error) {
+      console.error("Failed to start server:", error);
+      process.exit(1);
+    }
+  }
+}

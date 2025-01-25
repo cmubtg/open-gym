@@ -16,7 +16,7 @@ Lints the entire backend.
 ```Bash
 npm run lint
 ``` 
-Runs test suites, currently doesn't exist.
+Runs test suites.
 ```Bash
 npm run test
 ``` 

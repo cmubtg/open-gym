@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         "Sending login request to:",
         `${process.env.REACT_APP_AUTH_URL}/login`
       );
-
+      
       const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/login`, {
         method: "POST",
         headers: {
