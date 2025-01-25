@@ -1,10 +1,10 @@
 import { Request, Response } from 'express';
-import * as Controller from '../../src/controllers/controllers';
-import db from '../../src/models/database';
-import { HttpStatus } from '../../src/utils/constants';
+import * as Controller from "@/controllers";
+import db from '@/models/database';
+import { HttpStatus } from '@/utils/constants';
 
-jest.mock('../../src/models/database');
-jest.mock('../../src/utils/helper', () => ({
+jest.mock('@/models/database');
+jest.mock('@/utils/helper', () => ({
   // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
   errorMessage: jest.fn((error) => `Error: ${error.message}`)
 }));
@@ -34,7 +34,7 @@ describe('Controller Tests', () => {
       ];
       (db.getOccupancyRecords as jest.Mock).mockResolvedValue(mockData);
 
-      await Controller.getRecords(req as Request, res as Response);
+      await Controller.gymOccupancyRecords(req as Request, res as Response);
 
       expect(db.getOccupancyRecords).toHaveBeenCalledWith({ gym: 'tepperFC' });
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
@@ -45,7 +45,7 @@ describe('Controller Tests', () => {
       const error = new Error('Database error');
       (db.getOccupancyRecords as jest.Mock).mockRejectedValue(error);
 
-      await Controller.getRecords(req as Request, res as Response);
+      await Controller.gymOccupancyRecords(req as Request, res as Response);
 
       expect(db.getOccupancyRecords).toHaveBeenCalledWith({ gym: 'tepperFC' });
       expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);

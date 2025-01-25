@@ -7,8 +7,8 @@ const isProduction = (process.env.IS_PRODUCTION ?? "") === "true";
 
 export default {
   port: parseInt(process.env.PORT ?? "", 10),
-  databaseURL: process.env.MONGO_URI ?? "",
-  frontendURL: process.env.FRONTEND_URL ?? "",
+  databaseURL: (isProduction ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV) ?? "",
+  frontendURL: (isProduction ? process.env.FRONTEND_URL_PROD : process.env.FRONTEND_URL_DEV) ?? "",
   googleOauthClientID: process.env.GOOGLE_OAUTH_CLIENT_ID ?? "",
   isProduction: isProduction,
   corsPolicy: {
@@ -30,7 +30,7 @@ export default {
       }),
       cookie: {
         maxAge: 1000 * 60 * 60, // 1 hour
-        sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
+        sameSite: (isProduction ? "none" : "none") as "none" | "none",
         path: "/",
         secure: isProduction,
         httpOnly: true,

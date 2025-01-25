@@ -1,3 +1,4 @@
+import DB from "./database-interface";
 import {
   GymHoursType,
   gymHoursModel,
@@ -5,35 +6,30 @@ import {
   LogRecordType,
   logModel,
   OccupancyRecordModelType,
-  MODEL_MAP,
-} from "./database.types";
-import DB from "./database.interface";
-import { getRelativeDate } from "../utils/date";
-import { GYM_NAMES, Collection } from "../utils/constants";
-import { isIn } from "../utils/helper";
+  OCCUPANCY_MODEL_MAP,
+} from "./types";
+import {
+  GYM_NAMES,
+  OccupancyCollection, 
+  isIn,
+  relativeDate 
+} from "@/utils";
 
 // Helper functions/constants
-const getModel = (collection: Collection): OccupancyRecordModelType => {
-  return MODEL_MAP[collection];
+const getOccupancyModel = (collection: OccupancyCollection): OccupancyRecordModelType => {
+  return OCCUPANCY_MODEL_MAP[collection];
 };
 
 const defaultDateRange = {
-  start: getRelativeDate(new Date(), 0),
-  end: getRelativeDate(new Date(), 1),
-};
-
-const dummyRecord: OccupancyRecordType = {
-  gym: "cohonFC",
-  time: getRelativeDate(new Date(), 0),
-  occupancy: 0,
+  start: relativeDate(new Date(), 0),
+  end: relativeDate(new Date(), 1),
 };
 
 // Database object
 const db: DB = {
-  insertOccupancyRecords: async (records, collection = Collection.Current) => {
-    const model: OccupancyRecordModelType = getModel(collection);
+  insertOccupancyRecords: async (records, collection = OccupancyCollection.Current) => {
+    const model: OccupancyRecordModelType = getOccupancyModel(collection);
     for (const record of records) {
-      console.log("inserting into collection: ", collection);
       await model.create(record);
     }
   },
@@ -41,12 +37,12 @@ const db: DB = {
   getOccupancyRecords: async (options) => {
     const defaultOptions = {
       dateRange: defaultDateRange,
-      collection: Collection.Current,
+      collection: OccupancyCollection.Current,
     };
     const { gym, dateRange, collection } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;
 
-    const model = getModel(collection);
+    const model = getOccupancyModel(collection);
 
     if (isIn(GYM_NAMES, gym)) {
       const records: OccupancyRecordType[] = await model
@@ -65,7 +61,6 @@ const db: DB = {
 
   insertLogRecords: async (records) => {
     for (const record of records) {
-      console.log("inserting into log collection");
       await logModel.create(record);
     }
   },
@@ -78,7 +73,6 @@ const db: DB = {
     const { start, end } = dateRange;
 
     if (isIn(GYM_NAMES, gym)) {
-      const temp = gym;
       const records: LogRecordType[] = await logModel
         .find({ gym: gym, time: { $gte: start, $lt: end } }, { _id: 0 })
         .sort({ time: -1 })
@@ -100,8 +94,8 @@ const db: DB = {
     const { gym, dateRange } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;
 
-    const startDate = getRelativeDate(start, 0);
-    const endDate = getRelativeDate(end, 1);
+    const startDate = relativeDate(start, 0);
+    const endDate = relativeDate(end, 1);
     if (isIn(GYM_NAMES, gym)) {
       const hours: GymHoursType[] = await gymHoursModel.find(
         { gym: gym, time: { $gte: startDate, $lt: endDate } },

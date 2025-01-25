@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
-import config from "../config";
-import { HttpStatus } from "../utils/constants";
+import config from "@/config";
+import { HttpStatus } from "@/utils";
 
 const client = new OAuth2Client(config.googleOauthClientID);
 

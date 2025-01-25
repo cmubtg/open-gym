@@ -1,12 +1,11 @@
-import initAggregateScheduler from "./AggregateScheduler/aggregateScheduler";
-import initLogScanScheduler from "./log-scan";
+import StartAggregateScheduler from "./aggregate-occupancy";
+import StartLogScanScheduler from "./log-scan";
 
 /**
  * Initializes all cron jobs
  */
-export const initJobs = () => {
-
+export default function StartCronJobs() {
   // Removes and aggregates bluetooth data daily at midnight
-  initAggregateScheduler();
-  initLogScanScheduler();
+  StartAggregateScheduler();
+  StartLogScanScheduler();
 };

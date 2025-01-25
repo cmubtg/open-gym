@@ -1,12 +1,16 @@
-import db from '../../src/models/database';
-import { GYM_NAMES, Collection } from "../../src/utils/constants";
-import { getRelativeDate, timeRoundedToNearestMinute } from "../../src/utils/date";
-import { logScanJob } from '../../src/jobs/log-scan'; // Adjust path as needed
+import db from '@/models/database';
+import { logScanJob } from '@/jobs/log-scan'; // Adjust path as needed
+import { 
+  GYM_NAMES,
+  OccupancyCollection,
+  relativeDate,
+  timeRoundedToNearestMinute
+} from "@/utils";
 
-jest.mock('../../src/models/database');
-jest.mock('../../src/utils/date', () => ({
+jest.mock('@/models/database');
+jest.mock('@/utils/date', () => ({
   timeRoundedToNearestMinute: jest.fn(),
-  getRelativeDate: jest.fn(),
+  relativeDate: jest.fn(),
 }));
 
 describe('Log Scan Scheduler', () => {
@@ -52,7 +56,7 @@ describe('Log Scan Scheduler', () => {
         occupancy: (10 + 15) - (5 + 10), // sum of entries - sum of exits
       }));
 
-      expect(mockInsertOccupancyRecords).toHaveBeenCalledWith(expectedRecords, Collection.Current);
+      expect(mockInsertOccupancyRecords).toHaveBeenCalledWith(expectedRecords, OccupancyCollection.Current);
     });
 
     it('should handle errors thrown by the database methods gracefully', async () => {
