@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { validateRequest } from "./validateRequest";
+import { HttpStatus } from "@/utils";
+import { validateRequest } from "./validate-request";
 import { decrypt } from "./decrypt";
-import { HttpStatus } from "../../utils/constants";
 
 // Authentication & Confidentiality: Ensures that the request is from a valid source then
 // decrypts the data to be processed and stored.

@@ -1,5 +1,5 @@
 import crypto from "crypto";
-import config from "../../config";
+import config from "@/config";
 
 // Validate required configuration
 if (!config.hmacSecret || !config.encryptionKey) {

@@ -1,5 +1,5 @@
 import { Application, Request, Response, NextFunction } from "express";
-import { loginAuth } from "@/middleware/auth";
+import { loginAuth } from "./loginAuth";
 
 /**
  * @param app server state

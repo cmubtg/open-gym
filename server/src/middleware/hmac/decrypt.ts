@@ -1,6 +1,6 @@
 // Decryption helper functions
 import crypto from "crypto";
-import config from "../../config";
+import config from "@/config";
 
 // Validate required configuration
 if (!config.encryptionKey || !config.ivLength) {
