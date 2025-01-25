@@ -112,6 +112,34 @@
     mask-image: linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0) 100%);
   }
+
+  /* INFO BUTTON */
+  .info_button_wrapper {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+  }
+
+  .info_button { 
+    color: #F8F8F8; /* White icon color */
+    border: none;
+    border-radius: 100%;
+    padding: 2px 2px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  /* Tooltip that appears on hover */
+  .info_tooltip {
+    @apply hidden absolute top-[30px] left-[2px] bg-[rgba(255,255,255,0.8)] 
+    dark:bg-[rgba(0,0,0,0.8)] p-2 rounded text-[12px] w-max z-10;
+  } 
+  
+  /* Show the tooltip on button hover */
+  .info_button_wrapper:hover .info_tooltip {
+    display: block;
+  }
+
   /* OCCUPANCY METER */
   .meter_container {
     @apply w-full h-[50px] items-center max-w-[250px] 
