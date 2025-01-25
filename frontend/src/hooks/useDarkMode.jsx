@@ -1,5 +1,4 @@
 // SOURCE: https://www.youtube.com/watch?v=pfaSUYaSgRo
-
 import { useEffect, useState } from 'react';
 
 const useLocalStorage = (key, initialValue) => {

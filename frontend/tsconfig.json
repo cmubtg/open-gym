@@ -105,6 +105,16 @@
 
     /* Completeness */
     // "skipDefaultLibCheck": true,                      /* Skip type checking .d.ts files that are included with TypeScript. */
-    "skipLibCheck": true                                 /* Skip type checking all .d.ts files. */
+    "skipLibCheck": true,
+    "baseUrl": "src",
+    "paths": {
+      "components/*": ["components/*"],
+      "context/*": ["context/*"],
+      "data/*": ["data/*"],
+      "hooks/*": ["hooks/*"],
+      "pages/*": ["pages/*"],
+      "styles/*": ["styles/*"],
+      "utils/*": ["utils/*"],
+    },                               /* Skip type checking all .d.ts files. */
   }
 }

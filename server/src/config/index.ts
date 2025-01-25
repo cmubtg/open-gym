@@ -1,8 +1,52 @@
-import dotenv from 'dotenv';
+import MongoStore from "connect-mongo";
+import dotenv from "dotenv";
+import { Mongoose } from "mongoose";
 dotenv.config(); // load env variables
 
+const isProduction = (process.env.IS_PRODUCTION ?? "") === "true";
+
 export default {
-  port: parseInt(process.env.PORT ?? '', 10),
-  databaseURL: process.env.MONGO_URI ?? '',
-  frontendURL: process.env.FRONTEND_URL ?? '',
+  port: parseInt(process.env.PORT ?? "", 10),
+  databaseURL:
+    (isProduction ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV) ??
+    "",
+  frontendURL:
+    (isProduction
+      ? process.env.FRONTEND_URL_PROD
+      : process.env.FRONTEND_URL_DEV) ?? "",
+  googleOauthClientID: process.env.GOOGLE_OAUTH_CLIENT_ID ?? "",
+  isProduction: isProduction,
+  corsPolicy: {
+    origin:
+      (isProduction
+        ? process.env.FRONTEND_URL_PROD
+        : process.env.FRONTEND_URL_DEV) ?? "",
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
+  },
+
+  buildSessionConfig(mongoose: Mongoose) {
+    return {
+      secret: process.env.MONGODB_SESSION_SECRET ?? "",
+      saveUninitialized: false,
+      resave: false,
+      store: MongoStore.create({
+        client: mongoose.connection.getClient(),
+        collectionName: "sessions",
+        ttl: 60 * 60,
+      }),
+      cookie: {
+        maxAge: 1000 * 60 * 60, // 1 hour
+        sameSite: (isProduction ? "none" : "lax") as "none" | "lax",
+        path: "/",
+        secure: isProduction,
+        httpOnly: true,
+        domain:
+          (isProduction
+            ? process.env.BACKEND_DOMAIN_PROD
+            : process.env.BACKEND_DOMAIN_DEV) ?? "",
+      },
+    };
+  },
 };
