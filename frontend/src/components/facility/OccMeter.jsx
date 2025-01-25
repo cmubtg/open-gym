@@ -6,7 +6,9 @@ const OccMeter = () => {
   const { occupancy, facility } = useFacility();
   const metadata = getFacilitiesMetadata()
   // want to filter metadata list by id that matches facility name
-
+  const facilityMetadata = metadata.find((item) => item.id === facility.id);
+  const maxOccupancy = facilityMetadata?.occupancy
+  
   // Calculate the strokeDashoffset value for the meter_level circle
   const calculateOffset = (percentage) => {
     const boundedPerc = Math.max(0, Math.min(100, percentage));
@@ -14,9 +16,9 @@ const OccMeter = () => {
     const endOffset = -20; // offset at 100%
     return startOffset + (endOffset - startOffset) * (boundedPerc / 100);
   };
-
-  const offset = calculateOffset(occupancy);
-  const occ_class = getOccClass(occupancy);
+  const occupancyPercentage = (occupancy / maxOccupancy) * 100
+  const offset = calculateOffset(occupancyPercentage);
+  const occ_class = getOccClass(occupancyPercentage);
 
   return (
     <div className="meter_container">
@@ -33,7 +35,7 @@ const OccMeter = () => {
       </svg>
       <div className="meter_info">
         <p className="font-bold text-base text-black dark:text-white">
-          {occupancy}
+          {occupancyPercentage}
           <span className="text-xs">%</span>
         </p>
         <p className="font-light text-[7px] mt-[-5px]">of max occupancy</p>
