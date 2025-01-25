@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
-import config from "../config";
-import { HttpStatus } from "../utils/constants";
+import config from "@/config";
+import { HttpStatus } from "@/utils";
 
 const client = new OAuth2Client(config.googleOauthClientID);
 
@@ -64,11 +64,11 @@ export const login = async (
       // maxAge: 3600000,
       // httpOnly: false,
       // secure: true,
-      // sameSite: 'none' as const,
-      // domain: '.cmugym.com',
-      // path: '/'
+      // sameSite: "none" as const,
+      // domain: ".cmugym.com",
+      // path: "/"
       // };
-      // res.cookie('connect.sid', req.sessionID, cookieOptions);
+      // res.cookie("connect.sid", req.sessionID, cookieOptions);
       // console.log("Response headers after setting cookie:", res.getHeaders());
 
       res.status(HttpStatus.OK).json({

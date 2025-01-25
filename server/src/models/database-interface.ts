@@ -1,10 +1,10 @@
-import { Collection } from "../utils/constants";
+import { OccupancyCollection } from "@/utils";
 import {
   OccupancyRecordType,
   LogRecordType,
   GymHoursType,
   DBOptionType,
-} from "./database.types";
+} from "@/models/types";
 
 export default interface DB {
   // For all functions with options, the date range must match the collection.
@@ -14,10 +14,7 @@ export default interface DB {
    * @param data the records to insert
    * @param collection the collection to insert the records into
    */
-  insertOccupancyRecords(
-    data: OccupancyRecordType[],
-    collection: Collection
-  ): Promise<void>;
+  insertOccupancyRecords(data: OccupancyRecordType[], collection: OccupancyCollection): Promise<void>;
 
   /**
    * Retrieves all records from the specified gym's collection from the PAST,

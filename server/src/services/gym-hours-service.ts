@@ -1,8 +1,12 @@
-import * as metadata from '../../data/metadata.json';
-import db from '../models/database';
-import { GymName } from '../models/database.types';
-import { DAYS_OF_THE_WEEK } from '../utils/constants';
-import { getDateFromClock, getRelativeDate, startOfWeek } from '../utils/date';
+import * as metadata from "../../data/metadata.json";
+import db from "@/models/database";
+import { 
+  DAYS_OF_THE_WEEK,
+  GymName,
+  dateFromClock,
+  relativeDate,
+  startOfWeek
+} from "@/utils";
 
 /**
  * Get the special schedule for a gym for the entire week
@@ -16,7 +20,7 @@ export const getSpecialSchedule = async (date: Date, gym: GymName) => {
     gym: gym,
     dateRange: {
       start: startOfWeek(date),
-      end: getRelativeDate(date, 6)
+      end: relativeDate(date, 6)
     }
   });
 
@@ -40,8 +44,8 @@ export const getSpecialSchedule = async (date: Date, gym: GymName) => {
 export const isClosed = async (gym: string, date: Date) => {
   const hours = await getSpecialSchedule(date, gym as GymName);
   const day = DAYS_OF_THE_WEEK[date.getDay()];
-  const openDate = getDateFromClock(date, hours[day].open);
-  const closeDate = getDateFromClock(date, hours[day].close);
+  const openDate = dateFromClock(date, hours[day].open);
+  const closeDate = dateFromClock(date, hours[day].close);
 
   return openDate.getTime() > date.getTime() ||
           date.getTime() > closeDate.getTime();

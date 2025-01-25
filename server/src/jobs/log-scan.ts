@@ -1,13 +1,12 @@
 import { CronJob } from "cron";
-import db from "../models/database";
-import { GYM_NAMES, Collection } from "../utils/constants";
-import { GymName, OccupancyRecordType } from "../models/database.types";
-import { timeRoundedToNearestMinute } from "../utils/date";
+import db from "@/models/database";
+import { OccupancyRecordType } from "@/models/types";
+import { GYM_NAMES, OccupancyCollection, timeRoundedToNearestMinute } from "@/utils";
 
 /**
  * Initialize log scanner
  */
-export default function initLogScanScheduler() {
+export default function StartLogScanScheduler() {
   new CronJob(
     "*/5 * * * *", // Every 5 minutes
     logScanJob,
@@ -25,7 +24,6 @@ export default function initLogScanScheduler() {
 export const logScanJob = async () => {
   const currentTime = timeRoundedToNearestMinute(new Date());
   const occupancyRecords: OccupancyRecordType[] = [];
-
   for (const gymName of GYM_NAMES) {
     const records = await db.getLogRecords({
       gym: gymName,
@@ -42,6 +40,5 @@ export const logScanJob = async () => {
       occupancy: occupancy,
     });
   }
-
-  await db.insertOccupancyRecords(occupancyRecords, Collection.Current);
+  await db.insertOccupancyRecords(occupancyRecords, OccupancyCollection.Current);
 };
