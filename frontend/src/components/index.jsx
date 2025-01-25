@@ -1,14 +1,28 @@
-import FacilityCard from './home/FacilityCard';
-import FacilityCardDisplay from './home/FacilityCardDisplay';
-import FacilityCardInfo from './home/FacilityCardInfo';
+// Facility card components
+import FacilityCard from "./facility/FacilityCard";
+import FacilityCardDisplay from "./facility/FacilityCardDisplay";
+import FacilityCardInfo from "./facility/FacilityCardInfo";
 
-import Footer from './footer/Footer';
+// Occupancy display components
+import LiveDot from "./facility/LiveDot";
+import OccMeter from "./facility/OccMeter";
 
-import LiveDot from './misc/LiveDot';
-import OccMeter from './home/OccMeter';
-import ThemeIcon from './misc/ThemeIcon';
+// Footer component
+import Footer from "./footer/Footer";
 
-export { FacilityCard, FacilityCardDisplay, FacilityCardInfo, 
-        Footer, LiveDot, 
-        OccMeter, ThemeIcon
-        };
+// Login and theme related components
+import ThemeIcon from "./misc/ThemeIcon";
+import AuthButton from "./auth/AuthButton";
+import LoginPopup from "./auth/LoginPopup";
+
+export {
+  FacilityCard,
+  FacilityCardDisplay,
+  FacilityCardInfo,
+  LiveDot,
+  OccMeter,
+  Footer,
+  ThemeIcon,
+  AuthButton,
+  LoginPopup,
+};

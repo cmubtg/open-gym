@@ -1,7 +1,6 @@
-import * as metadata from '../../data/metadata.json';
-import { GymName } from '../models/database.types';
-import { GYM_NAMES } from '../utils/constants';
-import { getSpecialSchedule } from './gymHoursService';
+import * as metadata from "../../data/metadata.json";
+import { GYM_NAMES, GymName } from "@/utils";
+import { getSpecialSchedule } from "./gym-hours-service";
 
 /**
  * Get all metadata for all gyms
@@ -12,7 +11,6 @@ export const getAllMetadataHelper = async () => {
     metadata[gymName].hours = await getSpecialSchedule(new Date(), gymName);
   }
   return metadata;
-
 };
 
 /**

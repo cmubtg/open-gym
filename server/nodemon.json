@@ -2,5 +2,5 @@
   "watch": ["./"],
   "ext": "ts,js,cjs,mjs,json",
   "ignore": ["./dist/*.js"],
-  "exec": "ts-node src/server.ts"
+  "exec": "ts-node -r tsconfig-paths/register src/index.ts"
 }

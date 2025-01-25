@@ -1,39 +1,75 @@
-import express from 'express';
-import mongoose from 'mongoose';
-import OpenGymRoutes from './routes/routes';
-import config from './config';
-import { initJobs } from './jobs';
-const cors = require('cors');
+import express, { Application } from "express";
+import cors from "cors";
+import mongoose from "mongoose";
+import session from "express-session";
+import config from "@/config";
+import startCronJobs from "@/jobs";
+import mountRoutes from "@/routes";
+import mountMiddleware, { errorHandler } from "@/middleware";
 
+export class Server {
+  private app: Application;
 
-const app = express();
+  constructor() {
+    this.app = express();
+    this.app.set("trust proxy", 1);
+    this.app.use(cors(config.corsPolicy));
+    this.app.use(express.json());
+  }
 
-app.use(cors({
-  origin: config.frontendURL,
-}));
+  private async connectToDatabase(): Promise<mongoose.Mongoose> {
+    try {
+      const connection = await mongoose.connect(config.databaseURL);
+      console.log("Connected to database:", connection.connection.name);
+      return connection;
+    } catch (error) {
+      console.error("Database connection failed:", error);
+      throw error;
+    }
+  }
 
-// middleware
-app.use(express.json());
+  private setupSession(mongooseConnection: mongoose.Mongoose): void {
+    this.app.use(session(config.buildSessionConfig(mongooseConnection)));
+  }
 
-app.use((req, res, next) => {
-  console.log(req.path, req.method);
-  next();
-});
+  private setupMiddleware(): void {
+    mountMiddleware(this.app);
+  }
 
-// routes
-app.use('/api/', OpenGymRoutes);
+  private setupRoutes(): void {
+    mountRoutes(this.app);
+  }
 
-// connect to database
-mongoose.connect(config.databaseURL)
-    .then(() => {
-      console.log('Connected to database');
-      initJobs();
+  private setupErrorHandling(): void {
+    this.app.use(errorHandler);
+  }
 
-      // listen on port
-      app.listen(config.port, () => {
-        console.log('Listening on port', config.port);
+  public async start(): Promise<void> {
+    try {
+      // Connect to database
+      const connection = await this.connectToDatabase();
+
+      this.setupSession(connection);
+
+      // Start background jobs
+      startCronJobs();
+
+      // Initialize middleware
+      this.setupMiddleware();
+
+      // Setup routes
+      this.setupRoutes();
+
+      // Setup error handling
+      this.setupErrorHandling();
+
+      // Start server
+      this.app.listen(config.port, () => {
+        console.log(`Server running on port ${config.port}`);
       });
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+    } catch (error) {
+      console.error("Failed to start server:", error);
+      process.exit(1);
+    }
+  }
+}

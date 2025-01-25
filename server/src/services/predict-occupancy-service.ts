@@ -1,9 +1,7 @@
-import { exec } from 'child_process';
-import util from 'util';
-import { GymName } from '../models/database.types';
-import { isClosed } from './gymHoursService';
-import { GYM_NAMES, NO_ONE } from '../utils/constants';
-import { isIn } from '../utils/helper';
+import util from "util";
+import { exec } from "child_process";
+import { GYM_NAMES, NO_ONE, GymName, isIn } from "@/utils";
+import { isClosed } from "./gym-hours-service";
 
 const isHoliday = (date: Date) => {
   return true;
@@ -34,7 +32,7 @@ export const predictOccupancy = async (gym: string, date: Date) => {
   if (await isClosed(gym, date)) {
     return NO_ONE;
   }
-  const script = 'forecast/predict.py';
+  const script = "forecast/predict.py";
   const cmd = `python ${script} 
     --day_of_week ${date.getDay()} 
     --month ${date.getMonth()} 
@@ -45,7 +43,7 @@ export const predictOccupancy = async (gym: string, date: Date) => {
     --temperature ${getTemperature()}`;
     // different OS use different newline breaks
     // Remove newline breaks
-  const command = cmd.replace(/(\r\n|\n|\r)/gm, '');
+  const command = cmd.replace(/(\r\n|\n|\r)/gm, "");
   const { stdout } = await execAsync(command);
   return parseInt(stdout, 10);
 };
@@ -57,7 +55,7 @@ export const predictOccupancy = async (gym: string, date: Date) => {
  */
 export const validatePredictRequest = (gym: GymName, timestamp: string) => {
   if (isNaN(Date.parse(timestamp))) {
-    throw new Error('Invalid Timestamp');
+    throw new Error("Invalid Timestamp");
   }
 
   if (!isIn(GYM_NAMES, gym)) {
