@@ -28,6 +28,10 @@ const useFacilityOccupancy = (facility) => {
           }
         );
         const occupancyRecords = await res.json();
+        if (occupancyRecords.length === 0) {
+          console.log("No occupancy record found for facility:", facility.id);
+          return;
+        }
         if (res.ok) {
           setOccupancy(occupancyRecords[0].occupancy);
         }
