@@ -47,7 +47,7 @@ export const createOccupancyRecord = async (req: Request, res: Response) => {
     const occupancyRecord = {
       gym: gym as GymName,
       occupancy: occupancy as number,
-      time: new Date(),
+      time: new Date(Date.now()), // Converts to UTC
     };
     await db.insertOccupancyRecords([occupancyRecord]);
     res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
