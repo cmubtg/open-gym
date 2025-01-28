@@ -1,7 +1,7 @@
 // Controller actions that interact with Occupancy Records.
 import { Request, Response } from "express";
 import db from "@/models/database";
-import { HttpStatus, GymName, errorMessage } from "@/utils";
+import { HttpStatus, GymName, errorMessage, getESTDate } from "@/utils";
 
 // Get every Occupancy Record from every gym
 export const allOccupancyRecords = async (req: Request, res: Response) => {
@@ -47,10 +47,12 @@ export const createOccupancyRecord = async (req: Request, res: Response) => {
     const occupancyRecord = {
       gym: gym as GymName,
       occupancy: occupancy as number,
-      time: new Date(Date.now()), // Converts to UTC
+      time: getESTDate(),
     };
     await db.insertOccupancyRecords([occupancyRecord]);
-    res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
+    res
+      .status(HttpStatus.OK)
+      .json({ success: `Inserted Occupancy record into ${gym}` });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }

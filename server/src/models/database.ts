@@ -44,7 +44,6 @@ const db: DB = {
 
     const model = getOccupancyModel(collection);
 
-    console.log("getOccupancyRecords", start, end);
     if (isIn(GYM_NAMES, gym)) {
       const records: OccupancyRecordType[] = await model
         .find({ gym: gym, time: { $gte: start, $lt: end } }, { _id: 0 })
