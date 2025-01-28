@@ -26,7 +26,7 @@ export default function StartLogScanScheduler() {
  * collection at time rounded to nearest minute.
  */
 export const logScanJob = async () => {
-  const currentTime = timeRoundedToNearestMinute(new Date());
+  let currentTime = timeRoundedToNearestMinute(new Date());
   const occupancyRecords: OccupancyRecordType[] = [];
   for (const gymName of GYM_NAMES) {
     const records = await db.getLogRecords({
@@ -54,5 +54,11 @@ export const logScanJob = async () => {
     occupancyRecords,
     OccupancyCollection.Current
   );
-  console.log("Log scan complete:");
+  currentTime = timeRoundedToNearestMinute(new Date());
+  console.log(`Log scan complete ${currentTime}`);
+  for (const record of occupancyRecords) {
+    console.log(
+      `Inserted occupancy record for ${record.gym} at ${record.time} with occupancy ${record.occupancy}`
+    );
+  }
 };
