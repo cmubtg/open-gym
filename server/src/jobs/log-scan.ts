@@ -1,7 +1,11 @@
 import { CronJob } from "cron";
 import db from "@/models/database";
 import { OccupancyRecordType } from "@/models/types";
-import { GYM_NAMES, OccupancyCollection, timeRoundedToNearestMinute } from "@/utils";
+import {
+  GYM_NAMES,
+  OccupancyCollection,
+  timeRoundedToNearestMinute,
+} from "@/utils";
 
 /**
  * Initialize log scanner
@@ -33,12 +37,22 @@ export const logScanJob = async () => {
       (acc, record) => acc + (record.entries - record.exits),
       0
     );
-
+    if (occupancy < 0) {
+      console.log(
+        `Negative occupancy (${occupancy}) recorded for ${gymName} at ${currentTime}`,
+        records
+      );
+      continue;
+    }
     occupancyRecords.push({
       gym: gymName,
       time: currentTime,
       occupancy: occupancy,
     });
   }
-  await db.insertOccupancyRecords(occupancyRecords, OccupancyCollection.Current);
+  await db.insertOccupancyRecords(
+    occupancyRecords,
+    OccupancyCollection.Current
+  );
+  console.log("Log scan complete:");
 };
