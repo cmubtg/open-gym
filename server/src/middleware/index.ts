@@ -8,6 +8,7 @@ const mountMiddleware = (app: Application): void => {
   // Request logging middleware.
   app.use((req: Request, res: Response, next: NextFunction) => {
     console.log(`${req.method} ${req.path}`);
+    console.log("Headers:", req.headers);
     next();
   });
 
