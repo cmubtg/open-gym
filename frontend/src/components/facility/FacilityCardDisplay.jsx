@@ -58,18 +58,17 @@ const FacilityCardDisplay = () => {
       />
   
       {/* Info Button */}
-      <div className="info_button_wrapper absolute top-2 left-2 z-50">
+      <div className="info_button_wrapper top-2 left-2 z-50">
           <button
             className="info_button"
-            onClick={() => setOverlayVisible(!isOverlayVisible)}
-          >
-            <BiTime size="24px" style={{ color: 'white' }} />
+            onClick={() => setOverlayVisible(!isOverlayVisible)}>
+            <BiTime size="20px" style={{ color: 'white' }} />
           </button>
       </div>
 
       {/* Facility Card Status Text */}
-      {statusText && (
-        <p className="justify-center absolute text-base font-bold text-slate-50 opacity-100">
+      {statusText && !isOverlayVisible && (
+        <p className="justify-center absolute text-base font-bold text-slate-50 opacity-100 z-40">
           {statusText}
         </p>
       )}
@@ -77,13 +76,13 @@ const FacilityCardDisplay = () => {
       {/* Toggle Overlay */}
       {isOverlayVisible && (
         <div className="info_overlay absolute inset-0 bg-gray-800 bg-opacity-70 flex flex-col items-center justify-center text-white text-center">
-           <h3 className="text-xl text-white font-bold mb-4">Hours</h3>
-          <p className="text-lg text-white mb-2">
-            <span className="font-bold">Monday - Friday:</span> {weekdayHours}
+        <h3 className="text-xl text-white font-bold mb-4">Hours</h3>
+        <p className="text-white mb-2" style={{ fontSize: "16px" }}>
+          <span className="font-bold">Monday - Friday:</span> {weekdayHours}
           </p>
-          <p className="text-lg text-white">
+          <p className="text-white" style={{ fontSize: "16px" }}>
             <span className="font-bold">Saturday - Sunday:</span> {weekendHours}
-          </p>
+            </p>
         </div>
       )}
     </div>
