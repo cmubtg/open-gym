@@ -38,7 +38,7 @@ const FacilityCardDisplay = ({ facility, occupancy, closingStatus }) => {
 
       {/* Toggle Overlay */}
       {isOverlayVisible && (
-        <div className="info_overlay absolute inset-0 bg-gray-800 bg-opacity-70 flex flex-col items-center justify-center text-white text-center">
+        <div className="info_overlay relative inset-0 bg-gray-800 bg-opacity-70 flex flex-col items-center justify-center text-white text-center">
            <h3 className="text-xl text-white font-bold mb-4">Hours</h3>
           <p className="text-lg text-white mb-2">
             <span className="font-bold">Monday - Friday:</span> {weekdayHours}
