@@ -62,7 +62,7 @@ const FacilityCardDisplay = () => {
           <button
             className="info_button"
             onClick={() => setOverlayVisible(!isOverlayVisible)}>
-            <BiTime size="20px" style={{ color: 'white' }} />
+            <BiTime size="20px" className="text-white hover:btg-red" />
           </button>
       </div>
 
@@ -76,13 +76,13 @@ const FacilityCardDisplay = () => {
       {/* Toggle Overlay */}
       {isOverlayVisible && (
         <div className="info_overlay absolute inset-0 bg-gray-800 bg-opacity-70 flex flex-col items-center justify-center text-white text-center">
-        <h3 className="text-xl text-white font-bold mb-4">Hours</h3>
-        <p className="text-white mb-2" style={{ fontSize: "16px" }}>
-          <span className="font-bold">Monday - Friday:</span> {weekdayHours}
+           <h3 className="text-base text-white font-bold mb-4">Hours</h3>
+          <p className="text-base text-white mb-2">
+            <span className="font-bold">Monday - Friday:</span> {weekdayHours}
           </p>
-          <p className="text-white" style={{ fontSize: "16px" }}>
+          <p className="text-base text-white">
             <span className="font-bold">Saturday - Sunday:</span> {weekendHours}
-            </p>
+          </p>
         </div>
       )}
     </div>
