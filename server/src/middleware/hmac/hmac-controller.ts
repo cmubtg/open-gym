@@ -7,12 +7,10 @@ import { decrypt } from "./decrypt";
 // decrypts the data to be processed and stored.
 export const hmacAuth = (req: Request, res: Response, next: NextFunction) => {
   try {
-    const timestamp = req.headers["x-timestamp"] as string;
     const receivedSignature = req.headers["x-signature"] as string;
-    const encryptedData = req.body.direction as string;
+    const encryptedData = req.body as string;
 
     const { isValid, error } = validateRequest(
-      timestamp,
       receivedSignature,
       encryptedData
     );
@@ -24,7 +22,7 @@ export const hmacAuth = (req: Request, res: Response, next: NextFunction) => {
 
     // Decrypt
     try {
-      req.body.direction = decrypt(encryptedData);
+      // req.body.direction = decrypt(encryptedData);
       next();
       return;
     } catch (error) {
