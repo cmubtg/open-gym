@@ -42,7 +42,7 @@ const FacilityCardDisplay = () => {
   const statusText = getStatusDisplay();
 
   return (
-    <div className="card_top">
+    <div className="card_top relative">
       {/* TODO: Restore link when routing is implemented */}
       {/* <Link className="card_link" to={`/facility/${facility.id}`}> 
           </Link> */}
@@ -56,10 +56,20 @@ const FacilityCardDisplay = () => {
           src={facility.image} 
           alt={facility.name} 
       />
-      
+  
+      {/* Info Button */}
+      <div className="info_button_wrapper top-2 left-2">
+          <button
+            className="info_button"
+            onClick={() => setOverlayVisible(!isOverlayVisible)}
+          >
+            <BiTime size="24px" style={{ color: 'white' }} />
+          </button>
+      </div>
+
       {/* Facility Card Status Text */}
       {statusText && (
-        <p className="absolute justify-center text-base font-bold text-slate-50 opacity-100">
+        <p className="justify-center absolute text-base font-bold text-slate-50 opacity-100">
           {statusText}
         </p>
       )}
@@ -76,16 +86,6 @@ const FacilityCardDisplay = () => {
           </p>
         </div>
       )}
-
-       {/* Info Button */}
-        <div className="info_button_wrapper absolute top-2 left-2">
-          <button
-            className="info_button"
-            onClick={() => setOverlayVisible(!isOverlayVisible)}
-          >
-            <BiTime size="24px" style={{ color: 'white' }} />
-          </button>
-        </div>
     </div>
   );
 };
