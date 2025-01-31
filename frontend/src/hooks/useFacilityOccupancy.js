@@ -8,7 +8,7 @@ const useFacilityOccupancy = (facility) => {
   const [closingStatus, setClosingStatus] = useState("closed");
   const { isAuthenticated } = useAuth();
   // TODO Keep track of time since last fetch
-  const lastFetch = Math.floor(Math.random() * 10) + 1;
+  // const lastFetch = Math.floor(Math.random() * 10) + 1;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -46,12 +46,13 @@ const useFacilityOccupancy = (facility) => {
       if (newClosingStatus !== closingStatus) {
         setClosingStatus(newClosingStatus);
       }
+      if (!isClosed(closingStatus)) {
+        fetchData();
+      }
     };
 
     updateClosingStatus();
-    if (!isClosed(closingStatus)) {
-      fetchData();
-    }
+    
     // Check every minute to see if closing status has changed
     const intervalId = setInterval(updateClosingStatus, MINUTE_MS);
     return () => clearInterval(intervalId);
