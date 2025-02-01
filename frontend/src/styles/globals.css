@@ -121,7 +121,11 @@
   }
 
   .info_button { 
-    color: #F8F8F8; /* White icon color */
+    @apply ease cursor-pointer
+    group-hover:text-btg-red
+    group-hover:[&_*]:text-btg-red
+    hover:text-btg-red
+    text-black dark:text-white;
     border: none;
     border-radius: 100%;
     padding: 2px 2px;

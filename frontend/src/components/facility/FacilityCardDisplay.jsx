@@ -62,7 +62,7 @@ const FacilityCardDisplay = () => {
           <button
             className="info_button"
             onClick={() => setOverlayVisible(!isOverlayVisible)}>
-            <BiTime size="20px" className="text-white hover:btg-red" />
+            <BiTime size="20px" className="text-white transition-colors duration-500 group-hover:text-btg-red hover:text-btg-red" />
           </button>
       </div>
 
