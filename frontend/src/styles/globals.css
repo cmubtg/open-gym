@@ -329,3 +329,20 @@ code {
     opacity: 100;
   }
 }
+
+@keyframes fade-out {
+  from {
+    opacity: 100;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fade-in 0.5s;
+}
+
+.fade-out {
+  animation: fade-out 0.5s;
+}
