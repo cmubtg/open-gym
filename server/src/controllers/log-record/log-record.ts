@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import db from "@/models/database";
 import { LogRecordType } from "@/models/types";
-import { HttpStatus, GymName, errorMessage } from "@/utils";
+import { HttpStatus, GymName, errorMessage, getESTDate } from "@/utils";
 
 // Get every Log Record from every gym.
 export const allLogRecords = async (req: Request, res: Response) => {
@@ -30,11 +30,9 @@ export const createLogRecord = async (req: Request, res: Response) => {
   const { entries, exits } = req.body;
   const { gym } = req.params;
 
+  console.log("Received log:", { gym, entries, exits });
+
   // Validate input
-  if (!entries && !exits) {
-    res.status(HttpStatus.BadRequest).json({ error: "No log provided" });
-    return;
-  }
   if (entries < 0 || exits < 0) {
     res.status(HttpStatus.BadRequest).json({ error: "Invalid log" });
     return;
@@ -44,12 +42,14 @@ export const createLogRecord = async (req: Request, res: Response) => {
   try {
     const logRecord: LogRecordType = {
       gym: gym as GymName,
-      time: new Date(),
+      time: getESTDate(),
       entries: entries as number,
       exits: exits as number,
     };
     await db.insertLogRecords([logRecord]);
-    res.status(HttpStatus.OK).json({ success: `Inserted record into ${gym}` });
+    res
+      .status(HttpStatus.OK)
+      .json({ success: `Inserted Log record into ${gym}` });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }

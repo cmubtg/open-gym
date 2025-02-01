@@ -8,15 +8,12 @@ import {
   OccupancyRecordModelType,
   OCCUPANCY_MODEL_MAP,
 } from "./types";
-import {
-  GYM_NAMES,
-  OccupancyCollection, 
-  isIn,
-  relativeDate 
-} from "@/utils";
+import { GYM_NAMES, OccupancyCollection, isIn, relativeDate } from "@/utils";
 
 // Helper functions/constants
-const getOccupancyModel = (collection: OccupancyCollection): OccupancyRecordModelType => {
+const getOccupancyModel = (
+  collection: OccupancyCollection
+): OccupancyRecordModelType => {
   return OCCUPANCY_MODEL_MAP[collection];
 };
 
@@ -27,7 +24,10 @@ const defaultDateRange = {
 
 // Database object
 const db: DB = {
-  insertOccupancyRecords: async (records, collection = OccupancyCollection.Current) => {
+  insertOccupancyRecords: async (
+    records,
+    collection = OccupancyCollection.Current
+  ) => {
     const model: OccupancyRecordModelType = getOccupancyModel(collection);
     for (const record of records) {
       await model.create(record);

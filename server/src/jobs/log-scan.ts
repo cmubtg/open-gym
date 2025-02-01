@@ -1,7 +1,11 @@
 import { CronJob } from "cron";
 import db from "@/models/database";
 import { OccupancyRecordType } from "@/models/types";
-import { GYM_NAMES, OccupancyCollection, timeRoundedToNearestMinute } from "@/utils";
+import {
+  GYM_NAMES,
+  OccupancyCollection,
+  timeRoundedToNearestMinute,
+} from "@/utils";
 
 /**
  * Initialize log scanner
@@ -22,7 +26,7 @@ export default function StartLogScanScheduler() {
  * collection at time rounded to nearest minute.
  */
 export const logScanJob = async () => {
-  const currentTime = timeRoundedToNearestMinute(new Date());
+  let currentTime = timeRoundedToNearestMinute(new Date());
   const occupancyRecords: OccupancyRecordType[] = [];
   for (const gymName of GYM_NAMES) {
     const records = await db.getLogRecords({
@@ -33,12 +37,28 @@ export const logScanJob = async () => {
       (acc, record) => acc + (record.entries - record.exits),
       0
     );
-
+    if (occupancy < 0) {
+      console.log(
+        `Negative occupancy (${occupancy}) recorded for ${gymName} at ${currentTime}`,
+        records
+      );
+      continue;
+    }
     occupancyRecords.push({
       gym: gymName,
       time: currentTime,
       occupancy: occupancy,
     });
   }
-  await db.insertOccupancyRecords(occupancyRecords, OccupancyCollection.Current);
+  await db.insertOccupancyRecords(
+    occupancyRecords,
+    OccupancyCollection.Current
+  );
+  currentTime = timeRoundedToNearestMinute(new Date());
+  console.log(`Log scan complete ${currentTime}`);
+  for (const record of occupancyRecords) {
+    console.log(
+      `Inserted occupancy record for ${record.gym} at ${record.time} with occupancy ${record.occupancy}`
+    );
+  }
 };
