@@ -120,11 +120,10 @@
     right: 8px;
   }
 
-  .info_button { 
+  .info_button {
     @apply ease cursor-pointer
-    group-hover:text-btg-red
-    group-hover:[&_*]:text-btg-red
-    hover:text-btg-red
+    hover:[&_*]:text-btg-red
+    [&_*]:duration-100
     text-black dark:text-white;
     border: none;
     border-radius: 100%;
@@ -137,8 +136,8 @@
   .info_tooltip {
     @apply hidden absolute top-[30px] left-[2px] bg-[rgba(255,255,255,0.8)] 
     dark:bg-[rgba(0,0,0,0.8)] p-2 rounded text-[12px] w-max z-10;
-  } 
-  
+  }
+
   /* Show the tooltip on button hover */
   .info_button_wrapper:hover .info_tooltip {
     display: block;
@@ -317,16 +316,14 @@ code {
   width: 100px;
 }
 
-.info_overlay {
+/* .info_overlay {
   animation: fade-in 0.5s;
-}
+} */
 
 @keyframes fade-in {
-  from {
-    opacity: 0;
-  }
   to {
-    opacity: 100;
+    opacity: 100 !important;
+    background-color: red;
   }
 }
 
@@ -340,6 +337,7 @@ code {
 }
 
 .fade-in {
+  /* background-color: red; */
   animation: fade-in 0.5s;
 }
 
