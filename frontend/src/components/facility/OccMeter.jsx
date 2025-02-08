@@ -2,18 +2,22 @@ import { getOccClass } from "utils/utils";
 import { useFacility } from "context/FacilityContext";
 
 const OccMeter = () => {
-  const { occupancy } = useFacility();
+  const { occupancy, facility } = useFacility();
+  const maxOccupancy = facility?.max_occupancy
 
   // Calculate the strokeDashoffset value for the meter_level circle
   const calculateOffset = (percentage) => {
     const boundedPerc = Math.max(0, Math.min(100, percentage));
     const startOffset = 180; // offset at 0%
     const endOffset = -20; // offset at 100%
-    return startOffset + (endOffset - startOffset) * (boundedPerc / 100);
+    return { 
+      offset: startOffset + (endOffset - startOffset) * (boundedPerc / 100),
+      boundedPercentage: boundedPerc
+     }
   };
-
-  const offset = calculateOffset(occupancy);
-  const occ_class = getOccClass(occupancy);
+  const occupancyPercentage = ((occupancy / maxOccupancy) * 100).toFixed()
+  const { offset, boundedPercentage } = calculateOffset(occupancyPercentage);
+  const occ_class = getOccClass(occupancyPercentage);
 
   return (
     <div className="meter_container">
@@ -30,7 +34,7 @@ const OccMeter = () => {
       </svg>
       <div className="meter_info">
         <p className="font-bold text-base text-black dark:text-white">
-          {occupancy}
+          {boundedPercentage}
           <span className="text-xs">%</span>
         </p>
         <p className="font-light text-[7px] mt-[-5px]">of max occupancy</p>
