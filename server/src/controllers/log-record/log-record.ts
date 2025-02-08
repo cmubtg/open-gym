@@ -33,10 +33,6 @@ export const createLogRecord = async (req: Request, res: Response) => {
   console.log("Received log:", { gym, entries, exits });
 
   // Validate input
-  if (!entries && !exits) {
-    res.status(HttpStatus.BadRequest).json({ error: "No log provided" });
-    return;
-  }
   if (entries < 0 || exits < 0) {
     res.status(HttpStatus.BadRequest).json({ error: "Invalid log" });
     return;
