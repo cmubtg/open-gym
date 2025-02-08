@@ -274,6 +274,7 @@ code {
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(3px);
+  z-index: 15;
 }
 
 .login-popup-content {
