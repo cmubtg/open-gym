@@ -46,7 +46,7 @@ const FacilityCardDisplay = () => {
       />
 
       {/* Info Button */}
-      <div className="info_button_wrapper absolute top-2 left-2 z-50">
+      <div className="info_button_wrapper absolute top-2 left-2 z-5">
         <button
           className="info_button"
           onClick={() => setOverlayVisible(!isOverlayVisible)}
@@ -57,7 +57,7 @@ const FacilityCardDisplay = () => {
 
       {/* Facility Card Status Text */}
       {statusText && !isOverlayVisible && (
-        <p className="justify-center absolute text-base font-bold text-slate-50 opacity-100 z-40">
+        <p className="justify-center absolute text-base font-bold text-slate-50 opacity-100 z-5">
           {statusText}
         </p>
       )}

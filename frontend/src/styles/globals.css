@@ -84,6 +84,7 @@
     overflow-hidden rounded-lg 
     /* cursor-pointer */
     justify-center;
+    /* z-index: 10; */
   }
   .card_link {
     @apply w-full h-full 
@@ -118,6 +119,7 @@
     position: absolute;
     top: 8px;
     right: 8px;
+    /* z-index: 15; */
   }
 
   .info_button {
