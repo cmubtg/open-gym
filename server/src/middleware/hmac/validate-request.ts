@@ -1,5 +1,6 @@
 import crypto from "crypto";
 import config from "@/config";
+import {LogRecordType} from "@/models/types";
 
 // Validate required configuration
 if (!config.hmacSecret || !config.encryptionKey) {
@@ -19,18 +20,20 @@ interface ValidationResult {
 // has the correct HMAC signature and that the request has not expired.
 export const validateRequest = (
   signature: unknown,
-  data: unknown
+  data: LogRecordType
 ): ValidationResult => {
 
   // Verify signature
   try {
-    const dataToSign = `${data}`
-    console.log("data to sign is", data)
+    const dataToSign = `${data.entries}${data.exits}`
+    console.log("Data:", dataToSign)
+
     const expectedSignature = crypto
       .createHmac("sha256", HMAC_SECRET)
       .update(dataToSign)
       .digest("hex");
-    console.log("expected signature is", expectedSignature);
+    console.log("Received Signature", signature);
+    console.log("Expected Signature", expectedSignature);
       
     // Verify data hash and signature are valid 
     if (typeof signature !== 'string') {
@@ -49,7 +52,7 @@ export const validateRequest = (
     if (!isSignatureValid) {
       return {
         isValid: false,
-        error: "Invalid signature"
+        error: "Invalid signature (Ensure Log Record request body is valid)"
       };
     }
 
