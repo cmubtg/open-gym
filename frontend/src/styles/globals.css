@@ -84,6 +84,7 @@
     overflow-hidden rounded-lg 
     /* cursor-pointer */
     justify-center;
+    /* z-index: 10; */
   }
   .card_link {
     @apply w-full h-full 
@@ -112,6 +113,38 @@
     mask-image: linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0) 100%);
     background: linear-gradient(180deg, #000 38.74%, rgba(0, 0, 0, 0) 100%);
   }
+
+  /* INFO BUTTON */
+  .info_button_wrapper {
+    position: absolute;
+    top: 8px;
+    right: 8px;
+    /* z-index: 15; */
+  }
+
+  .info_button {
+    @apply ease cursor-pointer
+    hover:[&_*]:text-btg-red
+    [&_*]:duration-100
+    text-black dark:text-white;
+    border: none;
+    border-radius: 100%;
+    padding: 2px 2px;
+    font-size: 14px;
+    cursor: pointer;
+  }
+
+  /* Tooltip that appears on hover */
+  .info_tooltip {
+    @apply hidden absolute top-[30px] left-[2px] bg-[rgba(255,255,255,0.8)] 
+    dark:bg-[rgba(0,0,0,0.8)] p-2 rounded text-[12px] w-max z-10;
+  }
+
+  /* Show the tooltip on button hover */
+  .info_button_wrapper:hover .info_tooltip {
+    display: block;
+  }
+
   /* OCCUPANCY METER */
   .meter_container {
     @apply w-full h-[50px] items-center max-w-[250px] 
@@ -241,6 +274,7 @@ code {
   justify-content: center;
   align-items: center;
   backdrop-filter: blur(3px);
+  z-index: 15;
 }
 
 .login-popup-content {
@@ -283,4 +317,33 @@ code {
   margin-left: 10px;
   margin-bottom: 10px;
   width: 100px;
+}
+
+/* .info_overlay {
+  animation: fade-in 0.5s;
+} */
+
+@keyframes fade-in {
+  to {
+    opacity: 100 !important;
+    background-color: red;
+  }
+}
+
+@keyframes fade-out {
+  from {
+    opacity: 100;
+  }
+  to {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  /* background-color: red; */
+  animation: fade-in 0.5s;
+}
+
+.fade-out {
+  animation: fade-out 0.5s;
 }
