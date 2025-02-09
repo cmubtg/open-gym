@@ -47,3 +47,4 @@ export const loginAuth = async (
   // If no session exists, deny access
   res.status(HttpStatus.Unauthorized).json({ error: "Unauthorized access" });
 };
+

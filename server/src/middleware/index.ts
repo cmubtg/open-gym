@@ -1,8 +1,11 @@
 import { Application, Request, Response, NextFunction } from "express";
-import { loginAuth } from "@/middleware/auth";
+import { loginAuth } from "./login/login-check-controller";
+import { hmacAuth } from "./hmac/hmac-controller";
 
 /**
  * @param app server state
+ * 
+ * Warning: Ensure middleware is mounted before routes.
  */
 const mountMiddleware = (app: Application): void => {
   // Request logging middleware.
@@ -11,6 +14,10 @@ const mountMiddleware = (app: Application): void => {
     console.log("Headers:", req.headers);
     next();
   });
+
+  // Middleware check authenticity of caller and integrity of message
+  app.use("/log-record/:gym/new", hmacAuth);
+  app.use("/occupancy-record/:gym/new", hmacAuth);
 
   // Authentication middleware.
   app.use("/api", loginAuth);
