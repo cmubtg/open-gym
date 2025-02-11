@@ -16,8 +16,8 @@ const mountRoutes = (app: Application): void => {
   app.get("/auth/verify", controller.checkLogin);
 
   // Exposed for Demo Purposes.
-  app.post("/occupancy-record/:gym/new", controller.createOccupancyRecord);
   app.post("/log-record/:gym/new", controller.createLogRecord); // Scanner hits this route
+  app.post("/occupancy-record/:gym/new", controller.createOccupancyRecord);
 
   // Protected routes
   app.use("/api", OpenGymRoutes);

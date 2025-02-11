@@ -17,7 +17,6 @@ const mountMiddleware = (app: Application): void => {
 
   // Middleware check authenticity of caller and integrity of message
   app.use("/log-record/:gym/new", hmacAuth);
-  app.use("/occupancy-record/:gym/new", hmacAuth);
 
   // Authentication middleware.
   app.use("/api", loginAuth);
