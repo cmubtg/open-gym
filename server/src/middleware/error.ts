@@ -1,6 +1,6 @@
 // middleware/error.ts
 import { Request, Response, NextFunction } from "express";
-import logger from "../logger";
+import { logger } from "@/utils";
 
 export class AppError extends Error {
   constructor(

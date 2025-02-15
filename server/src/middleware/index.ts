@@ -1,7 +1,7 @@
-import { Application, Request, Response, NextFunction } from "express";
-import { loginAuth } from "@/middleware/auth";
-import logger from "../logger";
+import { Application } from "express";
 import morgan from "morgan";
+import { loginAuth } from "@/middleware/auth";
+import { logger } from "@/utils";
 
 /**
  * @param app server state
