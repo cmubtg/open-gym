@@ -19,6 +19,9 @@ const FacilityCardDisplay = () => {
 
   const weekdayHours = formatHours(facility.hours[0]);
   const weekendHours = formatHours(facility.hours[6]);
+  const weekdayClosed = facility.hours[0].open.getHours() == facility.hours[0].close.getHours();
+  const weekendClosed = facility.hours[6].open.getHours() == facility.hours[6].close.getHours();
+  
 
   const isComingSoon = facility.status === "coming soon";
   const isCurrentlyClosed = !isOpen(closingStatus);
@@ -73,10 +76,10 @@ const FacilityCardDisplay = () => {
         <div className="space-y-4 text-center">
           <h3 className="text-lg text-white font-bold">Hours</h3>
           <p className="text-sm text-white">
-            <span className="font-bold">Monday - Friday:</span> {weekdayHours}
+            <span className="font-bold">Monday - Friday:</span> {weekdayClosed ?  "Closed" : weekdayHours}
           </p>
           <p className="text-sm text-white">
-            <span className="font-bold">Saturday - Sunday:</span> {weekendHours}
+            <span className="font-bold">Saturday - Sunday:</span> {weekendClosed ?  "Closed" : weekendHours}
           </p>
         </div>
       </div>
