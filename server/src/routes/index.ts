@@ -1,7 +1,6 @@
 // routes/index.ts
 import { Application } from "express";
 import * as controller from "@/controllers";
-import { loginAuth } from "@/middleware/auth";
 import OpenGymRoutes from "./routes";
 
 const mountRoutes = (app: Application): void => {
@@ -17,8 +16,8 @@ const mountRoutes = (app: Application): void => {
   app.get("/auth/verify", controller.checkLogin);
 
   // Exposed for Demo Purposes.
-  app.post("/occupancy-record/:gym/new", controller.createOccupancyRecord);
   app.post("/log-record/:gym/new", controller.createLogRecord); // Scanner hits this route
+  app.post("/occupancy-record/:gym/new", controller.createOccupancyRecord);
 
   // Protected routes
   app.use("/api", OpenGymRoutes);

@@ -33,7 +33,7 @@ const OccMeter = () => {
         ></circle>
       </svg>
       <div className="meter_info">
-        <p className="font-bold text-base text-black dark:text-white">
+        <p className="font-bold text-sm text-black dark:text-white">
           {boundedPercentage}
           <span className="text-xs">%</span>
         </p>
