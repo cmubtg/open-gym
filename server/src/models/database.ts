@@ -71,6 +71,7 @@ const db: DB = {
     };
     const { gym, dateRange } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;
+    console.log("date range", dateRange);
 
     if (isIn(GYM_NAMES, gym)) {
       const records: LogRecordType[] = await logModel

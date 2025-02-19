@@ -15,9 +15,9 @@ export const loginAuth = async (
 ) => {
   console.log("=== LOGIN Auth Middleware Debug ===");
   console.log("Session ID:", req.sessionID);
-  console.log("Session:", req.session);
+  // console.log("Session:", req.session);
   console.log("Is authenticated:", req.session.isAuthenticated);
-  console.log("Headers:", req.headers);
+  // console.log("Headers:", req.headers);
   console.log("=========================");
 
   if (req.sessionID) {
@@ -27,7 +27,7 @@ export const loginAuth = async (
         resolve(session);
       });
     });
-    console.log("Session from store:", session);
+    // console.log("Session from store:", session);
   }
 
   if (!config.isProduction) {
