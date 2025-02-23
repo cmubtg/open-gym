@@ -30,13 +30,13 @@
                 "description": ""
             },
             "friday": {
-                "open": "09:00",
-                "close": "23:00",
+                "open": "10:00",
+                "close": "21:00",
                 "description": ""
             },
             "saturday": {
-                "open": "09:00",
-                "close": "23:00",
+                "open": "10:00",
+                "close": "21:00",
                 "description": ""
             }
         },
