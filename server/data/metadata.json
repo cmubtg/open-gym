@@ -5,8 +5,8 @@
         "description": "Two floors dedicated to cardio and weight equipment in the Cohon University Center.",
         "hours": {
             "sunday": {
-                "open": "09:00",
-                "close": "23:00",
+                "open": "10:00",
+                "close": "21:00",
                 "description": ""
             },
             "monday": {
@@ -35,12 +35,12 @@
                 "description": ""
             },
             "saturday": {
-                "open": "09:00",
-                "close": "23:00",
+                "open": "10:00",
+                "close": "21:00",
                 "description": ""
             }
         },
-        "maxOccupancy": 150
+        "maxOccupancy": 94
     },
     "tepperFC": {
         "name": "Tepper Fitness Center",
