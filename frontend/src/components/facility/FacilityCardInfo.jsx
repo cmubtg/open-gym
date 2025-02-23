@@ -9,8 +9,7 @@ const FacilityCardInfo = () => {
   const isComingSoon = facility.status === "coming soon";
   const { isAuthenticated } = useAuth()
 
-  const showOccInfo = !isComingSoon && !isClosed(closingStatus) && isAuthenticated; 
-  // const showOccInfo = true
+  const showOccInfo = !isComingSoon && !isClosed(closingStatus) && isAuthenticated;
   return (
     <div className={`card_btm ${(isClosed(closingStatus) || isComingSoon) && "opacity-55"}`}>
       
