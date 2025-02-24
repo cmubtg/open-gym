@@ -9,7 +9,7 @@ const Home = () => {
 
   return (
     <div className="btg_page_container">
-      <div className="w-full h-full pt-8">
+      <div className="w-full h-full pt-12">
         <TitleBar />
         <FacilityCards />
         {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
