@@ -17,9 +17,9 @@ const FacilityCardDisplay = () => {
       minute: "2-digit",
     })}`;
 
-  const weekdayHours = formatHours(facility.hours[0]);
+  const weekdayHours = formatHours(facility.hours[1]);
   const weekendHours = formatHours(facility.hours[6]);
-  const weekdayClosed = facility.hours[0].open.getHours() == facility.hours[0].close.getHours();
+  const weekdayClosed = facility.hours[1].open.getHours() == facility.hours[0].close.getHours();
   const weekendClosed = facility.hours[6].open.getHours() == facility.hours[6].close.getHours();
   
 
