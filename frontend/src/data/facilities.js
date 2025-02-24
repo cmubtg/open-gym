@@ -51,7 +51,7 @@ const facilities = [
     image: process.env.PUBLIC_URL + "../images/uc.jpg",
     image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
     image3: process.env.PUBLIC_URL + "../images/uc3.jpg",
-    max_occupancy: 150,
+    max_occupancy: 94,
     status: "established",
   },
   {

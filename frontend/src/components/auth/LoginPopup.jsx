@@ -8,16 +8,26 @@ const LoginPopup = ({ setShowLogin }) => {
   return (
     <div className="login-popup">
       <div className="login-popup-content">
-        <h2>OpenGym</h2>
+        <h2>Sign in</h2>
         <p id="body">
-          Open Gym is built and maintained by{" "}
-          <a href="https://cmubtg.com/">CMU BTG</a>.<span className="font-medium text-btg-red">To view real-time occupancy
-          data, please sign in with a CMU email </span>
-          <br/>
-          <br/>
-          Thanks for using OpenGym! We just launched this website recently, so we are still tuning the gym occupancy calibrations. If you have any feedback, bugs, or suggestions, please feel free to let us know at <a href="mailto:cmubtg@gmail.com" className="font-medium text-btg-red">cmubtg@gmail.com</a>.
+          Thanks for using OpenGym!{" "}
+          <span className="font-medium">
+            Note that this project is in active development and the real-time
+            data we are providing are estimates.
+          </span>
+          <br />
+          <br />
+          If you have any feedback, or suggestions please reach out to us at{" "}
+          <a href="mailto:cmubtg@gmail.com" className="font-medium">
+            cmubtg@gmail.com.
+          </a>
+          <br /><br />
+          <span className="text-btg-red">
+            To view real-time occupancy estimates,{" "}
+            please sign in with a valid CMU email.
+          </span>
         </p>
-        <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 ">
+        <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
           </div>
@@ -26,7 +36,7 @@ const LoginPopup = ({ setShowLogin }) => {
               onClick={continueAsGuest}
               className="cursor-pointer flex items-center justify-center h-10 border dark:text-btg-med-grey border-gray-300 rounded-sm w-full duration-300 hover:text-btg-red hover:border-btg-red"
             >
-              continue without signing in
+              Continue without signing in
             </p>
           </div>
         </div>
