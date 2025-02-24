@@ -279,8 +279,7 @@ code {
 }
 
 .login-popup-content {
-  @apply bg-btg-primary;
-  padding: 20px;
+  @apply bg-btg-primary p-4;
   border-radius: 10px;
   max-width: 520px;
   width: 100%;

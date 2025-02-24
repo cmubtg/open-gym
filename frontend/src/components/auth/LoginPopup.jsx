@@ -8,27 +8,26 @@ const LoginPopup = ({ setShowLogin }) => {
   return (
     <div className="login-popup">
       <div className="login-popup-content">
-        <h2>OpenGym</h2>
+        <h2>Sign in</h2>
         <p id="body">
           Thanks for using OpenGym!{" "}
-          <b className="">
+          <span className="font-medium">
             Note that this project is in active development and the real-time
-            data we are providing are estimates
-          </b>
+            data we are providing are estimates.
+          </span>
           <br />
           <br />
           If you have any feedback, or suggestions please reach out to us at{" "}
-          <a href="mailto:cmubtg@gmail.com" className="text-btg-red">
-            cmubtg@gmail.com
+          <a href="mailto:cmubtg@gmail.com" className="font-medium">
+            cmubtg@gmail.com.
           </a>
-          <br />
-          <br />
+          <br /><br />
           <span className="text-btg-red">
-            To view real-time occupancy estimates, please sign in with a valid
-            CMU email{" "}
+            To view real-time occupancy estimates,{" "}
+            please sign in with a valid CMU email.
           </span>
         </p>
-        <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 ">
+        <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
           </div>
@@ -37,7 +36,7 @@ const LoginPopup = ({ setShowLogin }) => {
               onClick={continueAsGuest}
               className="cursor-pointer flex items-center justify-center h-10 border dark:text-btg-med-grey border-gray-300 rounded-sm w-full duration-300 hover:text-btg-red hover:border-btg-red"
             >
-              continue without signing in
+              Continue without signing in
             </p>
           </div>
         </div>
