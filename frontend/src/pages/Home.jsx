@@ -21,8 +21,10 @@ const TitleBar = () => {
     <div>
     <div className="w-full flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
       <div>
-        <img className="block dark:hidden w-1/2 mb-2" src={process.env.PUBLIC_URL + "../images/light_mode_logo.png"} alt="Light Mode Logo" />
-        <img className="hidden dark:block w-1/2 mb-2" src={process.env.PUBLIC_URL + "../images/dark_mode_logo.png"} alt="Dark Mode Logo" />
+        <div className="flex justify-center items-center sm:justify-between">
+          <img className="block dark:hidden w-1/2 mb-2" src={process.env.PUBLIC_URL + "../images/light_mode_logo.png"} alt="Light Mode Logo" />
+          <img className="hidden dark:block w-1/2 mb-2" src={process.env.PUBLIC_URL + "../images/dark_mode_logo.png"} alt="Dark Mode Logo" />
+        </div>
         {/* TODO: n/BPS-222 - Add facility details description. */}
         {/* <p className="">Click on a gym for more occupancy information!</p> */}
         <p>Real-time gym occupancy information</p>
