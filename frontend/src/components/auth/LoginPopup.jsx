@@ -13,6 +13,9 @@ const LoginPopup = ({ setShowLogin }) => {
           Open Gym is built and maintained by{" "}
           <a href="https://cmubtg.com/">CMU BTG</a>.<span className="font-medium text-btg-red">To view real-time occupancy
           data, please sign in with a CMU email </span>
+          <br/>
+          <br/>
+          Thanks for using OpenGym! We just launched this website recently, so we are still tuning the gym occupancy calibrations. If you have any feedback, bugs, or suggestions, please feel free to let us know at <a href="mailto:cmubtg@gmail.com" className="font-medium text-btg-red">cmubtg@gmail.com</a>.
         </p>
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 ">
           <div className="w-[14em] md:w-[45%]">
