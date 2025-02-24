@@ -59,18 +59,6 @@ export const login = async (
       console.log("Session ID after save:", req.sessionID);
       console.log("Verified session in store:", verifySession);
 
-      // Manually set the session cookie
-      // const cookieOptions = {
-      // maxAge: 3600000,
-      // httpOnly: false,
-      // secure: true,
-      // sameSite: "none" as const,
-      // domain: ".cmugym.com",
-      // path: "/"
-      // };
-      // res.cookie("connect.sid", req.sessionID, cookieOptions);
-      // console.log("Response headers after setting cookie:", res.getHeaders());
-
       res.status(HttpStatus.OK).json({
         success: true,
         message: "Login successful",
