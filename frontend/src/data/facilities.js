@@ -38,7 +38,7 @@ const highmarkHours = {
 const facilities = [
   {
     id: "cohonFC",
-    name: "UC Fitness Center Lower",
+    name: "CUC Fitness Center Lower",
     address: "5000 Forbes Ave, Pittsburgh, PA 15213",
     description: `Two floors dedicated to cardio and weight equipment in
         the Cohon Univeristy Center.`,
@@ -56,7 +56,7 @@ const facilities = [
   },
   {
     id: "cohon2FC",
-    name: "UC Fitness Center Upper",
+    name: "CUC Fitness Center Upper",
     address: "5000 Forbes Ave, Pittsburgh, PA 15213",
     description: `Two floors dedicated to cardio and weight equipment in
         the Cohon Univeristy Center.`,
@@ -107,8 +107,8 @@ const facilities = [
     address: "",
     description: ``,
     hours: Array(7).fill(highmarkHours),
-    image: process.env.PUBLIC_URL + "./images/highmark.jpg",
-    image2: process.env.PUBLIC_URL + "../images/highmark.jpg",
+    image: process.env.PUBLIC_URL + "./images/highmark2.jpg",
+    image2: process.env.PUBLIC_URL + "../images/highmark2.jpg",
     max_occupancy: 1000,
     status: "coming soon",
   },
