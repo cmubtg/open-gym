@@ -12,7 +12,7 @@ const useFacilityOccupancy = (facility) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      console.log("logging");
+
       if (!isAuthenticated) {
         console.log("User is not authenticated, skipping fetch");
         return;
@@ -45,8 +45,7 @@ const useFacilityOccupancy = (facility) => {
     };
 
     const updateClosingStatus = () => {
-      const currDateTime = new Date(Date.now());
-      const newClosingStatus = getClosingStatus(facility, currDateTime);
+      const newClosingStatus = getClosingStatus(facility);
       if (newClosingStatus !== closingStatus) {
         setClosingStatus(newClosingStatus);
       }
