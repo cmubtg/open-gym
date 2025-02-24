@@ -165,7 +165,7 @@
     /* stroke: var(--btg-green); */
     stroke-width: 20px;
     stroke-linecap: round;
-    stroke-dasharray: 400;
+    stroke-dasharray: 420;
     transition: stroke-dashoffset 1s ease-out;
   }
   #meter_track {

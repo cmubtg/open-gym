@@ -10,22 +10,23 @@ const LoginPopup = ({ setShowLogin }) => {
       <div className="login-popup-content">
         <h2>OpenGym</h2>
         <p id="body">
-            Thanks for using OpenGym!{" "}
-            <b className="">
-                Note that this project is in active development and the real-time data
-                we are providing are estimates
-            </b>
-            <br/><br/>
-
-            If you have any feedback, or suggestions please reach out to us at{" "}
-            <a href="mailto:cmubtg@gmail.com" className="text-btg-red">
-                cmubtg@gmail.com
-            </a>
-            <br/><br/>
-
-            <span className="text-btg-red">
-            To view real-time occupancy estimates, please sign in with a valid CMU email{" "}
-            </span>
+          Thanks for using OpenGym!{" "}
+          <b className="">
+            Note that this project is in active development and the real-time
+            data we are providing are estimates
+          </b>
+          <br />
+          <br />
+          If you have any feedback, or suggestions please reach out to us at{" "}
+          <a href="mailto:cmubtg@gmail.com" className="text-btg-red">
+            cmubtg@gmail.com
+          </a>
+          <br />
+          <br />
+          <span className="text-btg-red">
+            To view real-time occupancy estimates, please sign in with a valid
+            CMU email{" "}
+          </span>
         </p>
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 ">
           <div className="w-[14em] md:w-[45%]">

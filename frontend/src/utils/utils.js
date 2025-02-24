@@ -90,10 +90,12 @@ export function getNextOpenReadable(facility, currTime) {
   return `${getDayOfWeekName(day)}, ${formatTime12h(openTime)}`;
 }
 
-export function getClosingStatus(facility, currTime, threshold) {
+export function getClosingStatus(facility, threshold) {
+  const currTime = new Date(Date.now());
   var thresh = threshold || CLOSING_THRESH
   var day = currTime.getDay()
 
+  console.log("hours", facility.hours)
   const openTime = facility.hours[day].open;
   const closeTime = facility.hours[day].close;
 
