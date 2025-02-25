@@ -37,6 +37,10 @@ export const createLogRecord = async (req: Request, res: Response) => {
     res.status(HttpStatus.BadRequest).json({ error: "Invalid log" });
     return;
   }
+  if (entries > 30 || exits > 30) {
+    res.status(HttpStatus.BadRequest).json({ error: "Invalid log Greater than Expected" });
+    return;
+  }
 
   // Insert into database
   try {
