@@ -22,9 +22,13 @@ const LoginPopup = ({ setShowLogin }) => {
             cmubtg@gmail.com.
           </a>
           <br /><br />
-          <span className="text-btg-red">
-            To view real-time occupancy estimates,{" "}
-            please sign in with a valid CMU email.
+          <span className="text-btg-red font-bold">
+            Open Gym is Temporarily Unavailable! We're scaling up our servers to handle the demand.
+            Please check back in a few hours.
+          </span>
+          <br /><br />
+          <span className="text-btg-red font-bold">
+            Thank you for your patience.
           </span>
         </p>
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
