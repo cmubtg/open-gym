@@ -5,8 +5,9 @@ import {
   GYM_NAMES,
   OccupancyCollection,
   timeRoundedToNearestMinute,
+  getESTDate,
+  dateFromClock,
 } from "@/utils";
-
 /**
  * Initialize log scanner
  */
@@ -29,14 +30,18 @@ export const logScanJob = async () => {
   let currentTime = timeRoundedToNearestMinute(new Date());
   const occupancyRecords: OccupancyRecordType[] = [];
 
-  // Ignore all log records before 6:30am
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  const startTime = new Date(today);
-  startTime.setHours(6, 30, 0, 0);
-
+  // Using the date time helpers to set start and end times in EST
+  const today = getESTDate();
+  const startTime = dateFromClock(today, "6:30");
   const endTime = new Date(today);
   endTime.setHours(23, 59, 59, 999);
+
+  // Only run the job if the current time is after 6:30 EST
+  const currentEST = getESTDate();
+  if (currentEST < startTime) {
+    console.log(`Current time ${currentEST} is before 6:30 AM EST. Skipping log scan.`);
+    return;
+  }
 
   for (const gymName of GYM_NAMES) {
     const records = await db.getLogRecords({
