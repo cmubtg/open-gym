@@ -26,18 +26,19 @@ const LoginPopup = ({ setShowLogin }) => {
             To view real-time occupancy estimates, please sign in with a valid CMU email.
           </span>
           <br /><br />
-          <span className="text-btg-red font-bold">
-            Open Gym is shut down for spring break! Have a great break!
-          </span>
+
           <br /><br />
           <span className="text-btg-red font-bold">
             Thank you for your patience.
           </span>
         </p> */}
-        <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
+          <span className="text-btg-red font-bold">
+            Open Gym is shut down for spring break! Have a great break!
+          </span>
+        {/* <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
-          </div>
+          </div> */}
           {/* <div className="w-[14em] md:w-[45%]">
                <GoogleLoginButton />
               </div> */}
@@ -49,7 +50,7 @@ const LoginPopup = ({ setShowLogin }) => {
               Continue without signing in
             </p>
           </div> */}
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );
