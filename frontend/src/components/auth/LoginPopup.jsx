@@ -33,7 +33,7 @@ const LoginPopup = ({ setShowLogin }) => {
           </span>
         </p> */}
           <span className="text-btg-red font-bold">
-            Open Gym is shut down for spring break! Have a great break!
+            Open Gym is down for maintenance. Please check back later.
           </span>
         {/* <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
