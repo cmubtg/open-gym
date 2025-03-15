@@ -5,6 +5,7 @@ import { HttpStatus } from "@/utils";
 declare module "express-session" {
   export interface SessionData {
     isAuthenticated: boolean;
+    isAdmin: boolean;
   }
 }
 
@@ -40,6 +41,9 @@ export const loginAuth = async (
   // Check for an active session indicating the user is logged in
   if (req.session.isAuthenticated) {
     console.log("User is authenticated, proceeding");
+    if (req.session.isAdmin) {
+      console.log("User has admin access");
+    }
     next();
     return;
   }

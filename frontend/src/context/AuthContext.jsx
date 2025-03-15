@@ -5,6 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [showLogin, setShowLogin] = useState(false);
 
@@ -58,6 +59,9 @@ export const AuthProvider = ({ children }) => {
       console.log("Login response data:", data);
 
       if (data.success) {
+        if (data.isAdmin) {
+          setIsAdmin(true);
+        }
         setIsAuthenticated(true);
         setShowLogin(false);
         return true;
@@ -80,6 +84,7 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     isAuthenticated,
+    isAdmin,
     isLoading,
     showLogin,
     setShowLogin,

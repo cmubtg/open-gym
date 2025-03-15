@@ -32,9 +32,16 @@ export const login = async (
       console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
 
+      if (config.adminEmailList.includes(email)) {
+        req.session.isAdmin = true;
+      } else {
+        req.session.isAdmin = false;
+      }
+
       // Log session and cookies
       console.log("Session:", req.session);
       console.log("Session ID:", req.sessionID);
+
 
       // Explicitly save the session and wait for it to complete
       await new Promise<void>((resolve, reject) => {
@@ -74,12 +81,14 @@ export const login = async (
       res.status(HttpStatus.OK).json({
         success: true,
         message: "Login successful",
+        isAdmin: req.session.isAdmin
       });
     } else {
       console.log("Invalid email domain");
       res.status(HttpStatus.Unauthorized).json({
         success: false,
         message: "Invalid email domain",
+        isAdmin: false
       });
     }
   } catch (error) {
@@ -87,6 +96,7 @@ export const login = async (
     res.status(HttpStatus.BadRequest).json({
       success: false,
       message: "Invalid token",
+      isAdmin: false
     });
   }
 };
@@ -94,9 +104,13 @@ export const login = async (
 // Deprecated - Moved to loginAuth in @/middleware/login/login-check-controller
 export const checkLogin = (req: Request, res: Response) => {
   if (req.session.isAuthenticated) {
-    res.status(HttpStatus.OK).json({ isAuthenticated: true });
+    if (req.session.isAdmin) {
+      res.status(HttpStatus.OK).json({ isAuthenticated: true, isAdmin: true });
+    } else {
+      res.status(HttpStatus.OK).json({ isAuthenticated: true, isAdmin: false });
+    }
   } else {
-    res.status(HttpStatus.OK).json({ isAuthenticated: false });
+    res.status(HttpStatus.OK).json({ isAuthenticated: false, isAdmin: false });
   }
 };
 
