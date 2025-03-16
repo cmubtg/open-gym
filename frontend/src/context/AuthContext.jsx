@@ -24,11 +24,13 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
 
         setIsAuthenticated(data.isAuthenticated);
+        setIsAdmin(data.isAdmin);
         // Only show login if user hasn't seen prompt and isn't authenticated
         setShowLogin(!data.isAuthenticated && !hasSeenPrompt);
       } catch (error) {
         console.error("Auth check failed:", error);
         setIsAuthenticated(false);
+        setIsAdmin(false);
         setShowLogin(!localStorage.getItem("hasSeenLoginPrompt"));
       } finally {
         setIsLoading(false);
