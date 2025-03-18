@@ -3,7 +3,7 @@ import { useFacility } from "context/FacilityContext";
 
 const OccMeter = () => {
   let { occupancy, facility } = useFacility();
-  const DELTA_PENALTY = 25;
+  const DELTA_PENALTY = 30;
   occupancy -= DELTA_PENALTY; // TODO n/BPS-307: temp offest observed end of day
   const maxOccupancy = facility?.max_occupancy
 
