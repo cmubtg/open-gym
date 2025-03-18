@@ -9,7 +9,7 @@ const LoginPopup = ({ setShowLogin }) => {
     <div className="login-popup">
       <div className="login-popup-content">
         <h2>Sign in</h2>
-        {/* <p id="body">
+        <p id="body">
           { "Thanks for using OpenGym!" }
           <span className="font-medium">
             Note that this project is in active development and the real-time
@@ -31,29 +31,27 @@ const LoginPopup = ({ setShowLogin }) => {
           <span className="text-btg-red font-bold">
             Thank you for your patience.
           </span>
-        </p> */}
-          <span className="text-btg-red font-bold">
-            Open Gym is down for maintenance. Please check back later.
-          </span>
-        {/* <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
+        </p> 
+
+        { <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
-          </div> */}
-          {/* <div className="w-[14em] md:w-[45%]">
+          </div> 
+          { <div className="w-[14em] md:w-[45%]">
                <GoogleLoginButton />
-              </div> */}
-          {/* <div className="w-[14em] md:w-[45%]">
+              </div> }
+          { <div className="w-[14em] md:w-[45%]">
             <p
               onClick={continueAsGuest}
               className="cursor-pointer flex items-center justify-center h-10 border dark:text-btg-med-grey border-gray-300 rounded-sm w-full duration-300 hover:text-btg-red hover:border-btg-red"
             >
               Continue without signing in
             </p>
-          </div> */}
-        {/* </div> */}
+          </div> }
+         </div>}
       </div>
     </div>
   );
-};
+
 
 export default LoginPopup;
