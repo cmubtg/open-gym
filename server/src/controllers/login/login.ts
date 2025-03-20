@@ -28,7 +28,7 @@ export const login = async (
     const email = payload?.email;
     console.log("Email from token:", email);
 
-    if (email && email.endsWith("@andrew.cmu.edu")) {
+    if (email && (email.endsWith("@andrew.cmu.edu") || email.endsWith("@cmu.edu"))) {
       console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
 
