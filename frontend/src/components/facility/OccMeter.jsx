@@ -5,7 +5,7 @@ const OccMeter = () => {
   let { occupancy, facility } = useFacility();
   const DELTA_PENALTY = 8;
   occupancy -= DELTA_PENALTY; // TODO n/BPS-307: temp offest observed end of day
-  // occupancy *= 0.3; // TODO n/BPS-307: temp occupancy reduction
+  occupancy *= 0.3; // TODO n/BPS-307: temp occupancy reduction
   const maxOccupancy = facility?.max_occupancy
 
   // Calculate the strokeDashoffset value for the meter_level circle
