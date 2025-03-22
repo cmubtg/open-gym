@@ -37,12 +37,13 @@ const TitleBar = () => {
       <div>
       <Banner>
         <div className="flex items-center gap-2">
-          <span>OpenGym is still in development, so some numbers may not be fully accurate. Help us improve the data by entering what percentage the CUC gym occupancy should be:</span>
+          {/* <span>OpenGym is still in development, so some numbers may not be fully accurate. Help us improve the data by entering what percentage the CUC gym occupancy should be:</span>
           <input
             type="number"
             placeholder="%"
             className="border border-yellow-600 rounded px-2 py-1 w-16"
-          />
+          /> */}
+          <span>OpenGym is currently down for maintenance and we hope to bring back the website soon. Thank you for your patience while work!</span>
         </div>
       </Banner>
 

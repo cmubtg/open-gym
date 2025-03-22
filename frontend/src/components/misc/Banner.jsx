@@ -12,7 +12,7 @@ const Banner = ({ message, children, onClose }) => {
         <AlertOctagon className="text-white w-4 h-4 flew-grow-0" />
       </div>
 
-      <div className="bg-[#ffc700] bg-opacity-20 text-[#554200] text-xs flex-1 flex justify-between items-center px-4">
+      <div className="bg-[#ffc700] dark:text-white bg-opacity-20 text-[#554200] text-xs flex-1 flex justify-between items-center px-4">
         <div>{children || message}</div> {}
         <button
           onClick={() => {
