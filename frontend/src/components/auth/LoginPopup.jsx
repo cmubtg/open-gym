@@ -10,24 +10,26 @@ const LoginPopup = ({ setShowLogin }) => {
       <div className="login-popup-content">
         <h2>Sign in</h2>
         <p id="body">
-          {"Thanks for using OpenGym! "}
-          <span className="font-medium text-btg-red">
+          OpenGym is down for maintenance. We will be back soon!
+          {/* {"Thanks for using OpenGym!"}
+          <span className="font-medium">
             Note that this project is in active development and the real-time
             data we are providing are estimates.
           </span>
           <br />
           <br />
-          If you have any feedback or suggestions, please reach out to us at{" "}
-          <a href="mailto:cmubtg@gmail.com" className="font-medium">cmubtg@gmail.com
+          If you have any feedback or suggestions, please reach out to us at
+          <a href="mailto:cmubtg@gmail.com" className="font-medium">
+            cmubtg@gmail.com
           </a>
           <br />
           <br />
           <span className="text-btg-red">
             To view real-time occupancy estimates, please sign in with a valid
             CMU email.
-          </span>
+          </span> */}
         </p>
-
+{/* 
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
@@ -40,7 +42,7 @@ const LoginPopup = ({ setShowLogin }) => {
               Continue without signing in
             </p>
           </div>
-        </div>
+        </div> */}
       </div>
     </div>
   );
