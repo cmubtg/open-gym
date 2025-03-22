@@ -4,7 +4,7 @@ import { hmacAuth } from "./hmac/hmac-controller";
 
 /**
  * @param app server state
- * 
+ *
  * Warning: Ensure middleware is mounted before routes.
  */
 const mountMiddleware = (app: Application): void => {
@@ -16,7 +16,7 @@ const mountMiddleware = (app: Application): void => {
   });
 
   // Middleware check authenticity of caller and integrity of message
-  app.use("/log-record/:gym/new", hmacAuth);
+  // app.use("/log-record/:gym/new", hmacAuth);
 
   // Authentication middleware.
   app.use("/api", loginAuth);

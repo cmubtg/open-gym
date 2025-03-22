@@ -25,10 +25,10 @@ export const login = async (
     });
 
     const payload = ticket.getPayload();
-    const email = payload?.email;
-    console.log("Email from token:", email);
+    const email = payload?.email?.toLowerCase().trim();
+    console.log("Email from token (normalized):", email);
 
-    if (email && email.endsWith("@andrew.cmu.edu")) {
+    if (email && (email.endsWith("@andrew.cmu.edu") || email.endsWith("@cmu.edu"))) {
       console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
 
@@ -65,18 +65,6 @@ export const login = async (
 
       console.log("Session ID after save:", req.sessionID);
       console.log("Verified session in store:", verifySession);
-
-      // Manually set the session cookie
-      // const cookieOptions = {
-      // maxAge: 3600000,
-      // httpOnly: false,
-      // secure: true,
-      // sameSite: "none" as const,
-      // domain: ".cmugym.com",
-      // path: "/"
-      // };
-      // res.cookie("connect.sid", req.sessionID, cookieOptions);
-      // console.log("Response headers after setting cookie:", res.getHeaders());
 
       res.status(HttpStatus.OK).json({
         success: true,
