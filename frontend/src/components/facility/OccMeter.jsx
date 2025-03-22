@@ -3,7 +3,9 @@ import { useFacility } from "context/FacilityContext";
 
 const OccMeter = () => {
   let { occupancy, facility } = useFacility();
-  occupancy -= 8; // TODO n/BPS-307: temp offest observed end of day
+  const DELTA_PENALTY = 8;
+  occupancy -= DELTA_PENALTY; // TODO n/BPS-307: temp offest observed end of day
+  // occupancy *= 0.1; // TODO n/BPS-307: temp occupancy reduction
   const maxOccupancy = facility?.max_occupancy
 
   // Calculate the strokeDashoffset value for the meter_level circle

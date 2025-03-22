@@ -25,10 +25,10 @@ export const login = async (
     });
 
     const payload = ticket.getPayload();
-    const email = payload?.email;
-    console.log("Email from token:", email);
+    const email = payload?.email?.toLowerCase().trim();
+    console.log("Email from token (normalized):", email);
 
-    if (email && email.endsWith("@andrew.cmu.edu")) {
+    if (email && (email.endsWith("@andrew.cmu.edu") || email.endsWith("@cmu.edu"))) {
       console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
 
