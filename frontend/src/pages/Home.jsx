@@ -35,17 +35,9 @@ const TitleBar = () => {
 
   return (
       <div>
-      <Banner>
-        <div className="flex items-center gap-2">
-          <span>OpenGym is still in development, so some numbers may not be fully accurate. Help us improve the data by entering what percentage the CUC gym occupancy should be:</span>
-          <input
-            type="number"
-            placeholder="%"
-            className="border border-yellow-600 rounded px-2 py-1 w-16"
-          />
-        </div>
-      </Banner>
-
+        <Banner>
+          <ManualOccupancyPSA/>
+        </Banner>
         <div className="w-full flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
           <div>
             <div className="flex justify-center items-center sm:justify-between">
@@ -82,5 +74,18 @@ const FacilityCards = () => {
     </div>
   );
 };
+
+const ManualOccupancyPSA = () =>{
+  return (
+    <div className="flex items-center gap-2">
+    <span>OpenGym is still in development, so some numbers may not be fully accurate. Help us improve the data by entering what percentage the CUC gym occupancy should be:</span>
+    <input
+      type="number"
+      placeholder="%"
+      className="border border-[#ffc700] rounded px-2 py-1 w-16"
+    />
+  </div>
+  )
+}
 
 export default Home;
