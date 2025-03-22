@@ -29,11 +29,11 @@ const LoginPopup = ({ setShowLogin }) => {
             CMU email.
           </span> */}
         </p>
-{/* 
+
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
-          <div className="w-[14em] md:w-[45%]">
+          {/* <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
-          </div>
+          </div> */}
           <div className="w-[14em] md:w-[45%]">
             <p
               onClick={continueAsGuest}
@@ -42,7 +42,7 @@ const LoginPopup = ({ setShowLogin }) => {
               Continue without signing in
             </p>
           </div>
-        </div> */}
+        </div>
       </div>
     </div>
   );
