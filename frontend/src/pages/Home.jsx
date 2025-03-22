@@ -43,7 +43,7 @@ const TitleBar = () => {
             placeholder="%"
             className="border border-yellow-600 rounded px-2 py-1 w-16"
           /> */}
-          <span>OpenGym is currently down for maintenance and we hope to bring back the website soon. Thank you for your patience while work!</span>
+          <span>OpenGym is currently down for maintenance and we hope to bring back the website soon. Thank you for your patience while we work!</span>
         </div>
       </Banner>
 
