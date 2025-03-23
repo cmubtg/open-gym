@@ -10,9 +10,8 @@ const LoginPopup = ({ setShowLogin }) => {
       <div className="login-popup-content">
         <h2>Sign in</h2>
         <p id="body">
-          OpenGym is down for maintenance. We will be back soon!
-          {/* {"Thanks for using OpenGym!"}
-          <span className="font-medium">
+          {"Thanks for using OpenGym! "}
+          <span className="font-medium text-btg-red">
             Note that this project is in active development and the real-time
             data we are providing are estimates.
           </span>
@@ -27,13 +26,13 @@ const LoginPopup = ({ setShowLogin }) => {
           <span className="text-btg-red">
             To view real-time occupancy estimates, please sign in with a valid
             CMU email.
-          </span> */}
+          </span>
         </p>
 
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
-          {/* <div className="w-[14em] md:w-[45%]">
+          <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
-          </div> */}
+          </div>
           <div className="w-[14em] md:w-[45%]">
             <p
               onClick={continueAsGuest}
