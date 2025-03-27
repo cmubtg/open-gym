@@ -12,9 +12,9 @@ const LoginPopup = ({ setShowLogin }) => {
         <p id="body">
           OpenGym is down for maintenance.{" "}
           <span className={"font-medium text-btg-red"}>
-            Please check back 28th March 2025
+            We'll be back on 28th March 2025!
           </span>
-          .{/*{"Thanks for using OpenGym! "}*/}
+          {/*{"Thanks for using OpenGym! "}*/}
           {/*<span className="font-medium text-btg-red">*/}
           {/*  Note that this project is in active development and the real-time*/}
           {/*  data we are providing are estimates.*/}
