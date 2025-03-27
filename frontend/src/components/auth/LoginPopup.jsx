@@ -12,9 +12,9 @@ const LoginPopup = ({ setShowLogin }) => {
         <p id="body">
           OpenGym is down for maintenance.{" "}
           <span className={"font-medium text-btg-red"}>
-             Please check back 28th March 2025
-          </span>.
-          {/*{"Thanks for using OpenGym! "}*/}
+            Please check back 28th March 2025
+          </span>
+          .{/*{"Thanks for using OpenGym! "}*/}
           {/*<span className="font-medium text-btg-red">*/}
           {/*  Note that this project is in active development and the real-time*/}
           {/*  data we are providing are estimates.*/}
@@ -34,9 +34,9 @@ const LoginPopup = ({ setShowLogin }) => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
-          {/*<div className="w-[14em] md:w-[45%]">*/}
-          {/*  <GoogleLoginButton />*/}
-          {/*</div>*/}
+          <div className="w-[14em] md:w-[45%]">
+            <GoogleLoginButton />
+          </div>
           <div className="w-[14em] md:w-[45%]">
             <p
               onClick={continueAsGuest}
