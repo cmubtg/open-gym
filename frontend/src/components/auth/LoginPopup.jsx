@@ -10,27 +10,23 @@ const LoginPopup = ({ setShowLogin }) => {
       <div className="login-popup-content">
         <h2>Sign in</h2>
         <p id="body">
-          OpenGym is down for maintenance.{" "}
-          <span className={"font-medium text-btg-red"}>
-            We'll be back on 28th March 2025!
+          {"Thanks for using OpenGym! "}
+          <span className="font-medium text-btg-red">
+            Note that this project is in active development and the real-time
+            data we are providing are estimates.
           </span>
-          {/*{"Thanks for using OpenGym! "}*/}
-          {/*<span className="font-medium text-btg-red">*/}
-          {/*  Note that this project is in active development and the real-time*/}
-          {/*  data we are providing are estimates.*/}
-          {/*</span>*/}
-          {/*<br />*/}
-          {/*<br />*/}
-          {/*If you have any feedback or suggestions, please reach out to us at*/}
-          {/*<a href="mailto:cmubtg@gmail.com" className="font-medium">*/}
-          {/*  cmubtg@gmail.com*/}
-          {/*</a>*/}
-          {/*<br />*/}
-          {/*<br />*/}
-          {/*<span className="text-btg-red">*/}
-          {/*  To view real-time occupancy estimates, please sign in with a valid*/}
-          {/*  CMU email.*/}
-          {/*</span>*/}
+          <br />
+          <br />
+          If you have any feedback or suggestions, please reach out to us at
+          <a href="mailto:cmubtg@gmail.com" className="font-medium">
+            cmubtg@gmail.com
+          </a>
+          <br />
+          <br />
+          <span className="text-btg-red">
+            To view real-time occupancy estimates, please sign in with a valid
+            CMU email.
+          </span>
         </p>
 
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
