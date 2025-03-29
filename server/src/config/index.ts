@@ -30,7 +30,7 @@ export default {
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization", "Cookie"],
   },
-  adminEmailList: (process.env.ADMIN_EMAIL_LIST ?? "").split("|"),
+  adminEmailList: process.env.ADMIN_EMAIL_LIST ? process.env.ADMIN_EMAIL_LIST.split("|") : [],
   buildSessionConfig(mongoose: Mongoose) {
     return {
       secret: process.env.MONGODB_SESSION_SECRET ?? "",
