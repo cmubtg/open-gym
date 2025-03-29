@@ -9,8 +9,51 @@ jest.mock("@/utils/helper", () => ({
   errorMessage: jest.fn((error) => `Error: ${error.message}`),
 }));
 
-describe("Controller Tests", () => {
-  describe("GetRecords", () => {
+describe("Occupancy Record Controller Tests", () => {
+  describe("allOccupancies", () => {
+    let req: Partial<Request>;
+    let res: Partial<Response>;
+    let mockStatus: jest.Mock;
+    let mockJson: jest.Mock;
+
+    beforeEach(() => {
+      mockStatus = jest.fn().mockReturnThis();
+      mockJson = jest.fn();
+      req = { params: {} };
+      res = { status: mockStatus, json: mockJson };
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+
+    it("should return all occupancies with status 200", async () => {
+      const mockData = [
+        { occupancy: 20 },
+        { occupancy: 25 },
+        { occupancy: 30 },
+      ];
+      (db.getOccupancyRecords as jest.Mock).mockResolvedValue(mockData);
+
+      await Controller.allOccupancyRecords(req as Request, res as Response);
+
+      expect(mockStatus).toHaveBeenCalledWith(HttpStatus.OK);
+      expect(mockJson).toHaveBeenCalledWith(mockData);
+    });
+
+    it("should return status 400 and an error message if db.getOccupancyRecords throws an error", async () => {
+      const error = new Error("Database error");
+      (db.getOccupancyRecords as jest.Mock).mockRejectedValue(error);
+
+      await Controller.allOccupancyRecords(req as Request, res as Response);
+
+      expect(mockStatus).toHaveBeenCalledWith(HttpStatus.BadRequest);
+      expect(mockJson).toHaveBeenCalledWith({ error: `Error: ${error.message}` });
+    });
+  });
+
+  describe("gymOccupancyRecords", () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let mockStatus: jest.Mock;
