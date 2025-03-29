@@ -1,8 +1,18 @@
-import { useState } from "react";
-import { AlertOctagon } from "lucide-react";
+import { useState, useEffect } from "react";
+import { AlertOctagon, X} from "lucide-react";
+import { useAuth } from "context/AuthContext";
 
 const Banner = ({ message, children, onClose }) => {
-  const [isVisible, setIsVisible] = useState(true);
+  const { isAuthenticated } = useAuth();
+  const [isVisible, setIsVisible] = useState(() => {
+    return isAuthenticated && Math.random() < 0.4;
+  });
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      setIsVisible(false);
+    }
+  }, [isAuthenticated]);
 
   if (!isVisible) return null;
 
@@ -19,9 +29,9 @@ const Banner = ({ message, children, onClose }) => {
             setIsVisible(false);
             if (onClose) onClose();
           }}
-          className="text-btg-yellow-dark font-bold px-2"
+          className="text-btg-yellow-dark font-bold px-2 hover:opacity-70 transition"
         >
-          ✖
+          <X className="w-4 h-4"/>
         </button>
       </div>
     </div>
