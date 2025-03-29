@@ -27,10 +27,10 @@ export const gymLogRecords = async (req: Request, res: Response) => {
 
 // Insert a sensor log into the database.
 export const createLogRecord = async (req: Request, res: Response) => {
-  const { entries, exits } = req.body;
+  const { entries, exits, notes } = req.body;  // Added notes
   const { gym } = req.params;
 
-  console.log("Received log:", { gym, entries, exits });
+  console.log("Received log:", { gym, entries, exits, notes });
 
   // Validate input
   if (entries < 0 || exits < 0) {
@@ -49,11 +49,12 @@ export const createLogRecord = async (req: Request, res: Response) => {
       time: getESTDate(),
       entries: entries as number,
       exits: exits as number,
+      notes: notes as string,
     };
     await db.insertLogRecords([logRecord]);
     res
-      .status(HttpStatus.OK)
-      .json({ success: `Inserted Log record into ${gym}` });
+        .status(HttpStatus.OK)
+        .json({ success: `Inserted Log record into ${gym}` });
   } catch (error) {
     res.status(HttpStatus.BadRequest).json({ error: errorMessage(error) });
   }
