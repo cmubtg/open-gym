@@ -77,6 +77,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsAuthenticated(false);
+    setIsAdmin(false);
   };
 
   const continueAsGuest = () => {
