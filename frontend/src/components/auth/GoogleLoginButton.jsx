@@ -28,14 +28,16 @@ function GoogleLoginButton() {
   };
 
   return (
-    <GoogleLogin
-      onSuccess={handleLoginSuccess}
-      onError={() => {
-        console.error("Google login failed");
-        alert("Google login failed");
-      }}
-      useOneTap={false} // Disable one-tap login to avoid COOP issues
-    />
+      <GoogleLogin
+          onSuccess={handleLoginSuccess}
+          onError={(error) => {
+            console.error("Google login failed with error:", error);
+            alert("Google login failed");
+          }}
+          useOneTap={false}
+          uxMode="redirect"
+          redirectUri={window.location.origin}
+      />
   );
 }
 export default GoogleLoginButton;

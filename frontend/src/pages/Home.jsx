@@ -78,13 +78,16 @@ const FacilityCards = () => {
 const ManualOccupancyPSA = () =>{
   return (
     <div className="flex items-center gap-2">
-    <span>OpenGym is still in development, so some numbers may not be fully accurate. Help us improve the data by entering what percentage the CUC gym occupancy should be:</span>
-    <input
-      type="number"
-      placeholder="%"
-      className="border border-[#ffc700] rounded px-2 py-1 w-16"
-    />
-  </div>
+      <span>
+        OpenGym is still under development and <strong>Are you in the gym right now?</strong> {" "}
+        Help us refine our data by sharing your estimate of the current occupancy:
+      </span>
+      <input
+        type="number"
+        placeholder="%"
+        className="border border-[#ffc700] rounded px-2 py-1 w-16"
+      />
+    </div>
   )
 }
 
