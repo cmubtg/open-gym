@@ -1,28 +1,39 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { Home, FacilityDetail, Dashboard } from "pages";
 import Footer from "components/footer/Footer";
-import { AuthProvider } from "context/AuthContext";
+import { AuthProvider, useAuth } from "context/AuthContext";
+import { Navigate, useLocation } from 'react-router-dom';
+
+// Protect Admin routes 
+const AdminRoute = ({ children }) => {
+  const { isAdmin } = useAuth();
+  const location = useLocation();
+
+  if (!isAdmin) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+
+  return children;
+};
+
 
 function App() {
-  const subdomain = window.location.hostname.split('.')[0];
-
-
   return (
     <AuthProvider>
-      <Router>
-          {/* Admin dashboard subdomain */}
-          {subdomain === 'dashboard' ? (
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-            </Routes>
-          ) : (
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/facility/:id" element={<FacilityDetail />} />
-            </Routes>
-          )}
+      <Router>      
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/facility/:id" element={<FacilityDetail />} />
+          <Route 
+            path="/dashboard" 
+            element={
+              <AdminRoute>
+                <Dashboard />
+              </AdminRoute>
+            } 
+          />
+        </Routes>
       </Router>
-
       <Footer />
     </AuthProvider>
   );
