@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { AlertOctagon, X} from "lucide-react";
 import { useAuth } from "context/AuthContext";
 
+const showBannerProb = 0.4;
+
 const Banner = ({ message, children, onClose }) => {
   const { isAuthenticated } = useAuth();
   const [isVisible, setIsVisible] = useState(() => {
-    return isAuthenticated && Math.random() < 0.4;
+    return isAuthenticated && Math.random() < showBannerProb;
   });
 
   useEffect(() => {
