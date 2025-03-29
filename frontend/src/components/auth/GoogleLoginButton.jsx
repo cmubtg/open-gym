@@ -35,8 +35,6 @@ function GoogleLoginButton() {
             alert("Google login failed");
           }}
           useOneTap={false}
-          uxMode="redirect"
-          redirectUri={window.location.origin}
       />
   );
 }
