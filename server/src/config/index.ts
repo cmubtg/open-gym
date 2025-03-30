@@ -21,6 +21,7 @@ export default {
   encryptionKey: process.env.ENCRYPTION_KEY,
   ivLength: 16,
   isProduction: isProduction,
+  debugMode: process.env.DEBUG_MODE === "true",
   corsPolicy: {
     origin:
       (isProduction

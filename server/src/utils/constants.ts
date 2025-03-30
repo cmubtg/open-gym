@@ -37,3 +37,5 @@ export enum HttpStatus {
   NotFound = 404,
   InternalServerError = 500,
 }
+
+export const DataFormat = "YYYY-MM-DD HH:mm:ss.SSS";

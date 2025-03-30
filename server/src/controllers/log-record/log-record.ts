@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import db from "@/models/database";
 import { LogRecordType } from "@/models/types";
-import { HttpStatus, GymName, errorMessage, getESTDate } from "@/utils";
+import { HttpStatus, GymName, errorMessage, getESTDate, logger } from "@/utils";
 
 // Get every Log Record from every gym.
 export const allLogRecords = async (req: Request, res: Response) => {
@@ -27,10 +27,10 @@ export const gymLogRecords = async (req: Request, res: Response) => {
 
 // Insert a sensor log into the database.
 export const createLogRecord = async (req: Request, res: Response) => {
-  const { entries, exits } = req.body;
+  const { entries, exits, notes } = req.body; // Added notes
   const { gym } = req.params;
 
-  console.log("Received log:", { gym, entries, exits });
+  logger.info("Received log:", { gym, entries, exits, notes });
 
   // Validate input
   if (entries < 0 || exits < 0) {
@@ -38,7 +38,9 @@ export const createLogRecord = async (req: Request, res: Response) => {
     return;
   }
   if (entries > 30 || exits > 30) {
-    res.status(HttpStatus.BadRequest).json({ error: "Invalid log Greater than Expected" });
+    res
+      .status(HttpStatus.BadRequest)
+      .json({ error: "Invalid log Greater than Expected" });
     return;
   }
 
@@ -49,6 +51,7 @@ export const createLogRecord = async (req: Request, res: Response) => {
       time: getESTDate(),
       entries: entries as number,
       exits: exits as number,
+      notes: notes as string,
     };
     await db.insertLogRecords([logRecord]);
     res

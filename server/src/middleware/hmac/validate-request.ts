@@ -1,6 +1,7 @@
 import crypto from "crypto";
 import config from "@/config";
-import {LogRecordType} from "@/models/types";
+import { LogRecordType } from "@/models/types";
+import { logger } from "@/utils";
 
 // Validate required configuration
 if (!config.hmacSecret || !config.encryptionKey) {
@@ -22,46 +23,44 @@ export const validateRequest = (
   signature: unknown,
   data: LogRecordType
 ): ValidationResult => {
-
   // Verify signature
   try {
-    const dataToSign = `${data.entries}${data.exits}`
-    console.log("Data:", dataToSign)
+    const dataToSign = `${data.entries}${data.exits}`;
+    logger.debug("Data:", dataToSign);
 
     const expectedSignature = crypto
       .createHmac("sha256", HMAC_SECRET)
       .update(dataToSign)
       .digest("hex");
-    console.log("Received Signature", signature);
-    console.log("Expected Signature", expectedSignature);
-      
-    // Verify data hash and signature are valid 
-    if (typeof signature !== 'string') {
+    logger.debug("Received Signature", signature);
+    logger.debug("Expected Signature", expectedSignature);
+
+    // Verify data hash and signature are valid
+    if (typeof signature !== "string") {
       return {
         isValid: false,
-        error: "Invalid signature format"
+        error: "Invalid signature format",
       };
     }
 
     // Use timing-safe comparison
     const isSignatureValid = crypto.timingSafeEqual(
-      Buffer.from(signature.toLowerCase(), 'hex'),
-      Buffer.from(expectedSignature, 'hex')
+      Buffer.from(signature.toLowerCase(), "hex"),
+      Buffer.from(expectedSignature, "hex")
     );
 
     if (!isSignatureValid) {
       return {
         isValid: false,
-        error: "Invalid signature (Ensure Log Record request body is valid)"
+        error: "Invalid signature (Ensure Log Record request body is valid)",
       };
     }
-
   } catch {
-      return {
-        isValid: false,
-        error: "Invalid signature format",
-      };
+    return {
+      isValid: false,
+      error: "Invalid signature format",
+    };
   }
 
   return { isValid: true };
-}
+};

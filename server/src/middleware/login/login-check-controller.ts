@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import config from "@/config";
-import { HttpStatus } from "@/utils";
+import { HttpStatus, logger } from "@/utils"; // Import logger from utils
 
 declare module "express-session" {
   export interface SessionData {
@@ -14,41 +14,52 @@ export const loginAuth = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("=== LOGIN Auth Middleware Debug ===");
-  console.log("Session ID:", req.sessionID);
-  // console.log("Session:", req.session);
-  console.log("Is authenticated:", req.session.isAuthenticated);
-  // console.log("Headers:", req.headers);
-  console.log("=========================");
+  logger.debug("=== LOGIN Auth Middleware Debug ===", {
+    sessionId: req.sessionID,
+    isAuthenticated: req.session.isAuthenticated,
+    path: req.path,
+    method: req.method,
+  });
 
   if (req.sessionID) {
     const session = await new Promise((resolve) => {
       req.sessionStore.get(req.sessionID, (err, session) => {
-        if (err) console.error("Error fetching session:", err);
+        if (err) {
+          logger.error("Error fetching session", {
+            error: err.message,
+            sessionId: req.sessionID,
+          });
+        }
         resolve(session);
       });
     });
-    // console.log("Session from store:", session);
+    // Use debug level for verbose session info
+    logger.debug("Session from store:", { session });
   }
 
   if (!config.isProduction) {
-    // Allow unrestricted access in development mode only
-    console.log("Development mode - bypassing auth");
+    logger.info("Development mode - bypassing auth", {
+      path: req.path,
+      method: req.method,
+    });
     next();
     return;
   }
 
-  // Check for an active session indicating the user is logged in
   if (req.session.isAuthenticated) {
-    console.log("User is authenticated, proceeding");
-    if (req.session.isAdmin) {
-      console.log("User has admin access");
-    }
+    logger.info("User is authenticated, proceeding", {
+      sessionId: req.sessionID,
+      path: req.path,
+    });
     next();
     return;
   }
-  console.log("User is not authenticated");
-  // If no session exists, deny access
+
+  logger.warn("Authentication failed - user is not authenticated", {
+    sessionId: req.sessionID,
+    path: req.path,
+    ip: req.ip,
+  });
+
   res.status(HttpStatus.Unauthorized).json({ error: "Unauthorized access" });
 };
-
