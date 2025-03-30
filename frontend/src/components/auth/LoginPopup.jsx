@@ -2,8 +2,10 @@ import React from "react";
 import GoogleLoginButton from "./GoogleLoginButton";
 import { useAuth } from "context/AuthContext";
 
-const LoginPopup = ({ setShowLogin }) => {
-  const { continueAsGuest } = useAuth();
+const LoginPopup = () => {
+  const { showLogin, continueAsGuest } = useAuth();
+
+  if (!showLogin) return null;
 
   return (
     <div className="login-popup">

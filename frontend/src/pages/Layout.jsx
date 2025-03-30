@@ -7,14 +7,12 @@ import { getTopBarMessage } from "data/topbarmessages";
 import { useLocation } from "react-router-dom";
 
 const Layout = () => {
-  const { showLogin, setShowLogin } = useAuth();
-
   return (
     <div className="btg_page_container">
       <div className="w-full h-full pt-10">
         <TitleBar />
-        <Outlet />
-        {showLogin && <LoginPopup setShowLogin={setShowLogin} />}
+        <Outlet /> {/* Child routes rendered here */}
+        <LoginPopup />
       </div>
     </div>
   );
