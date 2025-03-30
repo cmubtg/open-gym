@@ -11,6 +11,7 @@ const Layout = () => {
     <div className="btg_page_container">
       <div className="w-full h-full pt-10">
         <TitleBar />
+        <Divider />
         <Outlet /> {/* Child routes rendered here */}
         <LoginPopup />
       </div>
@@ -19,7 +20,27 @@ const Layout = () => {
 };
 
 const TitleBar = () => {
-  const { isAuthenticated, isAdmin } = useAuth();
+  return (
+    <div className="w-full flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
+      <div>
+        <Logo />
+        <StatusMessage />
+      </div>
+
+      <div className="flex flex-col sm:flex-row items-center sm:gap-1 mt-6 sm:mt-9 text-center sm:text-left">
+        <DashboardButton />
+        <div className="flex mt-4 sm:mt-0">
+          <ThemeIcon />
+          <AuthButton />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// Message component for rotating messages
+const StatusMessage = () => {
+  const { isAuthenticated } = useAuth();
   const location = useLocation();
   const [message, setMessage] = useState("");
   const isAdminView = location.pathname.includes("/dashboard");
@@ -28,9 +49,8 @@ const TitleBar = () => {
     if (isAdminView) {
       setMessage("Admin Dashboard");
     } else {
-      setMessage(getTopBarMessage(isAuthenticated));
-
       // Only set up the interval for rotating messages in student view
+      setMessage(getTopBarMessage(isAuthenticated));
       const interval = setInterval(() => {
         setMessage(getTopBarMessage(isAuthenticated));
       }, 300000);
@@ -39,26 +59,7 @@ const TitleBar = () => {
     }
   }, [isAuthenticated, isAdminView]);
 
-  return (
-    <>
-      <div className="w-full flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
-        <div>
-          <Logo />
-          <p>{message}</p>
-        </div>
-
-        <div className="flex flex-col sm:flex-row items-center sm:gap-1 mt-6 sm:mt-9 text-center sm:text-left">
-          {isAdmin && <DashboardButton />}
-          <div className="flex text-center sm:text-left mt-4 sm:mt-0">
-            <ThemeIcon />
-            <AuthButton />
-          </div>
-        </div>
-      </div>
-
-      <hr className="my-4" />
-    </>
-  );
+  return <p>{message}</p>;
 };
 
 const Logo = () => {
@@ -76,6 +77,10 @@ const Logo = () => {
       />
     </div>
   );
+};
+
+const Divider = () => {
+  return <hr className="my-4" />;
 };
 
 export default Layout;

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "context/AuthContext";
 
 const DashboardToggleButton = ({ isActive, onClick, label }) => (
   <button
@@ -19,6 +20,7 @@ const DashboardButton = () => {
   const navigate = useNavigate();
   const [isAdminView, setIsAdminView] = useState(false);
   const [isAnimating, setIsAnimating] = useState(false);
+  const { isAdmin } = useAuth();
 
   // Update state based on URL
   useEffect(() => {
@@ -41,6 +43,8 @@ const DashboardButton = () => {
       }, 300);
     }
   };
+
+  if (!isAdmin) return null; // Hide button if not admin
 
   return (
     <div className="flex items-center bg-gray-100 dark:bg-btg-secondary-dark rounded-lg p-1 mx-12 w-48 relative">
