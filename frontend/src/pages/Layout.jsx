@@ -9,7 +9,7 @@ import { useLocation } from "react-router-dom";
 const Layout = () => {
   return (
     <div className="btg_page_container">
-      <div className="w-full h-full pt-10">
+      <div className="w-full h-full pt-12">
         <TitleBar />
         <Divider />
         <Outlet /> {/* Child routes rendered here */}
@@ -80,7 +80,7 @@ const Logo = () => {
 };
 
 const Divider = () => {
-  return <hr className="my-4" />;
+  return <hr className="my-5" />;
 };
 
 export default Layout;
