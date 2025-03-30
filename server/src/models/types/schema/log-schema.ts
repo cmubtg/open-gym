@@ -8,6 +8,7 @@ import { GYM_NAMES, GymName, LogCollection } from "@/utils";
     time: Date;
     entries: number;
     exits: number;
+    notes: string;
 }
 */
 export const logRecordSchema = new Schema({
@@ -19,6 +20,7 @@ export const logRecordSchema = new Schema({
   time: { type: Date, required: true },
   entries: { type: Number, required: true, min: 0 },
   exits: { type: Number, required: true, min: 0 },
+  notes: { type: String, required: false },
 });
 
 // Infer base types from schemas

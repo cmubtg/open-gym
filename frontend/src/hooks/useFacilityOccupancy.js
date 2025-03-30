@@ -8,10 +8,11 @@ const useFacilityOccupancy = (facility) => {
   const [closingStatus, setClosingStatus] = useState("closed");
   const { isAuthenticated } = useAuth();
   // TODO Keep track of time since last fetch
-  const lastFetch = Math.floor(Math.random() * 10) + 1;
+  const [lastFetch, setLastFetch] = useState(0);
 
   useEffect(() => {
     const fetchData = async () => {
+
       if (!isAuthenticated) {
         console.log("User is not authenticated, skipping fetch");
         return;
@@ -28,8 +29,15 @@ const useFacilityOccupancy = (facility) => {
           }
         );
         const occupancyRecords = await res.json();
+        if (occupancyRecords.length === 0) {
+          console.log("No occupancy record found for facility:", facility.id);
+          return;
+        }
         if (res.ok) {
           setOccupancy(occupancyRecords[0].occupancy);
+          const recordTime = Date.parse(occupancyRecords[0].time);
+          const timeDiff = new Date(new Date() - recordTime).getMinutes();
+          setLastFetch(timeDiff);
         }
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -37,17 +45,17 @@ const useFacilityOccupancy = (facility) => {
     };
 
     const updateClosingStatus = () => {
-      const currDateTime = new Date(Date.now());
-      const newClosingStatus = getClosingStatus(facility, currDateTime);
+      const newClosingStatus = getClosingStatus(facility);
       if (newClosingStatus !== closingStatus) {
         setClosingStatus(newClosingStatus);
+      }
+      if (!isClosed(closingStatus)) {
+        fetchData();
       }
     };
 
     updateClosingStatus();
-    if (!isClosed(closingStatus)) {
-      fetchData();
-    }
+    
     // Check every minute to see if closing status has changed
     const intervalId = setInterval(updateClosingStatus, MINUTE_MS);
     return () => clearInterval(intervalId);
