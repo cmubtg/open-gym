@@ -4,9 +4,8 @@ import { GoogleOAuthProvider } from "@react-oauth/google";
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(true);
-  const [isAdmin, setIsAdmin] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
@@ -22,10 +21,9 @@ export const AuthProvider = ({ children }) => {
           }
         );
         const data = await response.json();
-
         setIsAuthenticated(data.isAuthenticated);
         setIsAdmin(data.isAdmin);
-        // Only show login if user hasn't seen prompt and isn't authenticated
+
         setShowLogin(!data.isAuthenticated && !hasSeenPrompt);
       } catch (error) {
         console.error("Auth check failed:", error);
@@ -33,7 +31,6 @@ export const AuthProvider = ({ children }) => {
         setIsAdmin(false);
         setShowLogin(!localStorage.getItem("hasSeenLoginPrompt"));
       } finally {
-        setIsLoading(false);
       }
     };
 
@@ -46,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         "Sending login request to:",
         `${process.env.REACT_APP_AUTH_URL}/login`
       );
-      
+
       const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/login`, {
         method: "POST",
         headers: {
@@ -88,21 +85,12 @@ export const AuthProvider = ({ children }) => {
   const value = {
     isAuthenticated,
     isAdmin,
-    isLoading,
     showLogin,
     setShowLogin,
     login,
     logout,
     continueAsGuest,
   };
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <GoogleOAuthProvider

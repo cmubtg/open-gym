@@ -1,21 +1,8 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { Home, FacilityDetail, Dashboard } from "pages";
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import {Dashboard, FacilityDetail, Home} from "pages";
 import Footer from "components/footer/Footer";
-import { AuthProvider, useAuth } from "context/AuthContext";
-import { Navigate, useLocation } from 'react-router-dom';
-
-// Protect Admin routes 
-const AdminRoute = ({ children }) => {
-  const { isAdmin } = useAuth();
-  const location = useLocation();
-
-  if (!isAdmin) {
-    return <Navigate to="/" state={{ from: location }} replace />;
-  }
-
-  return children;
-};
-
+import AuthProvider from "context/AuthContext";
+import AdminRoute from "components/auth/AdminRoute";
 
 function App() {
   return (

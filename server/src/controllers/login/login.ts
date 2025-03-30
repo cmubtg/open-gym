@@ -28,23 +28,20 @@ export const login = async (
     const email = payload?.email?.toLowerCase().trim();
     console.log("Email from token (normalized):", email);
 
-    if (email && 
-        (config.adminEmailList.includes(email) 
-        || email.endsWith("@andrew.cmu.edu") 
-        || email.endsWith("@cmu.edu"))) {
+    if (
+      email &&
+      (config.adminEmailList.includes(email) ||
+        email.endsWith("@andrew.cmu.edu") ||
+        email.endsWith("@cmu.edu"))
+    ) {
       console.log("Valid CMU email, setting session");
       req.session.isAuthenticated = true;
 
-      if (config.adminEmailList.includes(email)) {
-        req.session.isAdmin = true;
-      } else {
-        req.session.isAdmin = false;
-      }
+      req.session.isAdmin = config.adminEmailList.includes(email);
 
       // Log session and cookies
       console.log("Session:", req.session);
       console.log("Session ID:", req.sessionID);
-
 
       // Explicitly save the session and wait for it to complete
       await new Promise<void>((resolve, reject) => {
@@ -60,10 +57,10 @@ export const login = async (
 
       // Verify session was saved
       const verifySession = await new Promise((resolve) => {
-      req.sessionStore.get(req.sessionID, (err, session) => {
+        req.sessionStore.get(req.sessionID, (err, session) => {
           if (err) console.error("Error verifying session:", err);
           resolve(session);
-      });
+        });
       });
 
       console.log("Session ID after save:", req.sessionID);
@@ -72,14 +69,14 @@ export const login = async (
       res.status(HttpStatus.OK).json({
         success: true,
         message: "Login successful",
-        isAdmin: req.session.isAdmin
+        isAdmin: req.session.isAdmin,
       });
     } else {
       console.log("Invalid email domain");
       res.status(HttpStatus.Unauthorized).json({
         success: false,
         message: "Invalid email domain",
-        isAdmin: false
+        isAdmin: false,
       });
     }
   } catch (error) {
@@ -87,22 +84,17 @@ export const login = async (
     res.status(HttpStatus.BadRequest).json({
       success: false,
       message: "Invalid token",
-      isAdmin: false
+      isAdmin: false,
     });
   }
 };
 
 // Deprecated - Moved to loginAuth in @/middleware/login/login-check-controller
 export const checkLogin = (req: Request, res: Response) => {
-  if (req.session.isAuthenticated) {
-    if (req.session.isAdmin) {
-      res.status(HttpStatus.OK).json({ isAuthenticated: true, isAdmin: true });
-    } else {
-      res.status(HttpStatus.OK).json({ isAuthenticated: true, isAdmin: false });
-    }
-  } else {
-    res.status(HttpStatus.OK).json({ isAuthenticated: false, isAdmin: false });
-  }
+  res.status(HttpStatus.OK).json({
+    isAuthenticated: req.session.isAuthenticated,
+    isAdmin: req.session.isAdmin,
+  });
 };
 
 export const logout = (req: Request, res: Response) => {
