@@ -55,7 +55,7 @@ export class Server {
       // Start background jobs
       startCronJobs();
 
-      // Initialize middleware, including logger
+      // Initialize middleware
       this.setupMiddleware();
 
       // Setup routes
