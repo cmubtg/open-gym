@@ -7,6 +7,7 @@ const AuthButton = () => {
   const handleAuth = async () => {
     if (isAuthenticated) {
       try {
+        // TODO Refactor into logout function
         const response = await fetch(
           `${process.env.REACT_APP_AUTH_URL}/logout`,
           {

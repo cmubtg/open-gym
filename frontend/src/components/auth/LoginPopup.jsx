@@ -17,8 +17,9 @@ const LoginPopup = ({ setShowLogin }) => {
           </span>
           <br />
           <br />
-          If you have any feedback or suggestions, please reach out to us at{" "}
-          <a href="mailto:cmubtg@gmail.com" className="font-medium">cmubtg@gmail.com
+          If you have any feedback or suggestions, please reach out to us at
+          <a href="mailto:cmubtg@gmail.com" className="font-medium">
+            cmubtg@gmail.com
           </a>
           <br />
           <br />
