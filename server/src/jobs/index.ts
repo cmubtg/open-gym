@@ -1,4 +1,4 @@
-import StartAggregateScheduler from "./aggregate-occupancy";
+// import StartAggregateScheduler from "./aggregate-occupancy";
 import StartLogScanScheduler from "./log-scan";
 
 /**
@@ -6,6 +6,6 @@ import StartLogScanScheduler from "./log-scan";
  */
 export default function StartCronJobs() {
   // Removes and aggregates bluetooth data daily at midnight
-  StartAggregateScheduler();
+  // StartAggregateScheduler();
   StartLogScanScheduler();
 };
