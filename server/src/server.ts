@@ -6,6 +6,7 @@ import config from "@/config";
 import startCronJobs from "@/jobs";
 import mountRoutes from "@/routes";
 import mountMiddleware, { errorHandler } from "@/middleware";
+import { logger } from "./utils";
 
 export class Server {
   private app: Application;
@@ -20,10 +21,10 @@ export class Server {
   private async connectToDatabase(): Promise<mongoose.Mongoose> {
     try {
       const connection = await mongoose.connect(config.databaseURL);
-      console.log("Connected to database:", connection.connection.name);
+      logger.info("Connected to database:", connection.connection.name);
       return connection;
     } catch (error) {
-      console.error("Database connection failed:", error);
+      logger.error("Database connection failed:", error);
       throw error;
     }
   }
@@ -65,10 +66,10 @@ export class Server {
 
       // Start server
       this.app.listen(config.port, () => {
-        console.log(`Server running on port ${config.port}`);
+        logger.info(`Server running on port ${config.port}`);
       });
     } catch (error) {
-      console.error("Failed to start server:", error);
+      logger.error("Failed to start server:", error);
       process.exit(1);
     }
   }
