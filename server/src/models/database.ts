@@ -8,26 +8,21 @@ import {
   OccupancyRecordModelType,
   OCCUPANCY_MODEL_MAP,
 } from "./types";
-import {
-  GYM_NAMES,
-  OccupancyCollection, 
-  isIn,
-  relativeDate 
-} from "@/utils";
+import { GYM_NAMES, OccupancyCollection, isIn, relativeDate } from "@/utils";
 
 // Helper functions/constants
-const getOccupancyModel = (collection: OccupancyCollection): OccupancyRecordModelType => {
+const getOccupancyModel = (
+  collection: OccupancyCollection
+): OccupancyRecordModelType => {
   return OCCUPANCY_MODEL_MAP[collection];
-};
-
-const defaultDateRange = {
-  start: relativeDate(new Date(), 0),
-  end: relativeDate(new Date(), 1),
 };
 
 // Database object
 const db: DB = {
-  insertOccupancyRecords: async (records, collection = OccupancyCollection.Current) => {
+  insertOccupancyRecords: async (
+    records,
+    collection = OccupancyCollection.Current
+  ) => {
     const model: OccupancyRecordModelType = getOccupancyModel(collection);
     for (const record of records) {
       await model.create(record);
@@ -36,7 +31,10 @@ const db: DB = {
 
   getOccupancyRecords: async (options) => {
     const defaultOptions = {
-      dateRange: defaultDateRange,
+      dateRange: {
+        start: relativeDate(new Date(), 0),
+        end: relativeDate(new Date(), 1),
+      },
       collection: OccupancyCollection.Current,
     };
     const { gym, dateRange, collection } = { ...defaultOptions, ...options };
@@ -67,7 +65,10 @@ const db: DB = {
 
   getLogRecords: async (options) => {
     const defaultOptions = {
-      dateRange: defaultDateRange,
+      dateRange: {
+        start: relativeDate(new Date(), 0),
+        end: relativeDate(new Date(), 1),
+      },
     };
     const { gym, dateRange } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;
@@ -89,7 +90,10 @@ const db: DB = {
 
   getGymHours: async (options) => {
     const defaultOptions = {
-      dateRange: defaultDateRange,
+      dateRange: {
+        start: relativeDate(new Date(), 0),
+        end: relativeDate(new Date(), 1),
+      },
     };
     const { gym, dateRange } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;

@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import config from "@/config";
-import { HttpStatus } from "@/utils";
+import { HttpStatus, logger } from "@/utils";
 
 const client = new OAuth2Client(config.googleOauthClientID);
 
@@ -15,26 +15,28 @@ export const login = async (
   res: Response
 ) => {
   const { token } = req.body;
-  console.log("Login attempt received");
+  logger.info("Login attempt received");
 
   try {
-    console.log("Verifying Google token...");
+    logger.debug("Verifying Google token...");
     const ticket = await client.verifyIdToken({
       idToken: token,
       audience: config.googleOauthClientID,
     });
 
     const payload = ticket.getPayload();
-    const email = payload?.email;
-    console.log("Email from token:", email);
+    const email = payload?.email?.toLowerCase().trim();
+    logger.debug("Email from token (normalized):", email);
 
-    if (email && email.endsWith("@andrew.cmu.edu")) {
-      console.log("Valid CMU email, setting session");
+    if (
+      email &&
+      (email.endsWith("@andrew.cmu.edu") || email.endsWith("@cmu.edu"))
+    ) {
       req.session.isAuthenticated = true;
 
       // Log session and cookies
-      console.log("Session:", req.session);
-      console.log("Session ID:", req.sessionID);
+      logger.debug("Session:", req.session);
+      logger.debug("Session ID:", req.sessionID);
 
       // Explicitly save the session and wait for it to complete
       await new Promise<void>((resolve, reject) => {
@@ -42,7 +44,7 @@ export const login = async (
           if (err) {
             reject(err);
           } else {
-            console.log("Session saved!");
+            logger.debug("Session saved!");
             resolve();
           }
         });
@@ -50,40 +52,28 @@ export const login = async (
 
       // Verify session was saved
       const verifySession = await new Promise((resolve) => {
-      req.sessionStore.get(req.sessionID, (err, session) => {
-          if (err) console.error("Error verifying session:", err);
+        req.sessionStore.get(req.sessionID, (err, session) => {
+          if (err) logger.error("Error verifying session:", err);
           resolve(session);
-      });
+        });
       });
 
-      console.log("Session ID after save:", req.sessionID);
-      console.log("Verified session in store:", verifySession);
-
-      // Manually set the session cookie
-      // const cookieOptions = {
-      // maxAge: 3600000,
-      // httpOnly: false,
-      // secure: true,
-      // sameSite: "none" as const,
-      // domain: ".cmugym.com",
-      // path: "/"
-      // };
-      // res.cookie("connect.sid", req.sessionID, cookieOptions);
-      // console.log("Response headers after setting cookie:", res.getHeaders());
+      logger.debug("Session ID after save:", req.sessionID);
+      logger.debug("Verified session in store:", verifySession);
 
       res.status(HttpStatus.OK).json({
         success: true,
         message: "Login successful",
       });
     } else {
-      console.log("Invalid email domain");
+      logger.debug("Invalid email domain");
       res.status(HttpStatus.Unauthorized).json({
         success: false,
         message: "Invalid email domain",
       });
     }
   } catch (error) {
-    console.error("Login error:", error);
+    logger.error("Login error:", error);
     res.status(HttpStatus.BadRequest).json({
       success: false,
       message: "Invalid token",
@@ -91,6 +81,7 @@ export const login = async (
   }
 };
 
+// Deprecated - Moved to loginAuth in @/middleware/login/login-check-controller
 export const checkLogin = (req: Request, res: Response) => {
   if (req.session.isAuthenticated) {
     res.status(HttpStatus.OK).json({ isAuthenticated: true });
