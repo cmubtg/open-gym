@@ -7,6 +7,9 @@ import {
   logModel,
   OccupancyRecordModelType,
   OCCUPANCY_MODEL_MAP,
+  ConfigSettingsType,
+  configSettingsModel,
+
 } from "./types";
 import { GYM_NAMES, OccupancyCollection, isIn, relativeDate } from "@/utils";
 
@@ -114,6 +117,11 @@ const db: DB = {
     );
     return hours;
   },
+
+  getConfigSetting: async (key) => {
+    return configSettingsModel.findOne({key});
+  },
+
 };
 
 export default db;

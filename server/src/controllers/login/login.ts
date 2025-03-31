@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import config from "@/config";
 import { HttpStatus, logger } from "@/utils";
+import db from "@/models/database";
 
 const client = new OAuth2Client(config.googleOauthClientID);
 
@@ -36,7 +37,10 @@ export const login = async (
     ) {
       req.session.isAuthenticated = true;
 
-      req.session.isAdmin = config.adminEmailList.includes(email);
+      // Check if user is an admin
+      const adminEmailConfig = await db.getConfigSetting("adminEmailList");
+      const adminEmailList = adminEmailConfig?.value as string[] || [];
+      req.session.isAdmin = adminEmailList.includes(email);
 
       // Log session and cookies
       logger.debug("Session:", req.session);
