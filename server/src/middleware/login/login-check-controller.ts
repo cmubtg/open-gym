@@ -5,6 +5,7 @@ import { HttpStatus, logger } from "@/utils"; // Import logger from utils
 declare module "express-session" {
   export interface SessionData {
     isAuthenticated: boolean;
+    isAdmin: boolean;
   }
 }
 

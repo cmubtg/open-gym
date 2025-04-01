@@ -5,7 +5,7 @@ const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
 
   useEffect(() => {
@@ -21,16 +21,16 @@ export const AuthProvider = ({ children }) => {
           }
         );
         const data = await response.json();
-
         setIsAuthenticated(data.isAuthenticated);
-        // Only show login if user hasn't seen prompt and isn't authenticated
+        setIsAdmin(data.isAdmin);
+
         setShowLogin(!data.isAuthenticated && !hasSeenPrompt);
       } catch (error) {
         console.error("Auth check failed:", error);
         setIsAuthenticated(false);
+        setIsAdmin(false);
         setShowLogin(!localStorage.getItem("hasSeenLoginPrompt"));
       } finally {
-        setIsLoading(false);
       }
     };
 
@@ -43,7 +43,7 @@ export const AuthProvider = ({ children }) => {
         "Sending login request to:",
         `${process.env.REACT_APP_AUTH_URL}/login`
       );
-      
+
       const response = await fetch(`${process.env.REACT_APP_AUTH_URL}/login`, {
         method: "POST",
         headers: {
@@ -58,6 +58,9 @@ export const AuthProvider = ({ children }) => {
       console.log("Login response data:", data);
 
       if (data.success) {
+        if (data.isAdmin) {
+          setIsAdmin(true);
+        }
         setIsAuthenticated(true);
         setShowLogin(false);
         return true;
@@ -71,6 +74,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     setIsAuthenticated(false);
+    setIsAdmin(false);
   };
 
   const continueAsGuest = () => {
@@ -80,21 +84,13 @@ export const AuthProvider = ({ children }) => {
 
   const value = {
     isAuthenticated,
-    isLoading,
+    isAdmin,
     showLogin,
     setShowLogin,
     login,
     logout,
     continueAsGuest,
   };
-
-  if (isLoading) {
-    return (
-      <div className="w-full h-full flex items-center justify-center">
-        Loading...
-      </div>
-    );
-  }
 
   return (
     <GoogleOAuthProvider

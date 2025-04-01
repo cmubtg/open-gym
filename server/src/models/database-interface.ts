@@ -4,6 +4,7 @@ import {
   LogRecordType,
   GymHoursType,
   DBOptionType,
+  ConfigSettingsType,
 } from "@/models/types";
 
 export default interface DB {
@@ -70,4 +71,13 @@ export default interface DB {
    * @returns a list of gym hours
    */
   getGymHours(options?: DBOptionType): Promise<GymHoursType[]>;
+
+  /**
+   * Gets a configuration setting by key
+   * @param key the key of the configuration setting to get
+   * TODO: n/BPS-337 : Implement set config settings and get all config settings
+   */
+
+  getConfigSetting(key: string): Promise<ConfigSettingsType | null>;
+
 }

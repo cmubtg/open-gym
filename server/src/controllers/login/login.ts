@@ -2,6 +2,7 @@ import { Request, Response } from "express";
 import { OAuth2Client } from "google-auth-library";
 import config from "@/config";
 import { HttpStatus, logger } from "@/utils";
+import db from "@/models/database";
 
 const client = new OAuth2Client(config.googleOauthClientID);
 
@@ -30,9 +31,16 @@ export const login = async (
 
     if (
       email &&
-      (email.endsWith("@andrew.cmu.edu") || email.endsWith("@cmu.edu"))
+      (config.adminEmailList.includes(email) ||
+        email.endsWith("@andrew.cmu.edu") ||
+        email.endsWith("@cmu.edu"))
     ) {
       req.session.isAuthenticated = true;
+
+      // Check if user is an admin
+      const adminEmailConfig = await db.getConfigSetting("adminEmailList");
+      const adminEmailList = adminEmailConfig?.value as string[] || [];
+      req.session.isAdmin = adminEmailList.includes(email);
 
       // Log session and cookies
       logger.debug("Session:", req.session);
@@ -64,12 +72,14 @@ export const login = async (
       res.status(HttpStatus.OK).json({
         success: true,
         message: "Login successful",
+        isAdmin: req.session.isAdmin,
       });
     } else {
       logger.debug("Invalid email domain");
       res.status(HttpStatus.Unauthorized).json({
         success: false,
         message: "Invalid email domain",
+        isAdmin: false,
       });
     }
   } catch (error) {
@@ -77,17 +87,17 @@ export const login = async (
     res.status(HttpStatus.BadRequest).json({
       success: false,
       message: "Invalid token",
+      isAdmin: false,
     });
   }
 };
 
 // Deprecated - Moved to loginAuth in @/middleware/login/login-check-controller
 export const checkLogin = (req: Request, res: Response) => {
-  if (req.session.isAuthenticated) {
-    res.status(HttpStatus.OK).json({ isAuthenticated: true });
-  } else {
-    res.status(HttpStatus.OK).json({ isAuthenticated: false });
-  }
+  res.status(HttpStatus.OK).json({
+    isAuthenticated: req.session.isAuthenticated,
+    isAdmin: req.session.isAdmin,
+  });
 };
 
 export const logout = (req: Request, res: Response) => {

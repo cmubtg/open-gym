@@ -15,6 +15,9 @@ import ThemeIcon from "./misc/ThemeIcon";
 import AuthButton from "./auth/AuthButton";
 import LoginPopup from "./auth/LoginPopup";
 
+// Admin dashboard button
+import DashboardButton from "./misc/DashboardButton";
+
 export {
   FacilityCard,
   FacilityCardDisplay,
@@ -25,4 +28,5 @@ export {
   ThemeIcon,
   AuthButton,
   LoginPopup,
+  DashboardButton,
 };
