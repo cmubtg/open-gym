@@ -7,6 +7,7 @@ import {
   timeRoundedToNearestMinute,
   getESTDate,
   dateFromClock,
+  logger,
 } from "@/utils";
 /**
  * Initialize log scanner
@@ -39,7 +40,7 @@ export const logScanJob = async () => {
   // Only run the job if the current time is after 6:30 EST
   const currentEST = getESTDate();
   if (currentEST < startTime) {
-    console.log(`Current time ${currentEST} is before 6:30 AM EST. Skipping log scan.`);
+    logger.info(`Current time is before 6:30 AM EST. Skipping log scan.`);
     return;
   }
 
@@ -49,17 +50,17 @@ export const logScanJob = async () => {
       dateRange: {
         start: startTime,
         end: endTime,
-      }
+      },
     });
 
     const occupancy = records.reduce(
-        (acc, record) => acc + (record.entries - record.exits),
-        0
+      (acc, record) => acc + (record.entries - record.exits),
+      0
     );
     if (occupancy < 0) {
-      console.log(
-          `Negative occupancy (${occupancy}) recorded for ${gymName} at ${currentTime}`,
-          records
+      logger.error(
+        `Negative occupancy (${occupancy}) recorded for ${gymName} at ${currentTime}`,
+        records
       );
       continue;
     }
@@ -70,14 +71,14 @@ export const logScanJob = async () => {
     });
   }
   await db.insertOccupancyRecords(
-      occupancyRecords,
-      OccupancyCollection.Current
+    occupancyRecords,
+    OccupancyCollection.Current
   );
   currentTime = timeRoundedToNearestMinute(new Date());
-  console.log(`Log scan complete ${currentTime}`);
+  logger.info(`Log scan complete ${currentTime}`);
   for (const record of occupancyRecords) {
-    console.log(
-        `Inserted occupancy record for ${record.gym} at ${record.time} with occupancy ${record.occupancy}`
+    logger.info(
+      `Inserted occupancy record for ${record.gym} at ${record.time} with occupancy ${record.occupancy}`
     );
   }
 };

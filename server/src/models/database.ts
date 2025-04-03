@@ -32,9 +32,9 @@ const db: DB = {
   getOccupancyRecords: async (options) => {
     const defaultOptions = {
       dateRange: {
-            start: relativeDate(new Date(), 0),
-            end: relativeDate(new Date(), 1),
-          },
+        start: relativeDate(new Date(), 0),
+        end: relativeDate(new Date(), 1),
+      },
       collection: OccupancyCollection.Current,
     };
     const { gym, dateRange, collection } = { ...defaultOptions, ...options };
@@ -72,7 +72,6 @@ const db: DB = {
     };
     const { gym, dateRange } = { ...defaultOptions, ...options };
     const { start, end } = dateRange;
-    console.log("date range", dateRange);
 
     if (isIn(GYM_NAMES, gym)) {
       const records: LogRecordType[] = await logModel

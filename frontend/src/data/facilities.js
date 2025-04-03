@@ -33,6 +33,16 @@ const highmarkHours = {
   close: new Date(0, 0, 0, 19, 0), // 7 pm
 };
 
+const UCCarnivalHours1 = {
+  open: new Date(0, 0, 0, 8, 0), // 8 am
+  close: new Date(0, 0, 0, 20, 0), // 8 pm
+};
+
+const UCCarnivalHours2 = {
+  open: new Date(0, 0, 0, 10, 0), // 10 am
+  close: new Date(0, 0, 0, 18, 0), // 6 pm
+};
+
 // Hours Array
 // 0 = Sunday, 6 = Saturday
 const facilities = [
@@ -43,10 +53,18 @@ const facilities = [
     description: `Two floors dedicated to cardio and weight equipment in
         the Cohon Univeristy Center.`,
     // Sunday, then M-F, then Saturday
+    // hours: [
+    //   standardWeekendHours,
+    //   ...Array(5).fill(standardWeekdayHours),
+    //   standardWeekendHours,
+    // ],
     hours: [
       standardWeekendHours,
-      ...Array(5).fill(standardWeekdayHours),
-      standardWeekendHours,
+      ...Array(2).fill(standardWeekdayHours),
+      UCCarnivalHours1, // Wed
+      UCCarnivalHours1, // Thu
+      UCCarnivalHours1, // Fri
+      UCCarnivalHours2, // Sat
     ],
     image: process.env.PUBLIC_URL + "../images/uc.jpg",
     image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
