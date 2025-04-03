@@ -60,10 +60,11 @@ const facilities = [
     // ],
     hours: [
       standardWeekendHours,
-      ...Array(3).fill(standardWeekdayHours),
-        UCCarnivalHours1, // Thu
-        UCCarnivalHours1, // Fri
-        UCCarnivalHours2, // Sat
+      ...Array(2).fill(standardWeekdayHours),
+      UCCarnivalHours1, // Wed
+      UCCarnivalHours1, // Thu
+      UCCarnivalHours1, // Fri
+      UCCarnivalHours2, // Sat
     ],
     image: process.env.PUBLIC_URL + "../images/uc.jpg",
     image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
