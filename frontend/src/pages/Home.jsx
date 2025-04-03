@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import { getFacilitiesMetadata } from "data/facilities";
 import { useAuth } from "context/AuthContext";
 import {getTopBarMessage} from "data/topbarmessages";
+import Banner from "components/misc/Banner";
 
 const Home = () => {
   const { showLogin, setShowLogin } = useAuth();
@@ -34,6 +35,9 @@ const TitleBar = () => {
 
   return (
       <div>
+        <Banner>
+          <ManualOccupancyPSA/>
+        </Banner>
         <div className="w-full flex flex-col sm:flex-row justify-between items-center text-center sm:text-left">
           <div>
             <div className="flex justify-center items-center sm:justify-between">
@@ -70,5 +74,22 @@ const FacilityCards = () => {
     </div>
   );
 };
+
+const ManualOccupancyPSA = () =>{
+  return (
+    <div className="flex items-center gap-2">
+      <span>
+        OpenGym is still under development. The numbers we provide are estimates and may be incorrect.
+      </span>
+    {/*TODO: n/BPS- Backend support for manual occupancy collecting*/}
+    {/*<strong>Are you in the gym right now?</strong> {" "} Help us refine our data by sharing your estimate of the current occupancy:*/}
+    {/*  <input*/}
+    {/*    type="number"*/}
+    {/*    placeholder="%"*/}
+    {/*    className="border border-[#ffc700] rounded px-2 py-1 w-16"*/}
+    {/*  />*/}
+    </div>
+  )
+}
 
 export default Home;
