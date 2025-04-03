@@ -79,14 +79,15 @@ const ManualOccupancyPSA = () =>{
   return (
     <div className="flex items-center gap-2">
       <span>
-        OpenGym is still under development and <strong>Are you in the gym right now?</strong> {" "}
-        Help us refine our data by sharing your estimate of the current occupancy:
+        OpenGym is still under development. The numbers we provide are estimates and may be incorrect.
       </span>
-      <input
-        type="number"
-        placeholder="%"
-        className="border border-[#ffc700] rounded px-2 py-1 w-16"
-      />
+    {/*TODO: n/BPS- Backend support for manual occupancy collecting*/}
+    {/*<strong>Are you in the gym right now?</strong> {" "} Help us refine our data by sharing your estimate of the current occupancy:*/}
+    {/*  <input*/}
+    {/*    type="number"*/}
+    {/*    placeholder="%"*/}
+    {/*    className="border border-[#ffc700] rounded px-2 py-1 w-16"*/}
+    {/*  />*/}
     </div>
   )
 }
