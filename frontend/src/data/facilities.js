@@ -52,19 +52,11 @@ const facilities = [
     address: "5000 Forbes Ave, Pittsburgh, PA 15213",
     description: `Two floors dedicated to cardio and weight equipment in
         the Cohon Univeristy Center.`,
-    // Sunday, then M-F, then Saturday
-    // hours: [
-    //   standardWeekendHours,
-    //   ...Array(5).fill(standardWeekdayHours),
-    //   standardWeekendHours,
-    // ],
+    // Sunday, M-F, Saturday
     hours: [
       standardWeekendHours,
-      ...Array(2).fill(standardWeekdayHours),
-      UCCarnivalHours1, // Wed
-      UCCarnivalHours1, // Thu
-      UCCarnivalHours1, // Fri
-      UCCarnivalHours2, // Sat
+      ...Array(5).fill(standardWeekdayHours),
+      standardWeekendHours,
     ],
     image: process.env.PUBLIC_URL + "../images/uc.jpg",
     image2: process.env.PUBLIC_URL + "../images/uc2.jpg",
