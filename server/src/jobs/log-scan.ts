@@ -25,29 +25,29 @@ export default function StartLogScanScheduler() {
 }
 
 /**
- * Checks if the current time is after the evening threshold (8:00 PM)
+ * Checks if the current time is after the evening threshold
  * @param currentTime The current time in EST
  * @returns True if it's after 8:00 PM
  */
 function isEveningHours(currentTime: Date): boolean {
   const today = getESTDate();
-  const eveningThreshold = dateFromClock(today, "20:00"); // 8:00 PM
+  const eveningThreshold = dateFromClock(today, "20:00");
   return currentTime >= eveningThreshold;
 }
 
 /**
- * Processes records for a gym to calculate occupancy with adjustments as needed
+ * Calculates occupancy for a gym and applies adjustment if necessary
  * @param records The log records for a gym
  * @param gymName The name of the gym
  * @param currentDateTime The current time
  * @returns An occupancy record object and stats for logging
  */
 function processGymRecords(
-  records: LogRecordType[],
+  logRecords: LogRecordType[],
   gymName: GymName,
   currentDateTime: Date
 ): {
-  record: OccupancyRecordType;
+  occupancyRecord: OccupancyRecordType;
   stats: {
     totalEntries: number;
     totalExits: number;
@@ -64,9 +64,9 @@ function processGymRecords(
   // Calculate total entries and exits
   let totalEntries = 0;
   let totalExits = 0;
-  for (const record of records) {
-    totalEntries += record.entries;
-    totalExits += record.exits;
+  for (const logRecord of logRecords) {
+    totalEntries += logRecord.entries;
+    totalExits += logRecord.exits;
   }
 
   // Determine if adjustment should be applied
@@ -78,10 +78,11 @@ function processGymRecords(
   const adjustedExits = shouldAdjust
     ? Math.floor(totalExits * EXIT_WEIGHT_FACTOR)
     : totalExits;
+
   const occupancy = totalEntries - adjustedExits;
 
   return {
-    record: {
+    occupancyRecord: {
       gym: gymName,
       time: currentDateTime,
       occupancy: occupancy,
@@ -98,7 +99,7 @@ function processGymRecords(
 }
 
 /**
- * Main job function that scans logs and calculates occupancy
+ * Main job function
  */
 export const logScanJob = async () => {
   // Set up time boundaries
@@ -117,8 +118,8 @@ export const logScanJob = async () => {
   const roundedCurrentTime = timeRoundedToNearestMinute(currentDateTime);
 
   for (const gymName of GYM_NAMES) {
-    // Fetch records for this gym
-    const records = await db.getLogRecords({
+    // Fetch occupancy records for this gym
+    const logRecords = await db.getLogRecords({
       gym: gymName,
       dateRange: {
         start: startTime,
@@ -126,8 +127,8 @@ export const logScanJob = async () => {
       },
     });
 
-    const { record, stats } = processGymRecords(
-      records,
+    const { occupancyRecord, stats } = processGymRecords(
+      logRecords,
       gymName,
       roundedCurrentTime
     );
@@ -135,8 +136,7 @@ export const logScanJob = async () => {
     if (stats.occupancy < 0) {
       logger.warn(
         `Negative occupancy (${stats.occupancy}) calculated for ${gymName} at ${roundedCurrentTime} - ` +
-          `Entries: ${stats.totalEntries}, Exits: ${stats.totalExits}, Adjusted Exits: ${stats.adjustedExits}. ` +
-          `Setting to 0.`
+          `Entries: ${stats.totalEntries}, Exits: ${stats.totalExits}, Adjusted Exits: ${stats.adjustedExits}. `
       );
     }
 
@@ -148,7 +148,7 @@ export const logScanJob = async () => {
       );
     }
 
-    occupancyRecords.push(record);
+    occupancyRecords.push(occupancyRecord);
   }
 
   // Save records to database
