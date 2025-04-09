@@ -35,12 +35,6 @@ export const createOccupancyRecord = async (req: Request, res: Response) => {
     res.status(HttpStatus.BadRequest).json({ error: "No occupancy provided" });
     return;
   }
-  if (occupancy < 0) {
-    res
-      .status(HttpStatus.BadRequest)
-      .json({ error: "Invalid occupancy (cannot be < 0)" });
-    return;
-  }
 
   // Insert into database
   try {

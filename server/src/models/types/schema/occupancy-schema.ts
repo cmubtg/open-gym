@@ -16,7 +16,7 @@ export const occupancyRecordSchema = new Schema({
     enum: GYM_NAMES,
   },
   time: { type: Date, required: true },
-  occupancy: { type: Number, required: true, min: 0 },
+  occupancy: { type: Number, required: true},
 });
 
 // Infer base types from schemas
