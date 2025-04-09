@@ -16,11 +16,11 @@ import {
  */
 export default function StartLogScanScheduler() {
   new CronJob(
-      "*/5 * * * *", // Every 5 minutes
-      logScanJob,
-      null, // onComplete
-      true, // start
-      "UTC" // timeZone
+    "*/5 * * * *", // Every 5 minutes
+    logScanJob,
+    null, // onComplete
+    true, // start
+    "UTC" // timeZone
   );
 }
 
@@ -43,9 +43,9 @@ function isEveningHours(currentTime: Date): boolean {
  * @returns An occupancy record object and stats for logging
  */
 function processGymRecords(
-    records: LogRecordType[],
-    gymName: GymName,
-    currentDateTime: Date
+  records: LogRecordType[],
+  gymName: GymName,
+  currentDateTime: Date
 ): {
   record: OccupancyRecordType;
   stats: {
@@ -55,11 +55,11 @@ function processGymRecords(
     occupancy: number;
     adjustmentApplied: boolean;
     exitWeightFactor: number;
-  }
+  };
 } {
   // Configuration constants
-  const BUSY_THRESHOLD = 1000;
-  const EXIT_WEIGHT_FACTOR = 0.7;
+  const BUSY_THRESHOLD = 2000;
+  const EXIT_WEIGHT_FACTOR = 0.94;
 
   // Calculate total entries and exits
   let totalEntries = 0;
@@ -71,18 +71,20 @@ function processGymRecords(
 
   // Determine if adjustment should be applied
   const isEvening = isEveningHours(currentDateTime);
-  const isBusy = (totalEntries + totalExits) > BUSY_THRESHOLD;
+  const isBusy = totalEntries + totalExits > BUSY_THRESHOLD;
   const shouldAdjust = isEvening && isBusy;
 
   // Calculate occupancy
-  const adjustedExits = shouldAdjust ? Math.floor(totalExits * EXIT_WEIGHT_FACTOR) : totalExits;
+  const adjustedExits = shouldAdjust
+    ? Math.floor(totalExits * EXIT_WEIGHT_FACTOR)
+    : totalExits;
   const occupancy = totalEntries - adjustedExits;
 
   return {
     record: {
       gym: gymName,
       time: currentDateTime,
-      occupancy: occupancy
+      occupancy: occupancy,
     },
     stats: {
       totalEntries,
@@ -90,8 +92,8 @@ function processGymRecords(
       adjustedExits,
       occupancy,
       adjustmentApplied: shouldAdjust,
-      exitWeightFactor: EXIT_WEIGHT_FACTOR
-    }
+      exitWeightFactor: EXIT_WEIGHT_FACTOR,
+    },
   };
 }
 
@@ -124,11 +126,15 @@ export const logScanJob = async () => {
       },
     });
 
-    const { record, stats } = processGymRecords(records, gymName, roundedCurrentTime);
+    const { record, stats } = processGymRecords(
+      records,
+      gymName,
+      roundedCurrentTime
+    );
 
     if (stats.occupancy < 0) {
       logger.warn(
-          `Negative occupancy (${stats.occupancy}) calculated for ${gymName} at ${roundedCurrentTime} - ` +
+        `Negative occupancy (${stats.occupancy}) calculated for ${gymName} at ${roundedCurrentTime} - ` +
           `Entries: ${stats.totalEntries}, Exits: ${stats.totalExits}, Adjusted Exits: ${stats.adjustedExits}. ` +
           `Setting to 0.`
       );
@@ -136,7 +142,7 @@ export const logScanJob = async () => {
 
     if (stats.adjustmentApplied) {
       logger.info(
-          `Applied busy evening adjustment (${stats.exitWeightFactor}x) to exits for ${gymName}. ` +
+        `Applied busy evening adjustment (${stats.exitWeightFactor}x) to exits for ${gymName}. ` +
           `Total entries: ${stats.totalEntries}, Total exits: ${stats.totalExits}, ` +
           `Adjusted exits: ${stats.adjustedExits}, occupancy: ${stats.occupancy}, `
       );
@@ -147,15 +153,15 @@ export const logScanJob = async () => {
 
   // Save records to database
   await db.insertOccupancyRecords(
-      occupancyRecords,
-      OccupancyCollection.Current
+    occupancyRecords,
+    OccupancyCollection.Current
   );
 
   // Log completion
   logger.info(`Log scan complete`);
   for (const record of occupancyRecords) {
     logger.info(
-        `Inserted occupancy record for ${record.gym} at ${record.time} with occupancy ${record.occupancy}`
+      `Inserted occupancy record for ${record.gym} at ${record.time} with occupancy ${record.occupancy}`
     );
   }
 };
