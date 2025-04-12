@@ -29,17 +29,19 @@ export const login = async (
     const email = payload?.email?.toLowerCase().trim();
     logger.debug("Email from token (normalized):", email);
 
+    // Get admin emails from database
+    const adminEmailConfig = await db.getConfigSetting("adminEmailList");
+    const adminEmailList = adminEmailConfig?.value as string[] || [];
+
     if (
       email &&
-      (config.adminEmailList.includes(email) ||
+      ( adminEmailList.includes(email) ||
         email.endsWith("@andrew.cmu.edu") ||
         email.endsWith("@cmu.edu"))
     ) {
       req.session.isAuthenticated = true;
 
       // Check if user is an admin
-      const adminEmailConfig = await db.getConfigSetting("adminEmailList");
-      const adminEmailList = adminEmailConfig?.value as string[] || [];
       req.session.isAdmin = adminEmailList.includes(email);
 
       // Log session and cookies
