@@ -59,7 +59,9 @@ function processGymRecords(
 } {
   // Configuration constants
   const BUSY_THRESHOLD = 2000;
-  const EXIT_WEIGHT_FACTOR = 0.94;
+  // const EXIT_WEIGHT_FACTOR = 0.94;
+  // Note: Keeping at constant for now until proper factor is determined
+  const EXIT_WEIGHT_FACTOR = 1;
 
   // Calculate total entries and exits
   let totalEntries = 0;
