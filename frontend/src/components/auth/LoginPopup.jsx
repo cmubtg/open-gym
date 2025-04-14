@@ -28,7 +28,6 @@ const LoginPopup = ({ setShowLogin }) => {
             CMU email.
           </span>
         </p>
-
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-center mt-6 pb-4">
           <div className="w-[14em] md:w-[45%]">
             <GoogleLoginButton />
