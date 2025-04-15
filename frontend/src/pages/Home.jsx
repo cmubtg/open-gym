@@ -78,7 +78,7 @@ const FacilityCards = () => {
 const ManualOccupancyPSA = () =>{
   return (
     <div className="flex items-center gap-2">
-      <span>
+      <span className="py-2">
         OpenGym is still under development. The numbers we provide are estimates and may be incorrect.
       </span>
     {/*TODO: n/BPS- Backend support for manual occupancy collecting*/}
