@@ -76,10 +76,12 @@ const FacilityCards = () => {
 };
 
 const ManualOccupancyPSA = () =>{
+    const defaultMsg = "OpenGym is still under development. The numbers we provide are estimates and may be incorrect."
+    const sensorDownMsg = "OpenGym Sensors are currently down! The data being displayed may be inaccurate, please check back later."
   return (
     <div className="flex items-center gap-2">
-      <span className="py-2">
-        OpenGym is still under development. The numbers we provide are estimates and may be incorrect.
+      <span className="py-2 font-bold">
+        {sensorDownMsg}
       </span>
     {/*TODO: n/BPS- Backend support for manual occupancy collecting*/}
     {/*<strong>Are you in the gym right now?</strong> {" "} Help us refine our data by sharing your estimate of the current occupancy:*/}
